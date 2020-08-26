@@ -28,7 +28,7 @@ reply_port = 4007
 client = SimpleUDPClient(ip, request_port)  # Create client
 with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     
-    client.send_message("/gratings", [0.7, 0.0, -0.5, 0.0, 10.0, 0.0, 0.0, 2.0]) # grating 1
-    client.send_message("/gratings", [0.5, 45.0, 0.5, 0.0, 20.0, 0.0, 0.0, 2.0]) # grating 2
+    client.send_message("/gratings", [30.0, 0.0, -15.0, 0.0, 0.1, 0.0, 0.0, 2.0]) # grating 1
+    client.send_message("/gratings", [15.0, 45.0, 15.0, 0.0, 0.2, 0.0, 0.0, 2.0]) # grating 2
     client.send_message("/startgratings", 0)
     server.handle_request()  # Wait for end trial
