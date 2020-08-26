@@ -124,6 +124,7 @@ Rest.Item1 as Duration)</scr:Expression>
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\HarpRig.bonsai" />
     </Nodes>
     <Edges>
       <Edge From="2" To="3" Label="Source1" />
