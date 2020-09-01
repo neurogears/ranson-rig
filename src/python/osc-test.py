@@ -18,7 +18,7 @@ def default_handler(address, *args):
 
 
 dispatcher = Dispatcher()
-dispatcher.map("/something/*", print_handler)
+dispatcher.map("/print", print_handler)
 dispatcher.set_default_handler(default_handler)
 
 ip = "127.0.0.1"
@@ -31,4 +31,19 @@ with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     client.send_message("/gratings", [30.0, 0.0, -15.0, 0.0, 0.1, 0.0, 0.0, 2.0]) # grating 1
     client.send_message("/gratings", [15.0, 45.0, 15.0, 0.0, 0.2, 0.0, 0.0, 2.0]) # grating 2
     client.send_message("/startgratings", 0)
+    server.handle_request()  # Wait for end trial
+    
+    client.send_message("/go", [30.0, 2.0, 0.5]) # go trial
+    server.handle_request()  # Wait for end trial
+    
+    client.send_message("/nogo", [0.0, 2.0, 0.5]) # no-go trial
+    server.handle_request()  # Wait for end trial
+    
+    client.send_message("/tile", [0, 1.25, 1.0, "Black", 0])
+    client.send_message("/tile", [1, 1.25, 1.0, "White", 0])
+    client.send_message("/tile", [0, 2.25, 1.0, "White", 0])
+    client.send_message("/tile", [1, 2.25, 1.0, "Black", 0])
+    client.send_message("/tile", [2, 1.25, 1.0, "Black", 0])
+    client.send_message("/tile", [3, 1.25, 1.0, "Transparent", 0])
+    client.send_message("/startcorridor", 10.0)
     server.handle_request()  # Wait for end trial
