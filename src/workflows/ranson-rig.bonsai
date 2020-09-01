@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.5.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
@@ -214,7 +214,49 @@ Position - Extent / 2 as TranslationZ)</scr:Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:SampleOnUpdateFrame" />
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\CorridorTrial.bonsai" />
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\CorridorTrial.bonsai">
+              <Textures>
+                <TextureConfiguration xsi:type="gl:ImageTexture">
+                  <gl:Name>Black</gl:Name>
+                  <gl:Width xsi:nil="true" />
+                  <gl:Height xsi:nil="true" />
+                  <gl:InternalFormat>Rgba</gl:InternalFormat>
+                  <gl:WrapS>Repeat</gl:WrapS>
+                  <gl:WrapT>Repeat</gl:WrapT>
+                  <gl:MinFilter>Linear</gl:MinFilter>
+                  <gl:MagFilter>Linear</gl:MagFilter>
+                  <gl:FileName>Textures\Black.png</gl:FileName>
+                  <gl:ColorType>Unchanged</gl:ColorType>
+                  <gl:FlipMode>Vertical</gl:FlipMode>
+                </TextureConfiguration>
+                <TextureConfiguration xsi:type="gl:ImageTexture">
+                  <gl:Name>Transparent</gl:Name>
+                  <gl:Width xsi:nil="true" />
+                  <gl:Height xsi:nil="true" />
+                  <gl:InternalFormat>Rgba</gl:InternalFormat>
+                  <gl:WrapS>Repeat</gl:WrapS>
+                  <gl:WrapT>Repeat</gl:WrapT>
+                  <gl:MinFilter>Linear</gl:MinFilter>
+                  <gl:MagFilter>Linear</gl:MagFilter>
+                  <gl:FileName>Textures\Transparent.png</gl:FileName>
+                  <gl:ColorType>Unchanged</gl:ColorType>
+                  <gl:FlipMode>Vertical</gl:FlipMode>
+                </TextureConfiguration>
+                <TextureConfiguration xsi:type="gl:ImageTexture">
+                  <gl:Name>White</gl:Name>
+                  <gl:Width xsi:nil="true" />
+                  <gl:Height xsi:nil="true" />
+                  <gl:InternalFormat>Rgba</gl:InternalFormat>
+                  <gl:WrapS>Repeat</gl:WrapS>
+                  <gl:WrapT>Repeat</gl:WrapT>
+                  <gl:MinFilter>Linear</gl:MinFilter>
+                  <gl:MagFilter>Linear</gl:MagFilter>
+                  <gl:FileName>Textures\White.png</gl:FileName>
+                  <gl:ColorType>Unchanged</gl:ColorType>
+                  <gl:FlipMode>Vertical</gl:FlipMode>
+                </TextureConfiguration>
+              </Textures>
+            </Expression>
             <Expression xsi:type="osc:SendMessage">
               <osc:Connection>Reply</osc:Connection>
               <osc:Address>/endcorridor</osc:Address>
