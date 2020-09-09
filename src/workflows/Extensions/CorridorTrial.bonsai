@@ -3,73 +3,9 @@
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="gl:UpdateFrame" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Take">
-          <rx:Count>1</rx:Count>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Sender</Selector>
-      </Expression>
-      <Expression xsi:type="ExternalizedMapping">
-        <Property Name="Textures" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="gl:TextureResources">
-          <gl:Textures>
-            <gl:TextureConfiguration xsi:type="gl:ImageTexture">
-              <gl:Name>Black</gl:Name>
-              <gl:Width xsi:nil="true" />
-              <gl:Height xsi:nil="true" />
-              <gl:InternalFormat>Rgba</gl:InternalFormat>
-              <gl:WrapS>Repeat</gl:WrapS>
-              <gl:WrapT>Repeat</gl:WrapT>
-              <gl:MinFilter>Linear</gl:MinFilter>
-              <gl:MagFilter>Linear</gl:MagFilter>
-              <gl:FileName>Textures\Black.png</gl:FileName>
-              <gl:ColorType>Unchanged</gl:ColorType>
-              <gl:FlipMode>Vertical</gl:FlipMode>
-            </gl:TextureConfiguration>
-            <gl:TextureConfiguration xsi:type="gl:ImageTexture">
-              <gl:Name>Transparent</gl:Name>
-              <gl:Width xsi:nil="true" />
-              <gl:Height xsi:nil="true" />
-              <gl:InternalFormat>Rgba</gl:InternalFormat>
-              <gl:WrapS>Repeat</gl:WrapS>
-              <gl:WrapT>Repeat</gl:WrapT>
-              <gl:MinFilter>Linear</gl:MinFilter>
-              <gl:MagFilter>Linear</gl:MagFilter>
-              <gl:FileName>Textures\Transparent.png</gl:FileName>
-              <gl:ColorType>Unchanged</gl:ColorType>
-              <gl:FlipMode>Vertical</gl:FlipMode>
-            </gl:TextureConfiguration>
-            <gl:TextureConfiguration xsi:type="gl:ImageTexture">
-              <gl:Name>White</gl:Name>
-              <gl:Width xsi:nil="true" />
-              <gl:Height xsi:nil="true" />
-              <gl:InternalFormat>Rgba</gl:InternalFormat>
-              <gl:WrapS>Repeat</gl:WrapS>
-              <gl:WrapT>Repeat</gl:WrapT>
-              <gl:MinFilter>Linear</gl:MinFilter>
-              <gl:MagFilter>Linear</gl:MagFilter>
-              <gl:FileName>Textures\White.png</gl:FileName>
-              <gl:ColorType>Unchanged</gl:ColorType>
-              <gl:FlipMode>Vertical</gl:FlipMode>
-            </gl:TextureConfiguration>
-          </gl:Textures>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="res:LoadResources" />
-      </Expression>
-      <Expression xsi:type="ResourceSubject" />
       <Expression xsi:type="WorkflowInput">
         <Name>Source1</Name>
       </Expression>
@@ -340,12 +276,6 @@
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
       <Edge From="1" To="2" Label="Source1" />
-      <Edge From="2" To="4" Label="Source1" />
-      <Edge From="3" To="4" Label="Source2" />
-      <Edge From="4" To="5" Label="Source1" />
-      <Edge From="5" To="6" Label="Source1" />
-      <Edge From="7" To="8" Label="Source1" />
-      <Edge From="8" To="9" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
