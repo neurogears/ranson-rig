@@ -5,6 +5,7 @@ Created on Thu Aug 13 11:44:13 2020
 @author: gonca
 """
 
+import rigstim
 from pythonosc.udp_client import SimpleUDPClient
 from pythonosc.dispatcher import Dispatcher
 from pythonosc.osc_server import BlockingOSCUDPServer
@@ -26,11 +27,12 @@ request_port = 4002
 reply_port = 4007
 
 client = SimpleUDPClient(ip, request_port)  # Create client
+rig = rigstim.RigClient(client)
 with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     
-    client.send_message("/gratings", [30.0, 0.0, -15.0, 0.0, 0.1, 0.0, 0.0, 2.0]) # grating 1
-    client.send_message("/gratings", [15.0, 45.0, 15.0, 0.0, 0.2, 0.0, 0.0, 2.0]) # grating 2
-    client.send_message("/startgratings", 0)
+    rig.gratings(size=30, x=-15, angle=0, freq=0.1, duration=2.0) # grating 1
+    rig.gratings(size=15, x=15, angle=45, freq=0.1, duration=2.0, speed=1) # grating 2
+    client.send_message("/start", 0)
     server.handle_request()  # Wait for end trial
     
     client.send_message("/go", [30.0, 2.0, 0.5]) # go trial
@@ -44,6 +46,6 @@ with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     client.send_message("/tile", [0, 2.25, 1.0, "White", 0])
     client.send_message("/tile", [1, 2.25, 1.0, "Black", 0])
     client.send_message("/tile", [2, 1.25, 1.0, "Black", 0])
-    client.send_message("/tile", [3, 1.25, 1.0, "Transparent", 0])
+    client.send_message("/tile", [3, 1.25, 1.0, "mask", 0])
     client.send_message("/startcorridor", 10.0)
     server.handle_request()  # Wait for end trial

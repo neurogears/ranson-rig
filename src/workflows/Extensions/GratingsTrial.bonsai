@@ -89,12 +89,16 @@
                   </Expression>
                   <Expression xsi:type="InputMapping">
                     <PropertyMappings>
+                      <Property Name="Angle" Selector="Item3" />
                       <Property Name="ExtentX" Selector="Item2.Size" />
                       <Property Name="ExtentY" Selector="Item2.Size" />
                       <Property Name="LocationX" Selector="Item2.LocationX" />
                       <Property Name="LocationY" Selector="Item2.LocationY" />
-                      <Property Name="Angle" Selector="Item3" />
+                      <Property Name="Contrast" Selector="Item2.Contrast" />
+                      <Property Name="Opacity" Selector="Item2.Opacity" />
+                      <Property Name="Phase" Selector="Item2.Phase" />
                       <Property Name="SpatialFrequency" Selector="Item2.SpatialFrequency" />
+                      <Property Name="DutyCycle" Selector="Item2.DutyCycle" />
                     </PropertyMappings>
                     <Selector>Item1</Selector>
                   </Expression>
@@ -112,7 +116,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="gl:Timer">
-                      <gl:DueTime>PT5S</gl:DueTime>
+                      <gl:DueTime>PT0S</gl:DueTime>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -130,12 +134,12 @@
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-                    <LocationX>0</LocationX>
-                    <LocationY>20</LocationY>
+                    <LocationX>15</LocationX>
+                    <LocationY>0</LocationY>
                     <Layer>0</Layer>
                     <Angle>45</Angle>
                     <SpatialFrequency>0.2</SpatialFrequency>
-                    <TemporalFrequency>0</TemporalFrequency>
+                    <TemporalFrequency>1</TemporalFrequency>
                     <Phase>0</Phase>
                     <SquareWave>false</SquareWave>
                     <Contrast>1</Contrast>
