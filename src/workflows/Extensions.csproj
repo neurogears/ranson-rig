@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bonsai.Core" Version="2.5.0" />
-    <PackageReference Include="Bonsai.Shaders" Version="0.22.0" />
+    <PackageReference Include="Bonsai.Shaders" Version="0.23.0" />
     <PackageReference Include="Bonsai.System" Version="2.5.1" />
   </ItemGroup>
 
