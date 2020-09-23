@@ -142,10 +142,33 @@ single.IsNaN(Item2.Item6) ? single?(null) : Item2.Item6 as DutyCycle,
 Item3.Item1 as Onset,
 Item3.Item2 as Duration)</scr:Expression>
             </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\GratingsTrial.bonsai" />
             <Expression xsi:type="osc:ReceiveMessage">
               <osc:Address>/start</osc:Address>
               <osc:TypeTag />
               <osc:Connection>Request</osc:Connection>
+            </Expression>
+            <Expression xsi:type="osc:ReceiveMessage">
+              <osc:Address>/video</osc:Address>
+              <osc:TypeTag>[fffff][ffs][ff]</osc:TypeTag>
+              <osc:Connection>Request</osc:Connection>
+            </Expression>
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Expression>new(
+Item1.Item1 as Angle,
+Item1.Item2 as ExtentX,
+Item1.Item3 as ExtentY,
+Item1.Item4 as LocationX,
+Item1.Item5 as LocationY,
+Item2.Item1 &gt; 0 as Loop,
+Item2.Item2 as PlaybackRate,
+Item2.Item3 as TextureName,
+Item3.Item1 as Onset,
+Item3.Item2 as Duration)</scr:Expression>
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\VideoTrial.bonsai" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Merge" />
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:TriggeredBuffer">
@@ -155,21 +178,104 @@ Item3.Item2 as Duration)</scr:Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:SampleOnUpdateFrame" />
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\GratingsTrial.bonsai" />
+            <Expression xsi:type="SelectMany">
+              <Name>StartTrial</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="gl:RenderFrame" />
+                  </Expression>
+                  <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.OrthographicView.bonsai">
+                    <Left>-90</Left>
+                    <Right>90</Right>
+                    <Bottom>-45</Bottom>
+                    <Top>45</Top>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>Draw</Name>
+                  </Expression>
+                  <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
+                    <FaceSize xsi:nil="true" />
+                    <ClearColor>Gray</ClearColor>
+                    <Width>1024</Width>
+                    <Height>1024</Height>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>Environment</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Merge" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Merge" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:LastOrDefault" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="IntProperty">
+                      <Value>0</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="6" To="7" Label="Source1" />
+                  <Edge From="7" To="8" Label="Source1" />
+                  <Edge From="8" To="9" Label="Source1" />
+                  <Edge From="9" To="10" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
             <Expression xsi:type="osc:SendMessage">
               <osc:Connection>Reply</osc:Connection>
               <osc:Address>/endgratings</osc:Address>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>0</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:CreateOrthographic">
+                <gl:Width>2</gl:Width>
+                <gl:Height>2</gl:Height>
+                <gl:NearClip>0.1</gl:NearClip>
+                <gl:FarClip>1000</gl:FarClip>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:IgnoreElements" />
+            </Expression>
+            <Expression xsi:type="PublishSubject">
+              <Name>Draw</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="3" Label="Source1" />
-            <Edge From="2" To="3" Label="Source2" />
-            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="7" Label="Source1" />
+            <Edge From="3" To="8" Label="Source2" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="6" To="7" Label="Source2" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="13" To="14" Label="Source1" />
+            <Edge From="14" To="15" Label="Source1" />
+            <Edge From="15" To="16" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
