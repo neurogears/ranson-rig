@@ -36,9 +36,11 @@ with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     client.send_message("/start", 0)
     server.handle_request()  # Wait for end trial
     
+    rig.gratings(size=120, angle=30, freq=0.1, duration=2.0) # go gratings
     client.send_message("/go", [30.0, 2.0, 0.5]) # go trial
     server.handle_request()  # Wait for end trial
-    
+
+    rig.gratings(size=120, angle=0, freq=0.1, duration=2.0) # nogo gratings
     client.send_message("/nogo", [0.0, 2.0, 0.5]) # no-go trial
     server.handle_request()  # Wait for end trial
     
