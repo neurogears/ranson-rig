@@ -49,6 +49,6 @@ with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     client.send_message("/tile", [0, 2.25, 1.0, "White", 0])
     client.send_message("/tile", [1, 2.25, 1.0, "Black", 0])
     client.send_message("/tile", [2, 1.25, 1.0, "Black", 0])
-    client.send_message("/tile", [3, 1.25, 1.0, "mask", 0])
-    client.send_message("/startcorridor", 10.0)
+    client.send_message("/tile", [4, 2.5, 1.0, "mask", 0])
+    client.send_message("/startcorridor", [2.5, 1.2, 1.0, 0, 0])
     server.handle_request()  # Wait for end trial
