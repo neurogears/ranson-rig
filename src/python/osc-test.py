@@ -44,13 +44,13 @@ with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     client.send_message("/nogo", [0.0, 2.0, 0.5]) # no-go trial
     server.handle_request()  # Wait for end trial
 
-    client.send_message("/tile", [0, 0.0, 1.0, "White", 0, 0.0])
-    client.send_message("/tile", [1, 0.0, 1.0, "Black", 2, 2.0])
+    client.send_message("/tile", [0, 0.0, 1.0, "White", 7, 2.0])
+    client.send_message("/tile", [1, 0.0, 1.0, "Black", 2, 3.0])
     client.send_message("/tile", [0, 1.0, 1.0, "Black", 4, 3.0])
-    client.send_message("/tile", [1, 1.0, 1.0, "White", 0, 0.0])
+    client.send_message("/tile", [1, 1.0, 1.0, "White", 6, 1000.0])
     client.send_message("/tile", [0, 2.0, 1.0, "White", 1, 2000.0])
     client.send_message("/tile", [1, 2.0, 1.0, "Black", 3, 2.0])
-    client.send_message("/tile", [2, 1.0, 1.0, "Black", 0, 0.0])
+    client.send_message("/tile", [2, 1.0, 1.0, "Black", 5, 0.1])
     client.send_message("/tile", [4, 3.0, 1.0, "mask", 0, 0.0])
     client.send_message("/startcorridor", [3.0, 1.2, 1.0, 0.0, 0.0, 0.0])
     server.handle_request()  # Wait for end trial
