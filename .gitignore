@@ -3,3 +3,4 @@ obj
 *.exe
 *.exe.settings
 Packages
+__pycache__
