@@ -279,13 +279,10 @@ Item3.Item2 as Duration)</scr:Expression>
               <Name>Logic</Name>
             </Expression>
             <Expression xsi:type="osc:Parse">
-              <osc:TypeTag>fff</osc:TypeTag>
+              <osc:TypeTag>f</osc:TypeTag>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
-              <scr:Expression>new(
-Item1 as Angle,
-Item2 as StimulusDuration,
-Item3 as ResponseDuration)</scr:Expression>
+              <scr:Expression>new(it as ResponseDuration)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:SampleOnUpdateFrame" />
@@ -305,13 +302,10 @@ Item3 as ResponseDuration)</scr:Expression>
               <Name>Logic</Name>
             </Expression>
             <Expression xsi:type="osc:Parse">
-              <osc:TypeTag>fff</osc:TypeTag>
+              <osc:TypeTag>f</osc:TypeTag>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
-              <scr:Expression>new(
-Item1 as Angle,
-Item2 as StimulusDuration,
-Item3 as ResponseDuration)</scr:Expression>
+              <scr:Expression>new(it as ResponseDuration)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:SampleOnUpdateFrame" />
@@ -377,7 +371,7 @@ Item1 &gt;= 2 &amp;&amp; Item1 &lt; 4 as Vertical,
 Item1 == 4 as Front)</scr:Expression>
             </Expression>
             <Expression xsi:type="osc:ReceiveMessage">
-              <osc:Address>/startcorridor</osc:Address>
+              <osc:Address>/corridor</osc:Address>
               <osc:TypeTag>ffffff</osc:TypeTag>
               <osc:Connection>Request</osc:Connection>
             </Expression>
