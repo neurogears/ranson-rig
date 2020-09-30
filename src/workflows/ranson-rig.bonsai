@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.5.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
@@ -359,7 +359,7 @@ Item3 as ResponseDuration)</scr:Expression>
           <Nodes>
             <Expression xsi:type="osc:ReceiveMessage">
               <osc:Address>/tile</osc:Address>
-              <osc:TypeTag>iffsi</osc:TypeTag>
+              <osc:TypeTag>iffsif</osc:TypeTag>
               <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
@@ -369,7 +369,8 @@ Item1 as Wall,
 Item2 as Position,
 Item3 as Extent,
 Item4 as TextureName,
-Item5 as Interaction,
+Item5 as InteractionType,
+Item6 as InteractionArgument,
 Item1 &lt; 2 as Horizontal,
 Item1 &gt;= 2 &amp;&amp; Item1 &lt; 4 as Vertical,
 Item1 == 4 as Front)</scr:Expression>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.5.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
@@ -30,39 +30,6 @@
               <Combinator xsi:type="gl:RenderFrame" />
             </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>Encoder</Name>
-            </Expression>
-            <Expression xsi:type="GroupWorkflow">
-              <Name>Displacement</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>Encoder</Name>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Take">
-                      <rx:Count>1</rx:Count>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="WorkflowInput">
-                    <Name>Source1</Name>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:CombineLatest" />
-                  </Expression>
-                  <Expression xsi:type="Subtract" />
-                  <Expression xsi:type="WorkflowOutput" />
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="3" Label="Source2" />
-                  <Edge From="2" To="3" Label="Source1" />
-                  <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="4" To="5" Label="Source1" />
-                </Edges>
-              </Workflow>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
               <Name>CorridorParameters</Name>
             </Expression>
             <Expression xsi:type="PropertyMapping">
@@ -71,20 +38,7 @@
                 <Property Name="Y" Selector="ViewY" />
               </PropertyMappings>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="FloatProperty">
-                <Value>0</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Take">
-                <rx:Count>1</rx:Count>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Concat" />
-            </Expression>
-            <Expression xsi:type="PublishSubject">
+            <Expression xsi:type="SubscribeSubject">
               <Name>Position</Name>
             </Expression>
             <Expression xsi:type="Multiply">
@@ -196,12 +150,16 @@ Item1.Wall as Wall,
 Item1.Position as Position,
 Item1.Extent as Extent,
 Item1.TextureName as TextureName,
-Item1.Interaction as Interaction,
+Item1.InteractionType as InteractionType,
+Item1.InteractionArgument as InteractionArgument,
 Item1.Horizontal as Horizontal,
 Item1.Vertical as Vertical,
 Item1.Front as Front,
 Item2.Width as Width,
 Item2.Height as Height)</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="AsyncSubject">
+                    <Name>TileParameters</Name>
                   </Expression>
                   <Expression xsi:type="scr:ExpressionTransform">
                     <scr:Name>TileParameters</scr:Name>
@@ -210,7 +168,8 @@ Wall as Wall,
 -Position as Position,
 Extent as Extent,
 TextureName as TextureName,
-Interaction as Interaction,
+InteractionType as InteractionType,
+InteractionArgument as InteractionArgument,
 Horizontal ? Extent : Width as ScaleX,
 Vertical ? Extent : Height as ScaleY,
 Vertical ? Math.PI / 2 : 0.0 as RotationX,
@@ -220,13 +179,13 @@ Vertical ? (Wall == 2 ? 0.5 * Height : -0.5 * Height) : 0.0 as TranslationY,
 Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="AsyncSubject">
-                    <Name>TileParameters</Name>
+                    <Name>DrawParameters</Name>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>Draw</Name>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>TileParameters</Name>
+                    <Name>DrawParameters</Name>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:CombineLatest" />
@@ -285,6 +244,50 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                     <RotationY>0</RotationY>
                     <RotationX>0</RotationX>
                   </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Position</Name>
+                  </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>TileParameters</Name>
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>InteractionType</Selector>
+                  </Expression>
+                  <Expression xsi:type="Condition">
+                    <Name>Interactive</Name>
+                    <Workflow>
+                      <Nodes>
+                        <Expression xsi:type="WorkflowInput">
+                          <Name>Source1</Name>
+                        </Expression>
+                        <Expression xsi:type="GreaterThan">
+                          <Operand xsi:type="IntProperty">
+                            <Value>0</Value>
+                          </Operand>
+                        </Expression>
+                        <Expression xsi:type="WorkflowOutput" />
+                      </Nodes>
+                      <Edges>
+                        <Edge From="0" To="1" Label="Source1" />
+                        <Edge From="1" To="2" Label="Source1" />
+                      </Edges>
+                    </Workflow>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:SubscribeWhen" />
+                  </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>TileParameters</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:CombineLatest" />
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Expression>Item1 &gt;= Item2.Position &amp;&amp; Item1 &lt;= Item2.Position + Item2.Extent</scr:Expression>
+                  </Expression>
+                  <Expression xsi:type="PublishSubject">
+                    <Name>ActiveState</Name>
+                  </Expression>
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="2" Label="Source1" />
@@ -292,12 +295,21 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                   <Edge From="2" To="3" Label="Source1" />
                   <Edge From="3" To="4" Label="Source1" />
                   <Edge From="4" To="5" Label="Source1" />
-                  <Edge From="6" To="8" Label="Source1" />
-                  <Edge From="7" To="8" Label="Source2" />
-                  <Edge From="8" To="9" Label="Source1" />
+                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="7" To="9" Label="Source1" />
+                  <Edge From="8" To="9" Label="Source2" />
                   <Edge From="9" To="10" Label="Source1" />
                   <Edge From="10" To="11" Label="Source1" />
                   <Edge From="11" To="12" Label="Source1" />
+                  <Edge From="12" To="13" Label="Source1" />
+                  <Edge From="14" To="18" Label="Source1" />
+                  <Edge From="15" To="16" Label="Source1" />
+                  <Edge From="16" To="17" Label="Source1" />
+                  <Edge From="17" To="18" Label="Source2" />
+                  <Edge From="18" To="20" Label="Source1" />
+                  <Edge From="19" To="20" Label="Source2" />
+                  <Edge From="20" To="21" Label="Source1" />
+                  <Edge From="21" To="22" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -313,39 +325,95 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Encoder</Name>
+            </Expression>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>Displacement</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Encoder</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Take">
+                      <rx:Count>1</rx:Count>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:CombineLatest" />
+                  </Expression>
+                  <Expression xsi:type="Subtract" />
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="3" Label="Source2" />
+                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="4" To="5" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>Position</Name>
+            </Expression>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>Triggers</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="Unit" />
+                  <Expression xsi:type="BehaviorSubject">
+                    <Name>TrialEnd</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>0</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="BehaviorSubject">
+                    <Name>Position</Name>
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="4" To="17" Label="Source1" />
+            <Edge From="4" To="12" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="11" Label="Source2" />
+            <Edge From="6" To="10" Label="Source2" />
             <Edge From="7" To="8" Label="Source1" />
-            <Edge From="8" To="15" Label="Source2" />
+            <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="11" To="12" Label="Source2" />
             <Edge From="12" To="13" Label="Source1" />
             <Edge From="13" To="14" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
-            <Edge From="15" To="16" Label="Source1" />
-            <Edge From="16" To="17" Label="Source2" />
+            <Edge From="16" To="19" Label="Source1" />
             <Edge From="17" To="18" Label="Source1" />
-            <Edge From="18" To="19" Label="Source1" />
+            <Edge From="18" To="19" Label="Source2" />
             <Edge From="19" To="20" Label="Source1" />
-            <Edge From="21" To="24" Label="Source1" />
+            <Edge From="20" To="25" Label="Source2" />
+            <Edge From="21" To="22" Label="Source1" />
             <Edge From="22" To="23" Label="Source1" />
-            <Edge From="23" To="24" Label="Source2" />
+            <Edge From="23" To="24" Label="Source1" />
             <Edge From="24" To="25" Label="Source1" />
-            <Edge From="25" To="30" Label="Source2" />
+            <Edge From="25" To="26" Label="Source1" />
             <Edge From="26" To="27" Label="Source1" />
             <Edge From="27" To="28" Label="Source1" />
-            <Edge From="28" To="29" Label="Source1" />
             <Edge From="29" To="30" Label="Source1" />
             <Edge From="30" To="31" Label="Source1" />
-            <Edge From="31" To="32" Label="Source1" />
-            <Edge From="32" To="33" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
