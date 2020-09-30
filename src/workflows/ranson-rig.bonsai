@@ -279,10 +279,12 @@ Item3.Item2 as Duration)</scr:Expression>
               <Name>Logic</Name>
             </Expression>
             <Expression xsi:type="osc:Parse">
-              <osc:TypeTag>f</osc:TypeTag>
+              <osc:TypeTag>ff</osc:TypeTag>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
-              <scr:Expression>new(it as ResponseDuration)</scr:Expression>
+              <scr:Expression>new(
+Item1 as SuppressWindow,
+Item2 as ResponseDuration)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:SampleOnUpdateFrame" />
@@ -302,10 +304,12 @@ Item3.Item2 as Duration)</scr:Expression>
               <Name>Logic</Name>
             </Expression>
             <Expression xsi:type="osc:Parse">
-              <osc:TypeTag>f</osc:TypeTag>
+              <osc:TypeTag>ff</osc:TypeTag>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
-              <scr:Expression>new(it as ResponseDuration)</scr:Expression>
+              <scr:Expression>new(
+Item1 as SuppressWindow,
+Item2 as ResponseDuration)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:SampleOnUpdateFrame" />

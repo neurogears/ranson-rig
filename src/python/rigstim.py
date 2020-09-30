@@ -70,11 +70,11 @@ class RigClient:
     def start(self):
         self.client.send_message("/start", 0)
     
-    def go(self, duration):
-        self.client.send_message("/go", [duration])
+    def go(self, suppress=2000.0, response=0.5):
+        self.client.send_message("/go", [float(suppress), float(response)])
         
-    def nogo(self, duration):
-        self.client.send_message("/nogo", [duration])
+    def nogo(self, suppress=2000.0, response=0.5):
+        self.client.send_message("/nogo", [float(suppress), float(response)])
     
     def tile(self, wall, **kwargs):
         position = float(kwargs.get('position',0.0))

@@ -39,11 +39,11 @@ with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     server.handle_request()  # Wait for end trial
     
     rig.gratings(size=120, angle=30, freq=0.1, duration=2.0) # go gratings
-    rig.go(0.5) # go trial
+    rig.go(suppress=1000, response=500) # go trial
     server.handle_request()  # Wait for end trial
 
     rig.gratings(size=120, angle=0, freq=0.1, duration=2.0) # nogo gratings
-    rig.nogo(0.5) # no-go trial
+    rig.nogo(suppress=500, response=500) # no-go trial
     server.handle_request()  # Wait for end trial
 
     rig.tile(Wall.LEFT, position=0, extent=1, texture="White",

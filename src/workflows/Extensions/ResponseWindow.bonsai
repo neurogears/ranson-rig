@@ -19,7 +19,7 @@
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Name>ResponseDuration</scr:Name>
-              <scr:Expression>TimeSpan.FromSeconds(ResponseDuration)</scr:Expression>
+              <scr:Expression>TimeSpan.FromMilliseconds(ResponseDuration)</scr:Expression>
             </Expression>
             <Expression xsi:type="PropertyMapping">
               <PropertyMappings>
