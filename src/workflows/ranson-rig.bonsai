@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.5.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
@@ -366,7 +366,7 @@ Item3 as ResponseDuration)</scr:Expression>
               <scr:Name>ParseTile</scr:Name>
               <scr:Expression>new(
 Item1 as Wall,
--Item2 as Position,
+Item2 as Position,
 Item3 as Extent,
 Item4 as TextureName,
 Item5 as Interaction,

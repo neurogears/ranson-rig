@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.5.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
@@ -207,7 +207,7 @@ Item2.Height as Height)</scr:Expression>
                     <scr:Name>TileParameters</scr:Name>
                     <scr:Expression>new(
 Wall as Wall,
-Position as Position,
+-Position as Position,
 Extent as Extent,
 TextureName as TextureName,
 Interaction as Interaction,
@@ -217,7 +217,7 @@ Vertical ? Math.PI / 2 : 0.0 as RotationX,
 Horizontal ? Math.PI / 2 : 0.0 as RotationY,
 Horizontal ? (Wall == 0 ? -0.5 * Width : 0.5 * Width) : 0.0 as TranslationX,
 Vertical ? (Wall == 2 ? 0.5 * Height : -0.5 * Height) : 0.0 as TranslationY,
-Position - Extent / 2 as TranslationZ)</scr:Expression>
+Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="AsyncSubject">
                     <Name>TileParameters</Name>
