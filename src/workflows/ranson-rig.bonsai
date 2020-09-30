@@ -377,7 +377,7 @@ Item1 == 4 as Front)</scr:Expression>
             </Expression>
             <Expression xsi:type="osc:ReceiveMessage">
               <osc:Address>/startcorridor</osc:Address>
-              <osc:TypeTag>fffff</osc:TypeTag>
+              <osc:TypeTag>ffffff</osc:TypeTag>
               <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
@@ -386,7 +386,8 @@ Item1 as Length,
 Item2 as Width,
 Item3 as Height,
 Item4 as ViewX,
-Item5 as ViewY)</scr:Expression>
+Item5 as ViewY,
+Item6 as ViewPosition)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:TriggeredBuffer">
