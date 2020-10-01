@@ -35,7 +35,7 @@
               <Name>Environment</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>Elements</Name>
+              <Name>Stimuli</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Take">

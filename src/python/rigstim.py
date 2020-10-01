@@ -68,6 +68,12 @@ class RigClient:
     
     def start(self):
         self.client.send_message("/start", 0)
+        
+    def success(self):
+        self.client.send_message("/success", 0)
+        
+    def failure(self):
+        self.client.send_message("/failure", 0)
     
     def go(self, suppress=2000.0, response=0.5):
         self.client.send_message("/go", [float(suppress), float(response)])

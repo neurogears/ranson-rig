@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.5.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
@@ -214,6 +214,7 @@
             <Expression xsi:type="SubscribeSubject">
               <Name>Logic</Name>
             </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\StartWith.bonsai" />
             <Expression xsi:type="osc:ReceiveMessage">
               <osc:Address>/gratings</osc:Address>
               <osc:TypeTag>[ffff][ffffff][ff]</osc:TypeTag>
@@ -263,7 +264,71 @@ Item3.Item2 as Duration)</scr:Expression>
               </Combinator>
             </Expression>
             <Expression xsi:type="BehaviorSubject">
-              <Name>Elements</Name>
+              <Name>Stimuli</Name>
+            </Expression>
+            <Expression xsi:type="osc:ReceiveMessage">
+              <osc:Address>/success</osc:Address>
+              <osc:TypeTag />
+              <osc:Connection>Request</osc:Connection>
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\StartWith.bonsai" />
+            <Expression xsi:type="MulticastSubject">
+              <Name>Logic</Name>
+            </Expression>
+            <Expression xsi:type="SelectMany">
+              <Name>SampleElements</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Stimuli</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Take">
+                      <rx:Count>1</rx:Count>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="BehaviorSubject">
+              <Name>Success</Name>
+            </Expression>
+            <Expression xsi:type="osc:ReceiveMessage">
+              <osc:Address>/failure</osc:Address>
+              <osc:TypeTag />
+              <osc:Connection>Request</osc:Connection>
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\StartWith.bonsai" />
+            <Expression xsi:type="MulticastSubject">
+              <Name>Logic</Name>
+            </Expression>
+            <Expression xsi:type="SelectMany">
+              <Name>SampleElements</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Stimuli</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Take">
+                      <rx:Count>1</rx:Count>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="BehaviorSubject">
+              <Name>Failure</Name>
             </Expression>
           </Nodes>
           <Edges>
@@ -273,15 +338,24 @@ Item3.Item2 as Duration)</scr:Expression>
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
-            <Edge From="8" To="16" Label="Source2" />
-            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="17" Label="Source2" />
             <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="15" Label="Source1" />
-            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="12" To="16" Label="Source1" />
             <Edge From="13" To="14" Label="Source1" />
-            <Edge From="14" To="15" Label="Source2" />
-            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="14" To="15" Label="Source1" />
+            <Edge From="15" To="16" Label="Source2" />
             <Edge From="16" To="17" Label="Source1" />
+            <Edge From="17" To="18" Label="Source1" />
+            <Edge From="19" To="20" Label="Source1" />
+            <Edge From="20" To="21" Label="Source1" />
+            <Edge From="21" To="22" Label="Source1" />
+            <Edge From="22" To="23" Label="Source1" />
+            <Edge From="24" To="25" Label="Source1" />
+            <Edge From="25" To="26" Label="Source1" />
+            <Edge From="26" To="27" Label="Source1" />
+            <Edge From="27" To="28" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -348,6 +422,7 @@ Item2 as ResponseDuration)</scr:Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\SuppressResponse.bonsai" />
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\PlayStimulus.bonsai" />
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\ResponseWindow.bonsai" />
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\PlayOutcome.bonsai" />
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Expression>it ? "hit" : "miss"</scr:Expression>
             </Expression>
@@ -373,6 +448,7 @@ Item2 as ResponseDuration)</scr:Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\SuppressResponse.bonsai" />
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\PlayStimulus.bonsai" />
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\ResponseWindow.bonsai" />
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\PlayOutcome.bonsai" />
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Expression>!it ? "reject" : "alarm"</scr:Expression>
             </Expression>
@@ -393,8 +469,8 @@ Item2 as ResponseDuration)</scr:Expression>
             <Edge From="5" To="6" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
-            <Edge From="8" To="18" Label="Source1" />
-            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="20" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
             <Edge From="11" To="12" Label="Source1" />
             <Edge From="12" To="13" Label="Source1" />
@@ -402,8 +478,10 @@ Item2 as ResponseDuration)</scr:Expression>
             <Edge From="14" To="15" Label="Source1" />
             <Edge From="15" To="16" Label="Source1" />
             <Edge From="16" To="17" Label="Source1" />
-            <Edge From="17" To="18" Label="Source2" />
+            <Edge From="17" To="18" Label="Source1" />
             <Edge From="18" To="19" Label="Source1" />
+            <Edge From="19" To="20" Label="Source2" />
+            <Edge From="20" To="21" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
