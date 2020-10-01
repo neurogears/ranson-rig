@@ -7,7 +7,6 @@ Created on Thu Aug 13 11:44:13 2020
 
 import rigstim
 from rigstim import WallType as Wall
-from rigstim import TriggerType as Trigger
 from pythonosc.udp_client import SimpleUDPClient
 from pythonosc.dispatcher import Dispatcher
 from pythonosc.osc_server import BlockingOSCUDPServer

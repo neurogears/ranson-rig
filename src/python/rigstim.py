@@ -13,16 +13,6 @@ class WallType(Enum):
     TOP = 2
     BOTTOM = 3
     FRONT = 4
-    
-class TriggerType(Enum):
-    NONE = 0
-    END_ON_ENTRY = 1
-    END_ON_LICK = 2
-    TELEPORT_ON_ENTRY = 3
-    TELEPORT_ON_LICK = 4
-    CHANGE_GAIN_ON_ENTRY = 5
-    REWARD_ON_ENTRY = 6
-    REWARD_ON_LICK = 7
 
 class RigClient:
     def __init__(self, client):
@@ -83,17 +73,11 @@ class RigClient:
         position = float(kwargs.get('position',0.0))
         extent = float(kwargs.get('extent',1.0))
         texture = str(kwargs.get('texture',"Transparent"))
-        interaction = kwargs.get('interaction',TriggerType.NONE)
-        argument = float(kwargs.get('argument',0.0))
-        repetitions = int(kwargs.get('repetitions',1))
         self.client.send_message("/tile",
                                  [int(wall.value),
                                   position,
                                   extent,
-                                  texture,
-                                  int(interaction.value),
-                                  argument,
-                                  repetitions])
+                                  texture])
     
     def corridor(self, length, **kwargs):
         width = float(kwargs.get('width',1.0))
