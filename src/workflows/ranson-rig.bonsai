@@ -69,11 +69,6 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="p1:VideoFolder">
-          <p1:Path>Videos</p1:Path>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
         <Combinator xsi:type="res:LoadResources" />
       </Expression>
       <Expression xsi:type="WorkflowOutput" />
@@ -117,6 +112,67 @@
         <Y>0</Y>
         <Width>1</Width>
         <Height>1</Height>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>VideoCache</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="osc:ReceiveMessage">
+              <osc:Address>/preload</osc:Address>
+              <osc:TypeTag />
+              <osc:Connection>Request</osc:Connection>
+            </Expression>
+            <Expression xsi:type="osc:ReceiveMessage">
+              <osc:Address>/resource</osc:Address>
+              <osc:TypeTag>s</osc:TypeTag>
+              <osc:Connection>Request</osc:Connection>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:TriggeredBuffer">
+                <rx:Count xsi:nil="true" />
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="SelectMany">
+              <Name>CreateCache</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="p1:VideoPreloader" />
+                  </Expression>
+                  <Expression xsi:type="ResourceSubject" />
+                  <Expression xsi:type="osc:ReceiveMessage">
+                    <osc:Address>/clear</osc:Address>
+                    <osc:Connection>Request</osc:Connection>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Take">
+                      <rx:Count>1</rx:Count>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="gl:SampleOnUpdateFrame" />
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="4" To="5" Label="Source1" />
+                  <Edge From="5" To="6" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="2" Label="Source2" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+          </Edges>
+        </Workflow>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
         <Name>StimulusControl</Name>
@@ -464,9 +520,8 @@ Item6 as ViewPosition)</scr:Expression>
       <Edge From="3" To="4" Label="Source1" />
       <Edge From="4" To="5" Label="Source1" />
       <Edge From="5" To="6" Label="Source1" />
-      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
       <Edge From="8" To="9" Label="Source1" />
-      <Edge From="9" To="10" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

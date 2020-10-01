@@ -18,6 +18,15 @@ class RigClient:
     def __init__(self, client):
         self.client = client
         
+    def resource(self, path):
+        self.client.send_message("/resource", path)
+        
+    def preload(self):
+        self.client.send_message("/preload", 0)
+        
+    def clear(self):
+        self.client.send_message("/clear", 0)
+        
     def gratings(self, **kwargs):
         angle = float(kwargs.get('angle',0.0))
         size = float(kwargs.get('size',20.0))

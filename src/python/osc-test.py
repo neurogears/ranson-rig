@@ -31,11 +31,16 @@ client = SimpleUDPClient(ip, request_port)  # Create client
 rig = rigstim.RigClient(client)
 with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     
+    rig.resource("Videos/Blink")
+    rig.preload()
+    
     rig.gratings(size=30, x=-15, y=-5, angle=0, freq=0.1, duration=2.0) # grating 1
     rig.gratings(size=15, x=15, y=-5, angle=45, freq=0.1, duration=2.0, speed=1) # grating 2
     rig.video("Blink", y=20, speed=2.0, onset=1.0, duration=2.0) # video 1
     rig.start()
     server.handle_request()  # Wait for end trial
+    
+    rig.clear()
     
     rig.gratings(size=120, angle=30, freq=0.1, duration=2.0) # go gratings
     rig.go(suppress=1000, response=500) # go trial
