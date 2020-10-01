@@ -46,20 +46,25 @@ with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     rig.nogo(suppress=500, response=500) # no-go trial
     server.handle_request()  # Wait for end trial
 
-    rig.tile(Wall.LEFT, position=0, extent=1, texture="White",
-             interaction=Trigger.REWARD_ON_LICK, argument=2, repetitions=1) 
-    rig.tile(Wall.RIGHT, position=0, extent=1, texture="Black",
-             interaction=Trigger.END_ON_LICK, argument=3000, repetitions=3)
-    rig.tile(Wall.LEFT, position=1, extent=1, texture="Black",
-             interaction=Trigger.TELEPORT_ON_LICK, argument=3.0, repetitions=3)
-    rig.tile(Wall.RIGHT, position=1, extent=1, texture="White",
-             interaction=Trigger.REWARD_ON_ENTRY, argument=1000.0, repetitions=2)
-    rig.tile(Wall.LEFT, position=2, extent=1, texture="White",
-             interaction=Trigger.END_ON_ENTRY, argument=2000.0)
-    rig.tile(Wall.RIGHT, position=2, extent=1, texture="Black",
-             interaction=Trigger.TELEPORT_ON_ENTRY, repetitions=2)
-    rig.tile(Wall.TOP, position=1, extent=1, texture="Black",
-             interaction=Trigger.CHANGE_GAIN_ON_ENTRY, argument=0.1)
+    rig.interaction('rewardLick', [2, 1]) # lickthreshold, max activations
+    rig.interaction('endLick', [3, 3000.0]) # lickthreshold, delay
+    rig.tile(Wall.LEFT, position=0, extent=1, texture="White")
+    rig.tile(Wall.RIGHT, position=0, extent=1, texture="Black")
+    
+    rig.interaction('teleportLick', [0.0, 3, 3])
+    rig.tile(Wall.LEFT, position=1, extent=1, texture="Black")
+    
+    rig.interaction('rewardEntry', [1000.0, 2])
+    rig.tile(Wall.RIGHT, position=1, extent=1, texture="White")
+    
+    rig.interaction('endEntry', 2000.0)
+    rig.tile(Wall.LEFT, position=2, extent=1, texture="White")
+    
+    rig.interaction('teleportEntry', [0.0, 2])
+    rig.tile(Wall.RIGHT, position=2, extent=1, texture="Black")
+    
+    rig.interaction('gainEntry', [0.1, 1])
+    rig.tile(Wall.TOP, position=1, extent=1, texture="Black")
     rig.tile(Wall.FRONT, position=3, texture="mask")
-    rig.corridor(length=3.0, width=1.2, height=1.0, position=0.0)
+    rig.corridor(length=3.0, width=1.2, height=1.0, x=0.0, y=0.0, position=0.0)
     server.handle_request()  # Wait for end trial

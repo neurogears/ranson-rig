@@ -4,6 +4,7 @@
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
@@ -123,9 +124,7 @@ Item1.Wall as Wall,
 Item1.Position as Position,
 Item1.Extent as Extent,
 Item1.TextureName as TextureName,
-Item1.InteractionType as InteractionType,
-Item1.InteractionArgument as InteractionArgument,
-Item1.MaxInteractions as MaxInteractions,
+Item1.Interactions as Interactions,
 Item1.Horizontal as Horizontal,
 Item1.Vertical as Vertical,
 Item1.Front as Front,
@@ -220,7 +219,7 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                     <Name>TileParameters</Name>
                   </Expression>
                   <Expression xsi:type="MemberSelector">
-                    <Selector>InteractionType</Selector>
+                    <Selector>Interactions</Selector>
                   </Expression>
                   <Expression xsi:type="Condition">
                     <Name>Interactive</Name>
@@ -228,6 +227,9 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                       <Nodes>
                         <Expression xsi:type="WorkflowInput">
                           <Name>Source1</Name>
+                        </Expression>
+                        <Expression xsi:type="MemberSelector">
+                          <Selector>Count</Selector>
                         </Expression>
                         <Expression xsi:type="GreaterThan">
                           <Operand xsi:type="IntProperty">
@@ -239,6 +241,7 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                       <Edges>
                         <Edge From="0" To="1" Label="Source1" />
                         <Edge From="1" To="2" Label="Source1" />
+                        <Edge From="2" To="3" Label="Source1" />
                       </Edges>
                     </Workflow>
                   </Expression>
@@ -257,36 +260,31 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                   <Expression xsi:type="PublishSubject">
                     <Name>ActiveState</Name>
                   </Expression>
-                  <Expression xsi:type="GroupWorkflow">
-                    <Name>Interaction</Name>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>TileParameters</Name>
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Interactions</Selector>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Merge" />
+                  </Expression>
+                  <Expression xsi:type="SelectMany">
+                    <Name>CreateInteraction</Name>
                     <Workflow>
                       <Nodes>
-                        <Expression xsi:type="SubscribeSubject">
-                          <Name>TileParameters</Name>
+                        <Expression xsi:type="WorkflowInput">
+                          <Name>Source1</Name>
                         </Expression>
-                        <Expression xsi:type="Condition">
-                          <Name>Type1</Name>
-                          <Workflow>
-                            <Nodes>
-                              <Expression xsi:type="WorkflowInput">
-                                <Name>Source1</Name>
-                              </Expression>
-                              <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionType</Selector>
-                              </Expression>
-                              <Expression xsi:type="Equal">
-                                <Operand xsi:type="IntProperty">
-                                  <Value>1</Value>
-                                </Operand>
-                              </Expression>
-                              <Expression xsi:type="WorkflowOutput" />
-                            </Nodes>
-                            <Edges>
-                              <Edge From="0" To="1" Label="Source1" />
-                              <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                            </Edges>
-                          </Workflow>
+                        <Expression xsi:type="AsyncSubject">
+                          <Name>Interaction</Name>
+                        </Expression>
+                        <Expression xsi:type="SubscribeSubject">
+                          <Name>Interaction</Name>
+                        </Expression>
+                        <Expression xsi:type="osc:Parse">
+                          <osc:Address>/interaction/endEntry</osc:Address>
+                          <osc:TypeTag>f</osc:TypeTag>
                         </Expression>
                         <Expression xsi:type="SelectMany">
                           <Name>EndOnEntry</Name>
@@ -312,11 +310,8 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                   </Edges>
                                 </Workflow>
                               </Expression>
-                              <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
-                              </Expression>
-                              <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionArgument</Selector>
+                              <Expression xsi:type="WorkflowInput">
+                                <Name>Source1</Name>
                               </Expression>
                               <Expression xsi:type="scr:ExpressionTransform">
                                 <scr:Name>DelayMilliseconds</scr:Name>
@@ -340,47 +335,37 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                             <Edges>
                               <Edge From="0" To="1" Label="Source1" />
                               <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="7" Label="Source1" />
+                              <Edge From="2" To="6" Label="Source1" />
                               <Edge From="3" To="4" Label="Source1" />
                               <Edge From="4" To="5" Label="Source1" />
-                              <Edge From="5" To="6" Label="Source1" />
-                              <Edge From="6" To="7" Label="Source2" />
+                              <Edge From="5" To="6" Label="Source2" />
+                              <Edge From="6" To="7" Label="Source1" />
                               <Edge From="7" To="8" Label="Source1" />
-                              <Edge From="8" To="9" Label="Source1" />
                             </Edges>
                           </Workflow>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
-                          <Name>TileParameters</Name>
+                          <Name>Interaction</Name>
                         </Expression>
-                        <Expression xsi:type="Condition">
-                          <Name>Type2</Name>
-                          <Workflow>
-                            <Nodes>
-                              <Expression xsi:type="WorkflowInput">
-                                <Name>Source1</Name>
-                              </Expression>
-                              <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionType</Selector>
-                              </Expression>
-                              <Expression xsi:type="Equal">
-                                <Operand xsi:type="IntProperty">
-                                  <Value>2</Value>
-                                </Operand>
-                              </Expression>
-                              <Expression xsi:type="WorkflowOutput" />
-                            </Nodes>
-                            <Edges>
-                              <Edge From="0" To="1" Label="Source1" />
-                              <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                            </Edges>
-                          </Workflow>
+                        <Expression xsi:type="osc:Parse">
+                          <osc:Address>/interaction/endLick</osc:Address>
+                          <osc:TypeTag>if</osc:TypeTag>
                         </Expression>
                         <Expression xsi:type="SelectMany">
                           <Name>EndOnLick</Name>
                           <Workflow>
                             <Nodes>
+                              <Expression xsi:type="WorkflowInput">
+                                <Name>Source1</Name>
+                              </Expression>
+                              <Expression xsi:type="scr:ExpressionTransform">
+                                <scr:Expression>new(
+Item1 as LickThreshold,
+TimeSpan.FromMilliseconds(Item2) as Delay)</scr:Expression>
+                              </Expression>
+                              <Expression xsi:type="AsyncSubject">
+                                <Name>Arguments</Name>
+                              </Expression>
                               <Expression xsi:type="SubscribeSubject">
                                 <Name>Response</Name>
                               </Expression>
@@ -435,10 +420,10 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                 </Workflow>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
+                                <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="MemberSelector">
-                                <Selector>MaxInteractions</Selector>
+                                <Selector>LickThreshold</Selector>
                               </Expression>
                               <Expression xsi:type="Combinator">
                                 <Combinator xsi:type="rx:CombineLatest" />
@@ -460,14 +445,10 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                 </Workflow>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
+                                <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionArgument</Selector>
-                              </Expression>
-                              <Expression xsi:type="scr:ExpressionTransform">
-                                <scr:Name>DelayMilliseconds</scr:Name>
-                                <scr:Expression>TimeSpan.FromMilliseconds(it)</scr:Expression>
+                                <Selector>Delay</Selector>
                               </Expression>
                               <Expression xsi:type="PropertyMapping">
                                 <PropertyMappings>
@@ -487,52 +468,44 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                             <Edges>
                               <Edge From="0" To="1" Label="Source1" />
                               <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                              <Edge From="3" To="6" Label="Source1" />
+                              <Edge From="3" To="4" Label="Source1" />
                               <Edge From="4" To="5" Label="Source1" />
-                              <Edge From="5" To="6" Label="Source2" />
-                              <Edge From="6" To="7" Label="Source1" />
-                              <Edge From="7" To="12" Label="Source1" />
-                              <Edge From="8" To="9" Label="Source1" />
+                              <Edge From="5" To="6" Label="Source1" />
+                              <Edge From="6" To="9" Label="Source1" />
+                              <Edge From="7" To="8" Label="Source1" />
+                              <Edge From="8" To="9" Label="Source2" />
                               <Edge From="9" To="10" Label="Source1" />
-                              <Edge From="10" To="11" Label="Source1" />
-                              <Edge From="11" To="12" Label="Source2" />
+                              <Edge From="10" To="14" Label="Source1" />
+                              <Edge From="11" To="12" Label="Source1" />
                               <Edge From="12" To="13" Label="Source1" />
-                              <Edge From="13" To="14" Label="Source1" />
+                              <Edge From="13" To="14" Label="Source2" />
+                              <Edge From="14" To="15" Label="Source1" />
+                              <Edge From="15" To="16" Label="Source1" />
                             </Edges>
                           </Workflow>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
-                          <Name>TileParameters</Name>
+                          <Name>Interaction</Name>
                         </Expression>
-                        <Expression xsi:type="Condition">
-                          <Name>Type3</Name>
-                          <Workflow>
-                            <Nodes>
-                              <Expression xsi:type="WorkflowInput">
-                                <Name>Source1</Name>
-                              </Expression>
-                              <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionType</Selector>
-                              </Expression>
-                              <Expression xsi:type="Equal">
-                                <Operand xsi:type="IntProperty">
-                                  <Value>3</Value>
-                                </Operand>
-                              </Expression>
-                              <Expression xsi:type="WorkflowOutput" />
-                            </Nodes>
-                            <Edges>
-                              <Edge From="0" To="1" Label="Source1" />
-                              <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                            </Edges>
-                          </Workflow>
+                        <Expression xsi:type="osc:Parse">
+                          <osc:Address>/interaction/teleportEntry</osc:Address>
+                          <osc:TypeTag>fi</osc:TypeTag>
                         </Expression>
                         <Expression xsi:type="SelectMany">
                           <Name>TeleportOnEntry</Name>
                           <Workflow>
                             <Nodes>
+                              <Expression xsi:type="WorkflowInput">
+                                <Name>Source1</Name>
+                              </Expression>
+                              <Expression xsi:type="scr:ExpressionTransform">
+                                <scr:Expression>new(
+Item1 as Position,
+Item2 as MaxActivations)</scr:Expression>
+                              </Expression>
+                              <Expression xsi:type="AsyncSubject">
+                                <Name>Arguments</Name>
+                              </Expression>
                               <Expression xsi:type="SubscribeSubject">
                                 <Name>ActiveState</Name>
                               </Expression>
@@ -576,10 +549,10 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                 </Workflow>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
+                                <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="MemberSelector">
-                                <Selector>MaxInteractions</Selector>
+                                <Selector>MaxActivations</Selector>
                               </Expression>
                               <Expression xsi:type="Combinator">
                                 <Combinator xsi:type="rx:CombineLatest" />
@@ -600,7 +573,18 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                   </Edges>
                                 </Workflow>
                               </Expression>
-                              <Expression xsi:type="Unit" />
+                              <Expression xsi:type="SubscribeSubject">
+                                <Name>Arguments</Name>
+                              </Expression>
+                              <Expression xsi:type="MemberSelector">
+                                <Selector>Position</Selector>
+                              </Expression>
+                              <Expression xsi:type="Combinator">
+                                <Combinator xsi:type="rx:CombineLatest" />
+                              </Expression>
+                              <Expression xsi:type="MemberSelector">
+                                <Selector>Item2</Selector>
+                              </Expression>
                               <Expression xsi:type="MulticastSubject">
                                 <Name>Teleport</Name>
                               </Expression>
@@ -608,47 +592,44 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                             <Edges>
                               <Edge From="0" To="1" Label="Source1" />
                               <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                              <Edge From="3" To="6" Label="Source1" />
+                              <Edge From="3" To="4" Label="Source1" />
                               <Edge From="4" To="5" Label="Source1" />
-                              <Edge From="5" To="6" Label="Source2" />
-                              <Edge From="6" To="7" Label="Source1" />
+                              <Edge From="5" To="6" Label="Source1" />
+                              <Edge From="6" To="9" Label="Source1" />
                               <Edge From="7" To="8" Label="Source1" />
-                              <Edge From="8" To="9" Label="Source1" />
+                              <Edge From="8" To="9" Label="Source2" />
+                              <Edge From="9" To="10" Label="Source1" />
+                              <Edge From="10" To="13" Label="Source1" />
+                              <Edge From="11" To="12" Label="Source1" />
+                              <Edge From="12" To="13" Label="Source2" />
+                              <Edge From="13" To="14" Label="Source1" />
+                              <Edge From="14" To="15" Label="Source1" />
                             </Edges>
                           </Workflow>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
-                          <Name>TileParameters</Name>
+                          <Name>Interaction</Name>
                         </Expression>
-                        <Expression xsi:type="Condition">
-                          <Name>Type4</Name>
-                          <Workflow>
-                            <Nodes>
-                              <Expression xsi:type="WorkflowInput">
-                                <Name>Source1</Name>
-                              </Expression>
-                              <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionType</Selector>
-                              </Expression>
-                              <Expression xsi:type="Equal">
-                                <Operand xsi:type="IntProperty">
-                                  <Value>4</Value>
-                                </Operand>
-                              </Expression>
-                              <Expression xsi:type="WorkflowOutput" />
-                            </Nodes>
-                            <Edges>
-                              <Edge From="0" To="1" Label="Source1" />
-                              <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                            </Edges>
-                          </Workflow>
+                        <Expression xsi:type="osc:Parse">
+                          <osc:Address>/interaction/teleportLick</osc:Address>
+                          <osc:TypeTag>fii</osc:TypeTag>
                         </Expression>
                         <Expression xsi:type="SelectMany">
                           <Name>TeleportOnLick</Name>
                           <Workflow>
                             <Nodes>
+                              <Expression xsi:type="WorkflowInput">
+                                <Name>Source1</Name>
+                              </Expression>
+                              <Expression xsi:type="scr:ExpressionTransform">
+                                <scr:Expression>new(
+Item1 as Position,
+Item2 as LickThreshold,
+Item3 as MaxActivations)</scr:Expression>
+                              </Expression>
+                              <Expression xsi:type="AsyncSubject">
+                                <Name>Arguments</Name>
+                              </Expression>
                               <Expression xsi:type="SubscribeSubject">
                                 <Name>Response</Name>
                               </Expression>
@@ -703,10 +684,10 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                 </Workflow>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
+                                <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionArgument</Selector>
+                                <Selector>LickThreshold</Selector>
                               </Expression>
                               <Expression xsi:type="Combinator">
                                 <Combinator xsi:type="rx:CombineLatest" />
@@ -733,10 +714,10 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                 </Combinator>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
+                                <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="MemberSelector">
-                                <Selector>MaxInteractions</Selector>
+                                <Selector>MaxActivations</Selector>
                               </Expression>
                               <Expression xsi:type="PropertyMapping">
                                 <PropertyMappings>
@@ -748,7 +729,18 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                   <rx:Count>0</rx:Count>
                                 </Combinator>
                               </Expression>
-                              <Expression xsi:type="Unit" />
+                              <Expression xsi:type="SubscribeSubject">
+                                <Name>Arguments</Name>
+                              </Expression>
+                              <Expression xsi:type="MemberSelector">
+                                <Selector>Position</Selector>
+                              </Expression>
+                              <Expression xsi:type="Combinator">
+                                <Combinator xsi:type="rx:CombineLatest" />
+                              </Expression>
+                              <Expression xsi:type="MemberSelector">
+                                <Selector>Item2</Selector>
+                              </Expression>
                               <Expression xsi:type="MulticastSubject">
                                 <Name>Teleport</Name>
                               </Expression>
@@ -756,52 +748,48 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                             <Edges>
                               <Edge From="0" To="1" Label="Source1" />
                               <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                              <Edge From="3" To="6" Label="Source1" />
+                              <Edge From="3" To="4" Label="Source1" />
                               <Edge From="4" To="5" Label="Source1" />
-                              <Edge From="5" To="6" Label="Source2" />
-                              <Edge From="6" To="7" Label="Source1" />
+                              <Edge From="5" To="6" Label="Source1" />
+                              <Edge From="6" To="9" Label="Source1" />
                               <Edge From="7" To="8" Label="Source1" />
-                              <Edge From="8" To="12" Label="Source1" />
+                              <Edge From="8" To="9" Label="Source2" />
                               <Edge From="9" To="10" Label="Source1" />
                               <Edge From="10" To="11" Label="Source1" />
-                              <Edge From="11" To="12" Label="Source2" />
+                              <Edge From="11" To="15" Label="Source1" />
                               <Edge From="12" To="13" Label="Source1" />
                               <Edge From="13" To="14" Label="Source1" />
+                              <Edge From="14" To="15" Label="Source2" />
+                              <Edge From="15" To="18" Label="Source1" />
+                              <Edge From="16" To="17" Label="Source1" />
+                              <Edge From="17" To="18" Label="Source2" />
+                              <Edge From="18" To="19" Label="Source1" />
+                              <Edge From="19" To="20" Label="Source1" />
                             </Edges>
                           </Workflow>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
-                          <Name>TileParameters</Name>
+                          <Name>Interaction</Name>
                         </Expression>
-                        <Expression xsi:type="Condition">
-                          <Name>Type5</Name>
-                          <Workflow>
-                            <Nodes>
-                              <Expression xsi:type="WorkflowInput">
-                                <Name>Source1</Name>
-                              </Expression>
-                              <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionType</Selector>
-                              </Expression>
-                              <Expression xsi:type="Equal">
-                                <Operand xsi:type="IntProperty">
-                                  <Value>5</Value>
-                                </Operand>
-                              </Expression>
-                              <Expression xsi:type="WorkflowOutput" />
-                            </Nodes>
-                            <Edges>
-                              <Edge From="0" To="1" Label="Source1" />
-                              <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                            </Edges>
-                          </Workflow>
+                        <Expression xsi:type="osc:Parse">
+                          <osc:Address>/interaction/gainEntry</osc:Address>
+                          <osc:TypeTag>fi</osc:TypeTag>
                         </Expression>
                         <Expression xsi:type="SelectMany">
                           <Name>ChangeGainOnEntry</Name>
                           <Workflow>
                             <Nodes>
+                              <Expression xsi:type="WorkflowInput">
+                                <Name>Source1</Name>
+                              </Expression>
+                              <Expression xsi:type="scr:ExpressionTransform">
+                                <scr:Expression>new(
+Item1 as Gain,
+Item2 as MaxActivations)</scr:Expression>
+                              </Expression>
+                              <Expression xsi:type="AsyncSubject">
+                                <Name>Arguments</Name>
+                              </Expression>
                               <Expression xsi:type="SubscribeSubject">
                                 <Name>ActiveState</Name>
                               </Expression>
@@ -823,19 +811,19 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                 </Workflow>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
+                                <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionArgument</Selector>
+                                <Selector>Gain</Selector>
                               </Expression>
                               <Expression xsi:type="Combinator">
                                 <Combinator xsi:type="rx:Sample" />
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
+                                <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="MemberSelector">
-                                <Selector>MaxInteractions</Selector>
+                                <Selector>MaxActivations</Selector>
                               </Expression>
                               <Expression xsi:type="PropertyMapping">
                                 <PropertyMappings>
@@ -854,48 +842,41 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                             <Edges>
                               <Edge From="0" To="1" Label="Source1" />
                               <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="5" Label="Source2" />
                               <Edge From="3" To="4" Label="Source1" />
                               <Edge From="4" To="5" Label="Source1" />
-                              <Edge From="5" To="9" Label="Source1" />
+                              <Edge From="5" To="8" Label="Source2" />
                               <Edge From="6" To="7" Label="Source1" />
                               <Edge From="7" To="8" Label="Source1" />
-                              <Edge From="8" To="9" Label="Source2" />
+                              <Edge From="8" To="12" Label="Source1" />
                               <Edge From="9" To="10" Label="Source1" />
+                              <Edge From="10" To="11" Label="Source1" />
+                              <Edge From="11" To="12" Label="Source2" />
+                              <Edge From="12" To="13" Label="Source1" />
                             </Edges>
                           </Workflow>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
-                          <Name>TileParameters</Name>
+                          <Name>Interaction</Name>
                         </Expression>
-                        <Expression xsi:type="Condition">
-                          <Name>Type6</Name>
-                          <Workflow>
-                            <Nodes>
-                              <Expression xsi:type="WorkflowInput">
-                                <Name>Source1</Name>
-                              </Expression>
-                              <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionType</Selector>
-                              </Expression>
-                              <Expression xsi:type="Equal">
-                                <Operand xsi:type="IntProperty">
-                                  <Value>6</Value>
-                                </Operand>
-                              </Expression>
-                              <Expression xsi:type="WorkflowOutput" />
-                            </Nodes>
-                            <Edges>
-                              <Edge From="0" To="1" Label="Source1" />
-                              <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                            </Edges>
-                          </Workflow>
+                        <Expression xsi:type="osc:Parse">
+                          <osc:Address>/interaction/rewardEntry</osc:Address>
+                          <osc:TypeTag>fi</osc:TypeTag>
                         </Expression>
                         <Expression xsi:type="SelectMany">
                           <Name>RewardOnEntry</Name>
                           <Workflow>
                             <Nodes>
+                              <Expression xsi:type="WorkflowInput">
+                                <Name>Source1</Name>
+                              </Expression>
+                              <Expression xsi:type="scr:ExpressionTransform">
+                                <scr:Expression>new(
+TimeSpan.FromMilliseconds(Item1) as DwellTime,
+Item2 as MaxActivations)</scr:Expression>
+                              </Expression>
+                              <Expression xsi:type="AsyncSubject">
+                                <Name>Arguments</Name>
+                              </Expression>
                               <Expression xsi:type="SubscribeSubject">
                                 <Name>ActiveState</Name>
                               </Expression>
@@ -915,26 +896,6 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                     <Edge From="0" To="1" Label="Source1" />
                                   </Edges>
                                 </Workflow>
-                              </Expression>
-                              <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
-                              </Expression>
-                              <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionArgument</Selector>
-                              </Expression>
-                              <Expression xsi:type="scr:ExpressionTransform">
-                                <scr:Name>DwellTimeMilliseconds</scr:Name>
-                                <scr:Expression>TimeSpan.FromMilliseconds(it)</scr:Expression>
-                              </Expression>
-                              <Expression xsi:type="PropertyMapping">
-                                <PropertyMappings>
-                                  <Property Name="DueTime" />
-                                </PropertyMappings>
-                              </Expression>
-                              <Expression xsi:type="Combinator">
-                                <Combinator xsi:type="gl:Timer">
-                                  <gl:DueTime>PT1S</gl:DueTime>
-                                </Combinator>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
                                 <Name>ActiveState</Name>
@@ -954,6 +915,22 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                   </Edges>
                                 </Workflow>
                               </Expression>
+                              <Expression xsi:type="SubscribeSubject">
+                                <Name>Arguments</Name>
+                              </Expression>
+                              <Expression xsi:type="MemberSelector">
+                                <Selector>DwellTime</Selector>
+                              </Expression>
+                              <Expression xsi:type="PropertyMapping">
+                                <PropertyMappings>
+                                  <Property Name="DueTime" />
+                                </PropertyMappings>
+                              </Expression>
+                              <Expression xsi:type="Combinator">
+                                <Combinator xsi:type="gl:Timer">
+                                  <gl:DueTime>PT1S</gl:DueTime>
+                                </Combinator>
+                              </Expression>
                               <Expression xsi:type="Combinator">
                                 <Combinator xsi:type="rx:TakeUntil" />
                               </Expression>
@@ -961,10 +938,10 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                 <Combinator xsi:type="rx:SubscribeWhen" />
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
+                                <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="MemberSelector">
-                                <Selector>MaxInteractions</Selector>
+                                <Selector>MaxActivations</Selector>
                               </Expression>
                               <Expression xsi:type="PropertyMapping">
                                 <PropertyMappings>
@@ -984,55 +961,47 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                             <Edges>
                               <Edge From="0" To="1" Label="Source1" />
                               <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="11" Label="Source2" />
                               <Edge From="3" To="4" Label="Source1" />
                               <Edge From="4" To="5" Label="Source1" />
-                              <Edge From="5" To="6" Label="Source1" />
+                              <Edge From="5" To="13" Label="Source2" />
                               <Edge From="6" To="7" Label="Source1" />
-                              <Edge From="7" To="10" Label="Source1" />
+                              <Edge From="7" To="12" Label="Source2" />
                               <Edge From="8" To="9" Label="Source1" />
-                              <Edge From="9" To="10" Label="Source2" />
+                              <Edge From="9" To="10" Label="Source1" />
                               <Edge From="10" To="11" Label="Source1" />
-                              <Edge From="11" To="15" Label="Source1" />
+                              <Edge From="11" To="12" Label="Source1" />
                               <Edge From="12" To="13" Label="Source1" />
-                              <Edge From="13" To="14" Label="Source1" />
-                              <Edge From="14" To="15" Label="Source2" />
+                              <Edge From="13" To="17" Label="Source1" />
+                              <Edge From="14" To="15" Label="Source1" />
                               <Edge From="15" To="16" Label="Source1" />
-                              <Edge From="16" To="17" Label="Source1" />
+                              <Edge From="16" To="17" Label="Source2" />
+                              <Edge From="17" To="18" Label="Source1" />
+                              <Edge From="18" To="19" Label="Source1" />
                             </Edges>
                           </Workflow>
                         </Expression>
                         <Expression xsi:type="SubscribeSubject">
-                          <Name>TileParameters</Name>
+                          <Name>Interaction</Name>
                         </Expression>
-                        <Expression xsi:type="Condition">
-                          <Name>Type7</Name>
-                          <Workflow>
-                            <Nodes>
-                              <Expression xsi:type="WorkflowInput">
-                                <Name>Source1</Name>
-                              </Expression>
-                              <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionType</Selector>
-                              </Expression>
-                              <Expression xsi:type="Equal">
-                                <Operand xsi:type="IntProperty">
-                                  <Value>7</Value>
-                                </Operand>
-                              </Expression>
-                              <Expression xsi:type="WorkflowOutput" />
-                            </Nodes>
-                            <Edges>
-                              <Edge From="0" To="1" Label="Source1" />
-                              <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                            </Edges>
-                          </Workflow>
+                        <Expression xsi:type="osc:Parse">
+                          <osc:Address>/interaction/rewardLick</osc:Address>
+                          <osc:TypeTag>ii</osc:TypeTag>
                         </Expression>
                         <Expression xsi:type="SelectMany">
                           <Name>RewardOnLick</Name>
                           <Workflow>
                             <Nodes>
+                              <Expression xsi:type="WorkflowInput">
+                                <Name>Source1</Name>
+                              </Expression>
+                              <Expression xsi:type="scr:ExpressionTransform">
+                                <scr:Expression>new(
+Item1 as LickThreshold,
+Item2 as MaxActivations)</scr:Expression>
+                              </Expression>
+                              <Expression xsi:type="AsyncSubject">
+                                <Name>Arguments</Name>
+                              </Expression>
                               <Expression xsi:type="SubscribeSubject">
                                 <Name>Response</Name>
                               </Expression>
@@ -1087,10 +1056,10 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                 </Workflow>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
+                                <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="MemberSelector">
-                                <Selector>InteractionArgument</Selector>
+                                <Selector>LickThreshold</Selector>
                               </Expression>
                               <Expression xsi:type="Combinator">
                                 <Combinator xsi:type="rx:CombineLatest" />
@@ -1117,10 +1086,10 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                                 </Combinator>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>TileParameters</Name>
+                                <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="MemberSelector">
-                                <Selector>MaxInteractions</Selector>
+                                <Selector>MaxActivations</Selector>
                               </Expression>
                               <Expression xsi:type="PropertyMapping">
                                 <PropertyMappings>
@@ -1140,37 +1109,40 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                             <Edges>
                               <Edge From="0" To="1" Label="Source1" />
                               <Edge From="1" To="2" Label="Source1" />
-                              <Edge From="2" To="3" Label="Source1" />
-                              <Edge From="3" To="6" Label="Source1" />
+                              <Edge From="3" To="4" Label="Source1" />
                               <Edge From="4" To="5" Label="Source1" />
-                              <Edge From="5" To="6" Label="Source2" />
-                              <Edge From="6" To="7" Label="Source1" />
+                              <Edge From="5" To="6" Label="Source1" />
+                              <Edge From="6" To="9" Label="Source1" />
                               <Edge From="7" To="8" Label="Source1" />
-                              <Edge From="8" To="12" Label="Source1" />
+                              <Edge From="8" To="9" Label="Source2" />
                               <Edge From="9" To="10" Label="Source1" />
                               <Edge From="10" To="11" Label="Source1" />
-                              <Edge From="11" To="12" Label="Source2" />
+                              <Edge From="11" To="15" Label="Source1" />
                               <Edge From="12" To="13" Label="Source1" />
                               <Edge From="13" To="14" Label="Source1" />
+                              <Edge From="14" To="15" Label="Source2" />
+                              <Edge From="15" To="16" Label="Source1" />
+                              <Edge From="16" To="17" Label="Source1" />
                             </Edges>
                           </Workflow>
                         </Expression>
                       </Nodes>
                       <Edges>
                         <Edge From="0" To="1" Label="Source1" />
-                        <Edge From="1" To="2" Label="Source1" />
+                        <Edge From="2" To="3" Label="Source1" />
                         <Edge From="3" To="4" Label="Source1" />
-                        <Edge From="4" To="5" Label="Source1" />
+                        <Edge From="5" To="6" Label="Source1" />
                         <Edge From="6" To="7" Label="Source1" />
-                        <Edge From="7" To="8" Label="Source1" />
+                        <Edge From="8" To="9" Label="Source1" />
                         <Edge From="9" To="10" Label="Source1" />
-                        <Edge From="10" To="11" Label="Source1" />
+                        <Edge From="11" To="12" Label="Source1" />
                         <Edge From="12" To="13" Label="Source1" />
-                        <Edge From="13" To="14" Label="Source1" />
+                        <Edge From="14" To="15" Label="Source1" />
                         <Edge From="15" To="16" Label="Source1" />
-                        <Edge From="16" To="17" Label="Source1" />
+                        <Edge From="17" To="18" Label="Source1" />
                         <Edge From="18" To="19" Label="Source1" />
-                        <Edge From="19" To="20" Label="Source1" />
+                        <Edge From="20" To="21" Label="Source1" />
+                        <Edge From="21" To="22" Label="Source1" />
                       </Edges>
                     </Workflow>
                   </Expression>
@@ -1196,6 +1168,9 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                   <Edge From="19" To="20" Label="Source2" />
                   <Edge From="20" To="21" Label="Source1" />
                   <Edge From="21" To="22" Label="Source1" />
+                  <Edge From="23" To="24" Label="Source1" />
+                  <Edge From="24" To="25" Label="Source1" />
+                  <Edge From="25" To="26" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1295,6 +1270,11 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                       <rx:Count>1</rx:Count>
                     </Combinator>
                   </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Take">
+                      <rx:Count>1</rx:Count>
+                    </Combinator>
+                  </Expression>
                   <Expression xsi:type="WorkflowInput">
                     <Name>Source1</Name>
                   </Expression>
@@ -1304,22 +1284,11 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:LastOrDefault" />
                   </Expression>
-                  <Expression xsi:type="CreateAsync">
-                    <Workflow>
-                      <Nodes>
-                        <Expression xsi:type="SubscribeSubject">
-                          <Name>CorridorParameters</Name>
-                        </Expression>
-                        <Expression xsi:type="MemberSelector">
-                          <Selector>ViewPosition</Selector>
-                        </Expression>
-                        <Expression xsi:type="WorkflowOutput" />
-                      </Nodes>
-                      <Edges>
-                        <Edge From="0" To="1" Label="Source1" />
-                        <Edge From="1" To="2" Label="Source1" />
-                      </Edges>
-                    </Workflow>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:Zip" />
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Item2</Selector>
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
                     <Name>Position</Name>
@@ -1331,13 +1300,16 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="3" Label="Source2" />
-                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="4" Label="Source2" />
+                  <Edge From="2" To="6" Label="Source2" />
                   <Edge From="3" To="4" Label="Source1" />
                   <Edge From="4" To="5" Label="Source1" />
                   <Edge From="5" To="6" Label="Source1" />
                   <Edge From="6" To="7" Label="Source1" />
                   <Edge From="7" To="8" Label="Source1" />
+                  <Edge From="8" To="9" Label="Source1" />
+                  <Edge From="9" To="10" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -1379,7 +1351,22 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                   <Expression xsi:type="BehaviorSubject">
                     <Name>EncoderGain</Name>
                   </Expression>
-                  <Expression xsi:type="Unit" />
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>CorridorParameters</Name>
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>ViewPosition</Selector>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="Value" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="FloatProperty">
+                      <Value>0</Value>
+                    </Combinator>
+                  </Expression>
                   <Expression xsi:type="BehaviorSubject">
                     <Name>Teleport</Name>
                   </Expression>
@@ -1400,8 +1387,11 @@ Front ? -Position : -Position - Extent / 2 as TranslationZ)</scr:Expression>
                   <Edge From="6" To="7" Label="Source1" />
                   <Edge From="8" To="9" Label="Source1" />
                   <Edge From="10" To="11" Label="Source1" />
+                  <Edge From="11" To="12" Label="Source1" />
                   <Edge From="12" To="13" Label="Source1" />
                   <Edge From="13" To="14" Label="Source1" />
+                  <Edge From="15" To="16" Label="Source1" />
+                  <Edge From="16" To="17" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>

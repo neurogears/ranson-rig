@@ -75,6 +75,9 @@ class RigClient:
         
     def nogo(self, suppress=2000.0, response=0.5):
         self.client.send_message("/nogo", [float(suppress), float(response)])
+        
+    def interaction(self, name, arguments):
+        self.client.send_message('/interaction/{0}'.format(name), arguments)
     
     def tile(self, wall, **kwargs):
         position = float(kwargs.get('position',0.0))
