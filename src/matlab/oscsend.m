@@ -6,17 +6,23 @@ function oscsend(varargin)
   path = oscstr(varargin{2});
   types = varargin{3};
   data = [];
-  for i = 4:nargin
-    code = types(i-2);
+  offset = 4;
+  for i = 2:length(types)
+    code = types(i);
     if code == 'i'
-      value = fliplr(typecast(uint32(varargin{i}),'uint8'));
+      value = fliplr(typecast(uint32(varargin{offset}),'uint8'));
     elseif code == 'f'
-      value = fliplr(typecast(single(varargin{i}),'uint8'));
+      value = fliplr(typecast(single(varargin{offset}),'uint8'));
     elseif code == 's'
-      value = oscstr(varargin{i});
+      value = oscstr(varargin{offset});
+    elseif code == '['
+      continue
+    elseif code == ']'
+      continue
     else
       error("Unsupported type tag.");
     end
+    offset = offset + 1;
     data = [data value];
   end
   types = oscstr(types);
