@@ -31,7 +31,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Merge" />
       </Expression>
-      <Expression xsi:type="BehaviorSubject">
+      <Expression xsi:type="PublishSubject">
         <Name>Response</Name>
       </Expression>
       <Expression xsi:type="Combinator">
