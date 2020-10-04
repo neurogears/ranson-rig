@@ -43,11 +43,11 @@ with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     rig.clear()
     
     rig.gratings(size=120, angle=30, freq=0.1, duration=2.0) # go gratings
-    rig.go(suppress=1000, response=500) # go trial
+    rig.go(suppress=1000, start=500, duration=1000.0, threshold=2) # go trial
     server.handle_request()  # Wait for end trial
 
     rig.gratings(size=120, angle=0, freq=0.1, duration=2.0) # nogo gratings
-    rig.nogo(suppress=500, response=500) # no-go trial
+    rig.nogo(suppress=500, start=0.0, duration=2000.0) # no-go trial
     server.handle_request()  # Wait for end trial
 
     rig.interaction('rewardLick', [2, 1]) # lickthreshold, max activations

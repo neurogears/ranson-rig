@@ -77,12 +77,12 @@ classdef Rig
       oscsend(obj.client, "/failure", ",i", 0);
     end
     
-    function go(obj, suppress, response)
-      oscsend(obj.client, "/go", ",ff", suppress, response);
+    function go(obj, suppress, start, duration, threshold)
+      oscsend(obj.client, "/go", ",fffi", suppress, start, duration, threshold);
     end
     
-    function nogo(obj, suppress, response)
-      oscsend(obj.client, "/nogo", ",ff", suppress, response);
+    function nogo(obj, suppress, start, duration, threshold)
+      oscsend(obj.client, "/nogo", ",fffi", suppress, start, duration, threshold);
     end
 
     function interaction(obj, name, type, arguments)

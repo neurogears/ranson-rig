@@ -75,11 +75,19 @@ class RigClient:
     def failure(self):
         self.client.send_message("/failure", 0)
     
-    def go(self, suppress=2000.0, response=0.5):
-        self.client.send_message("/go", [float(suppress), float(response)])
+    def go(self, suppress=2000, start=500, duration=1000, threshold=1):
+        self.client.send_message("/go",
+                                 [float(suppress),
+                                  float(start),
+                                  float(duration),
+                                  int(threshold)])
         
-    def nogo(self, suppress=2000.0, response=0.5):
-        self.client.send_message("/nogo", [float(suppress), float(response)])
+    def nogo(self, suppress=2000, start=500, duration=1000, threshold=1):
+        self.client.send_message("/nogo",
+                                 [float(suppress),
+                                  float(start),
+                                  float(duration),
+                                  int(threshold)])
         
     def interaction(self, name, arguments):
         self.client.send_message('/interaction/{0}'.format(name), arguments)

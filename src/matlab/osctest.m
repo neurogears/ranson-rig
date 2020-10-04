@@ -38,7 +38,7 @@ gg.angle = 30;
 gg.freq = 0.1;
 gg.duration = 2.0;
 rig.gratings(gg); % go gratings
-rig.go(1000, 500); % go trial
+rig.go(1000, 500, 1000, 2); % go trial
 oscrecv(u); % Wait for end trial
 
 ng.size = 120;
@@ -46,7 +46,7 @@ ng.angle = 0;
 ng.freq = 0.1;
 ng.duration = 2.0;
 rig.gratings(ng); % nogo gratings
-rig.nogo(500, 500); % no-go trial
+rig.nogo(500, 500, 1000, 1); % no-go trial
 oscrecv(u); % Wait for end trial
 
 rig.interaction('rewardLick', "ii", {2, 1}); % lickthreshold, max activations
