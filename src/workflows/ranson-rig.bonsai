@@ -417,13 +417,14 @@ Item3.Item2 as Duration)</scr:Expression>
               <Name>Logic</Name>
             </Expression>
             <Expression xsi:type="osc:Parse">
-              <osc:TypeTag>fff</osc:TypeTag>
+              <osc:TypeTag>fffi</osc:TypeTag>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Expression>new(
 Item1 as SuppressDuration,
 Item2 as ResponseStart,
-Item3 as ResponseDuration)</scr:Expression>
+Item3 as ResponseDuration,
+Item4 as LickThreshold)</scr:Expression>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:SampleOnUpdateFrame" />
