@@ -69,6 +69,5 @@ with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     
     rig.interaction('gainEntry', [0.1, 1])
     rig.tile(Wall.TOP, position=1, extent=1, texture="Black")
-    rig.tile(Wall.FRONT, position=3, texture="mask")
     rig.corridor(length=3.0, width=1.2, height=1.0, x=0.0, y=0.0, position=0.0)
     server.handle_request()  # Wait for end trial
