@@ -4,3 +4,4 @@ obj
 *.exe.settings
 Packages
 __pycache__
+Data
