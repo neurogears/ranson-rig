@@ -2,6 +2,7 @@
 <WorkflowBuilder Version="2.5.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns="https://bonsai-rx.org/2018/workflow">
+  <Description>Logs custom formatted metadata in the trial metadata file.</Description>
   <Workflow>
     <Nodes>
       <Expression xsi:type="WorkflowInput">
@@ -13,7 +14,7 @@
       </Expression>
       <Expression xsi:type="Sink">
         <Name>LogMetadata</Name>
-        <Description>Logs custom formatted metadata in the trial metadata file.</Description>
+        <Description />
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
