@@ -204,7 +204,7 @@ Item2.Index as TrialID)</scr:Expression>
                     <Combinator xsi:type="rx:IgnoreElements" />
                   </Expression>
                   <Expression xsi:type="PublishSubject">
-                    <Name>CloseTrial</Name>
+                    <Name>EndTrial</Name>
                   </Expression>
                 </Nodes>
                 <Edges>
@@ -504,7 +504,7 @@ Item3.Item2 as Duration)</scr:Expression>
               <Format xsi:nil="true" />
               <Selector xsi:nil="true" />
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\CloseTrial.bonsai" />
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\EndTrial.bonsai" />
             <Expression xsi:type="osc:SendMessage">
               <osc:Connection>Reply</osc:Connection>
               <osc:Address />
@@ -581,7 +581,7 @@ Item4 as LickThreshold)</scr:Expression>
               <Format xsi:nil="true" />
               <Selector xsi:nil="true" />
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\CloseTrial.bonsai" />
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\EndTrial.bonsai" />
             <Expression xsi:type="osc:SendMessage">
               <osc:Connection>Reply</osc:Connection>
               <osc:Address>/outcome</osc:Address>
@@ -699,7 +699,7 @@ Item6 as ViewPosition)</scr:Expression>
               <Format xsi:nil="true" />
               <Selector xsi:nil="true" />
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\CloseTrial.bonsai" />
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\EndTrial.bonsai" />
             <Expression xsi:type="osc:SendMessage">
               <osc:Connection>Reply</osc:Connection>
               <osc:Address>/endcorridor</osc:Address>

@@ -9,7 +9,7 @@
         <Name>Source1</Name>
       </Expression>
       <Expression xsi:type="Sink">
-        <Name>CloseTrial</Name>
+        <Name>EndTrial</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
@@ -17,7 +17,7 @@
             </Expression>
             <Expression xsi:type="Unit" />
             <Expression xsi:type="MulticastSubject">
-              <Name>CloseTrial</Name>
+              <Name>EndTrial</Name>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
