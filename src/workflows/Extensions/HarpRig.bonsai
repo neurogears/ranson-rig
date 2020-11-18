@@ -31,7 +31,7 @@
         <p1:Type>Input</p1:Type>
         <p1:Mask>Port0</p1:Mask>
       </Expression>
-      <Expression xsi:type="BehaviorSubject">
+      <Expression xsi:type="PublishSubject">
         <Name>Response</Name>
       </Expression>
       <Expression xsi:type="p1:BehaviorEvent">
