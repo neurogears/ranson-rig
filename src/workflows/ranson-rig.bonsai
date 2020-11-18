@@ -728,7 +728,9 @@ Item6 as ViewPosition)</scr:Expression>
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\HarpRig.bonsai" />
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\HarpRig.bonsai">
+        <PortName>COM3</PortName>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge From="2" To="3" Label="Source1" />
