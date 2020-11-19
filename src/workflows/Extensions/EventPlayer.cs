@@ -23,7 +23,8 @@ public class EventPlayer
                 evt =>
                 {
                     elapsedTime += evt.TimeStep.ElapsedTime;
-                    while (index < events.Length && elapsedTime >= events[index].Item1)
+                    while (index < events.Length &&
+                           Math.Abs(elapsedTime - events[index].Item1) < 1e-10)
                     {
                         observer.OnNext(events[index].Item2);
                         index++;
