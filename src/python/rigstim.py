@@ -18,6 +18,12 @@ class RigClient:
     def __init__(self, client):
         self.client = client
         
+    def experiment(self,expid):
+        self.client.send_message("/experiment", expid)
+        
+    def replay(self, expid, trial):
+        self.client.send_message("/replay", [expid, trial])
+        
     def resource(self, path):
         self.client.send_message("/resource", path)
         

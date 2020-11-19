@@ -82,3 +82,7 @@ with BlockingOSCUDPServer((ip, reply_port), dispatcher) as server:
     rig.tile(Wall.TOP, position=1, extent=1, texture="Black")
     rig.corridor(length=3.0, width=1.2, height=1.0, x=0.0, y=0.0, position=0.0)
     server.handle_request()  # Wait for end trial
+    
+    rig.experiment(metadata)
+    rig.replay(metadata, 3)
+    server.handle_request()  # Wait for end trial

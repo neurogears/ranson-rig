@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.5.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
@@ -23,6 +23,14 @@
           <osc:Port>0</osc:Port>
           <osc:RemoteHostName>localhost</osc:RemoteHostName>
           <osc:RemotePort>4007</osc:RemotePort>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="osc:CreateUdpClient">
+          <osc:Name>Echo</osc:Name>
+          <osc:Port>0</osc:Port>
+          <osc:RemoteHostName>localhost</osc:RemoteHostName>
+          <osc:RemotePort>4002</osc:RemotePort>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -474,6 +482,24 @@ Item3.Item2 as Duration)</scr:Expression>
             <Expression xsi:type="BehaviorSubject">
               <Name>Failure</Name>
             </Expression>
+            <Expression xsi:type="osc:ReceiveMessage">
+              <osc:Address>/replay</osc:Address>
+              <osc:TypeTag>si</osc:TypeTag>
+              <osc:Connection>Request</osc:Connection>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>StartTrial</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:TakeUntil" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:FirstOrDefault" />
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\ReplayControl.bonsai" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Repeat" />
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -500,6 +526,11 @@ Item3.Item2 as Duration)</scr:Expression>
             <Edge From="25" To="26" Label="Source1" />
             <Edge From="26" To="27" Label="Source1" />
             <Edge From="27" To="28" Label="Source1" />
+            <Edge From="29" To="31" Label="Source1" />
+            <Edge From="30" To="31" Label="Source2" />
+            <Edge From="31" To="32" Label="Source1" />
+            <Edge From="32" To="33" Label="Source1" />
+            <Edge From="33" To="34" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -757,12 +788,12 @@ Item6 as ViewPosition)</scr:Expression>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge From="2" To="3" Label="Source1" />
       <Edge From="3" To="4" Label="Source1" />
       <Edge From="4" To="5" Label="Source1" />
       <Edge From="5" To="6" Label="Source1" />
-      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
       <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
