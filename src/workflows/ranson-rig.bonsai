@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.5.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
@@ -177,7 +177,12 @@ Item2.Index as TrialID)</scr:Expression>
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="StringProperty" />
+                    <Combinator xsi:type="StringProperty">
+                      <Value>/</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="osc:Format">
+                    <osc:Address>/</osc:Address>
                   </Expression>
                   <Expression xsi:type="BehaviorSubject">
                     <Name>TrialMetadata</Name>
@@ -187,6 +192,7 @@ Item2.Index as TrialID)</scr:Expression>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -242,10 +248,7 @@ Item2.Index as TrialID)</scr:Expression>
               <osc:Address />
               <osc:Connection>Request</osc:Connection>
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai">
-              <Format xsi:nil="true" />
-              <Selector xsi:nil="true" />
-            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai" />
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -525,10 +528,7 @@ Item3.Item2 as Duration)</scr:Expression>
             <Expression xsi:type="osc:Format">
               <osc:Address>/end</osc:Address>
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai">
-              <Format xsi:nil="true" />
-              <Selector xsi:nil="true" />
-            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai" />
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\EndTrial.bonsai" />
             <Expression xsi:type="osc:SendMessage">
               <osc:Connection>Reply</osc:Connection>
@@ -604,10 +604,7 @@ Item4 as LickThreshold)</scr:Expression>
             <Expression xsi:type="osc:Format">
               <osc:Address>/outcome</osc:Address>
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai">
-              <Format xsi:nil="true" />
-              <Selector xsi:nil="true" />
-            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai" />
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\EndTrial.bonsai" />
             <Expression xsi:type="osc:SendMessage">
               <osc:Connection>Reply</osc:Connection>
@@ -724,10 +721,7 @@ Item6 as ViewPosition)</scr:Expression>
             <Expression xsi:type="osc:Format">
               <osc:Address>/endcorridor</osc:Address>
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai">
-              <Format xsi:nil="true" />
-              <Selector xsi:nil="true" />
-            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai" />
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\EndTrial.bonsai" />
             <Expression xsi:type="osc:SendMessage">
               <osc:Connection>Reply</osc:Connection>

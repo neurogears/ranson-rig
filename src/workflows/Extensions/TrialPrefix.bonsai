@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
+<WorkflowBuilder Version="2.5.1"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns="https://bonsai-rx.org/2018/workflow">
-  <Description>Logs custom formatted metadata in the trial metadata file.</Description>
   <Workflow>
     <Nodes>
       <Expression xsi:type="WorkflowInput">
         <Name>Source1</Name>
       </Expression>
-      <Expression xsi:type="MulticastSubject">
-        <Name>TrialMetadata</Name>
+      <Expression xsi:type="Format">
+        <Format>Data/{2}/{0}_{1}_{2}/{0}_{1}_{2}_{3:D5}</Format>
+        <Selector>ExperimentDate,ExperimentNumber,AnimalID,TrialID</Selector>
       </Expression>
       <Expression xsi:type="WorkflowOutput" />
     </Nodes>
