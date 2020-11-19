@@ -2,6 +2,7 @@ bin
 obj
 *.exe
 *.exe.settings
+.vscode
 Packages
 __pycache__
 Data
