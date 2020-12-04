@@ -47,7 +47,7 @@
           <gl:WindowState>Normal</gl:WindowState>
           <gl:DisplayDevice>Primary</gl:DisplayDevice>
           <gl:TargetRenderFrequency>60</gl:TargetRenderFrequency>
-          <gl:TargetUpdateFrequency xsi:nil="true" />
+          <gl:TargetUpdateFrequency>120</gl:TargetUpdateFrequency>
           <gl:RenderState />
           <gl:GraphicsMode>
             <gl:ColorFormat>
@@ -130,6 +130,7 @@
               <osc:TypeTag>s</osc:TypeTag>
               <osc:Connection>Request</osc:Connection>
             </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\ResetEncoder.bonsai" />
             <Expression xsi:type="rx:GroupBy" />
             <Expression xsi:type="SelectMany">
               <Name>LogExperiment</Name>
@@ -261,7 +262,8 @@ Item2.Index as TrialID)</scr:Expression>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -496,7 +498,12 @@ Item3.Item2 as Duration)</scr:Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:FirstOrDefault" />
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\ReplayControl.bonsai" />
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="EncoderScale" />
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\ReplayControl.bonsai">
+              <EncoderScale>1</EncoderScale>
+            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Repeat" />
             </Expression>
@@ -529,8 +536,9 @@ Item3.Item2 as Duration)</scr:Expression>
             <Edge From="29" To="31" Label="Source1" />
             <Edge From="30" To="31" Label="Source2" />
             <Edge From="31" To="32" Label="Source1" />
-            <Edge From="32" To="33" Label="Source1" />
-            <Edge From="33" To="34" Label="Source1" />
+            <Edge From="32" To="34" Label="Source1" />
+            <Edge From="33" To="34" Label="Source2" />
+            <Edge From="34" To="35" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>

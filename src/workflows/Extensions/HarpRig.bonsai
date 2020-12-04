@@ -52,7 +52,7 @@
         <Name>Response</Name>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="IntProperty">
+        <Combinator xsi:type="DoubleProperty">
           <Value>0</Value>
         </Combinator>
       </Expression>

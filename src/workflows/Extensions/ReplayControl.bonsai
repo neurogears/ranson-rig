@@ -14,6 +14,9 @@
       <Expression xsi:type="WorkflowInput">
         <Name>Source1</Name>
       </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="EncoderScale" />
+      </Expression>
       <Expression xsi:type="SelectMany">
         <Name>LiveOrReplay</Name>
         <Workflow>
@@ -70,7 +73,7 @@ Item2 as TrialID)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="p1:ArrayReader">
-                      <p1:FileName>Data/S1/2020-11-18_23-56-43_S1/2020-11-18_23-56-43_S1_00003_Metadata.bin</p1:FileName>
+                      <p1:FileName />
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Condition">
@@ -115,8 +118,8 @@ Item2 as TrialID)</scr:Expression>
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>Data/S1/2020-11-18_23-56-43_S1/2020-11-18_23-56-43_S1_00003_Encoder.csv</io:FileName>
-                    <io:ScanPattern>%d,%i</io:ScanPattern>
+                    <io:FileName />
+                    <io:ScanPattern>%d,%d</io:ScanPattern>
                     <io:SkipRows>1</io:SkipRows>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -166,7 +169,7 @@ Item2 as TrialID)</scr:Expression>
                     </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>Data/S1/2020-11-18_23-56-43_S1/2020-11-18_23-56-43_S1_00003_Responses.csv</io:FileName>
+                    <io:FileName />
                     <io:ScanPattern>%d,%b</io:ScanPattern>
                     <io:SkipRows>1</io:SkipRows>
                   </Expression>
@@ -235,6 +238,9 @@ Item2 as TrialID)</scr:Expression>
               <scr:Name>Null</scr:Name>
               <scr:Expression>it == null</scr:Expression>
             </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="EncoderScale" />
+            </Expression>
             <Expression xsi:type="SelectMany">
               <Name>LiveTrial</Name>
               <Workflow>
@@ -245,6 +251,14 @@ Item2 as TrialID)</scr:Expression>
                   <Expression xsi:type="p2:BehaviorEvent">
                     <p2:Type>QuadratureCounter</p2:Type>
                     <p2:Mask>Port2</p2:Mask>
+                  </Expression>
+                  <Expression xsi:type="ExternalizedMapping">
+                    <Property Name="Value" DisplayName="EncoderScale" />
+                  </Expression>
+                  <Expression xsi:type="Multiply">
+                    <Operand xsi:type="DoubleProperty">
+                      <Value>1</Value>
+                    </Operand>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="gl:LatestOnUpdateFrame" />
@@ -265,10 +279,12 @@ Item2 as TrialID)</scr:Expression>
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
+                  <Edge From="1" To="3" Label="Source1" />
+                  <Edge From="2" To="3" Label="Source2" />
+                  <Edge From="3" To="4" Label="Source1" />
                   <Edge From="4" To="5" Label="Source1" />
-                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="6" To="7" Label="Source1" />
+                  <Edge From="7" To="8" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -286,17 +302,19 @@ Item2 as TrialID)</scr:Expression>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="0" To="3" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="3" To="5" Label="Source1" />
+            <Edge From="4" To="5" Label="Source2" />
             <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
       <Expression xsi:type="WorkflowOutput" />
     </Nodes>
     <Edges>
-      <Edge From="0" To="1" Label="Source1" />
-      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="0" To="2" Label="Source1" />
+      <Edge From="1" To="2" Label="Source2" />
+      <Edge From="2" To="3" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
