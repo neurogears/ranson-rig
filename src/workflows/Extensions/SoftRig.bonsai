@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
+<WorkflowBuilder Version="2.6.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gli="clr-namespace:Bonsai.Shaders.Input;assembly=Bonsai.Shaders"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
@@ -44,18 +44,10 @@
       <Expression xsi:type="PublishSubject">
         <Name>Encoder</Name>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="harp:CreateMessage">
-          <harp:MessageType>Write</harp:MessageType>
-          <harp:Address>32</harp:Address>
-          <harp:PayloadType>U8</harp:PayloadType>
-          <harp:Payload>0</harp:Payload>
-        </Combinator>
+      <Expression xsi:type="BehaviorSubject" TypeArguments="harp:HarpMessage">
+        <Name>Command</Name>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:IgnoreElements" />
-      </Expression>
-      <Expression xsi:type="PublishSubject">
+      <Expression xsi:type="BehaviorSubject" TypeArguments="harp:HarpMessage">
         <Name>Behavior</Name>
       </Expression>
     </Nodes>
@@ -67,8 +59,6 @@
       <Edge From="4" To="5" Label="Source1" />
       <Edge From="6" To="7" Label="Source1" />
       <Edge From="7" To="8" Label="Source1" />
-      <Edge From="9" To="10" Label="Source1" />
-      <Edge From="10" To="11" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
