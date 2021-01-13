@@ -4,7 +4,7 @@ function oscsend(varargin)
   end
   u = varargin{1};
   path = oscstr(varargin{2});
-  types = varargin{3};
+  types = char(varargin{3});
   data = [];
   offset = 4;
   for i = 2:length(types)

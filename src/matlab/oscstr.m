@@ -1,4 +1,5 @@
 function s = oscstr(str)
+  str = char(str);
   s = uint8(str);
   l = length(str) + 1;
   pad = mod(4 - mod(l,4),4);

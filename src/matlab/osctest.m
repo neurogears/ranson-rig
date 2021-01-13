@@ -1,5 +1,4 @@
-u = udp('127.0.0.1', 4002, 4007);
-fopen(u);
+u = udp('127.0.0.1', 4002, 'LocalPort', 4007);
 rig = Rig(u)
 
 rig.resource("Videos/Blink");
@@ -97,11 +96,6 @@ t6.position = 1;
 t6.extent = 1;
 t6.texture = "Black";
 rig.tile(t6);
-
-t7.wall = Wall.Front;
-t7.position = 3;
-t7.texture = "mask";
-rig.tile(t7);
 
 c.length = 3.0;
 c.width = 1.2;
