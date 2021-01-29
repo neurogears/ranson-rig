@@ -1,38 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
+<WorkflowBuilder Version="2.6.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:p1="clr-namespace:;assembly=Extensions"
                  xmlns:res="clr-namespace:Bonsai.Resources;assembly=Bonsai.System"
+                 xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="osc:CreateUdpClient">
-          <osc:Name>Request</osc:Name>
-          <osc:Port>4002</osc:Port>
-          <osc:RemotePort>0</osc:RemotePort>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="osc:CreateUdpClient">
-          <osc:Name>Reply</osc:Name>
-          <osc:Port>0</osc:Port>
-          <osc:RemoteHostName>localhost</osc:RemoteHostName>
-          <osc:RemotePort>4007</osc:RemotePort>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="osc:CreateUdpClient">
-          <osc:Name>Echo</osc:Name>
-          <osc:Port>0</osc:Port>
-          <osc:RemoteHostName>localhost</osc:RemoteHostName>
-          <osc:RemotePort>4002</osc:RemotePort>
-        </Combinator>
-      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:CreateWindow">
           <gl:Width>640</gl:Width>
@@ -122,13 +99,56 @@
         <Height>1</Height>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
+        <Name>Networking</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="osc:CreateTcpServer">
+                <osc:Name>Request</osc:Name>
+                <osc:Port>4002</osc:Port>
+                <osc:NoDelay>true</osc:NoDelay>
+                <osc:AllowNatTraversal>false</osc:AllowNatTraversal>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="osc:CreateTcpClient">
+                <osc:Name>Echo</osc:Name>
+                <osc:HostName>localhost</osc:HostName>
+                <osc:Port>4002</osc:Port>
+                <osc:NoDelay>true</osc:NoDelay>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="BehaviorSubject" TypeArguments="osc:Message">
+              <Name>Reply</Name>
+            </Expression>
+            <Expression xsi:type="osc:SendMessage">
+              <osc:Connection>Request</osc:Connection>
+              <osc:Address />
+            </Expression>
+            <Expression xsi:type="osc:ReceiveMessage">
+              <osc:Address />
+              <osc:Connection>Request</osc:Connection>
+            </Expression>
+            <Expression xsi:type="PublishSubject">
+              <Name>Request</Name>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
         <Name>Logging</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/experiment</osc:Address>
               <osc:TypeTag>s</osc:TypeTag>
-              <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\ResetEncoder.bonsai" />
             <Expression xsi:type="rx:GroupBy" />
@@ -253,9 +273,8 @@ Item2.Index as TrialID)</scr:Expression>
                 </Edges>
               </Workflow>
             </Expression>
-            <Expression xsi:type="osc:ReceiveMessage">
-              <osc:Address />
-              <osc:Connection>Request</osc:Connection>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai" />
           </Nodes>
@@ -263,7 +282,8 @@ Item2.Index as TrialID)</scr:Expression>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -271,15 +291,19 @@ Item2.Index as TrialID)</scr:Expression>
         <Name>VideoCache</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="osc:ReceiveMessage">
-              <osc:Address>/preload</osc:Address>
-              <osc:TypeTag />
-              <osc:Connection>Request</osc:Connection>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
             </Expression>
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/resource</osc:Address>
               <osc:TypeTag>s</osc:TypeTag>
-              <osc:Connection>Request</osc:Connection>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
+              <osc:Address>/preload</osc:Address>
+              <osc:TypeTag />
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:TriggeredBuffer">
@@ -297,9 +321,12 @@ Item2.Index as TrialID)</scr:Expression>
                     <Combinator xsi:type="p1:VideoPreloader" />
                   </Expression>
                   <Expression xsi:type="ResourceSubject" />
-                  <Expression xsi:type="osc:ReceiveMessage">
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Request</Name>
+                  </Expression>
+                  <Expression xsi:type="osc:Parse">
                     <osc:Address>/clear</osc:Address>
-                    <osc:Connection>Request</osc:Connection>
+                    <osc:TypeTag />
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Take">
@@ -317,14 +344,17 @@ Item2.Index as TrialID)</scr:Expression>
                   <Edge From="3" To="4" Label="Source1" />
                   <Edge From="4" To="5" Label="Source1" />
                   <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="6" To="7" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
           </Nodes>
           <Edges>
-            <Edge From="0" To="2" Label="Source2" />
-            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="4" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source2" />
+            <Edge From="4" To="5" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -369,10 +399,12 @@ Item2.Index as TrialID)</scr:Expression>
               <Name>Logic</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\StartWith.bonsai" />
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/gratings</osc:Address>
               <osc:TypeTag>[ffff][ffffff][ff]</osc:TypeTag>
-              <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Expression>new(
@@ -390,10 +422,12 @@ Item3.Item1 as Onset,
 Item3.Item2 as Duration)</scr:Expression>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\GratingStimulus.bonsai" />
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/video</osc:Address>
               <osc:TypeTag>[fffff][ffs][ff]</osc:TypeTag>
-              <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Expression>new(
@@ -420,10 +454,11 @@ Item3.Item2 as Duration)</scr:Expression>
             <Expression xsi:type="BehaviorSubject">
               <Name>Stimuli</Name>
             </Expression>
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/success</osc:Address>
-              <osc:TypeTag />
-              <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\StartWith.bonsai" />
             <Expression xsi:type="MulticastSubject">
@@ -452,10 +487,11 @@ Item3.Item2 as Duration)</scr:Expression>
             <Expression xsi:type="BehaviorSubject">
               <Name>Success</Name>
             </Expression>
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/failure</osc:Address>
-              <osc:TypeTag />
-              <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\StartWith.bonsai" />
             <Expression xsi:type="MulticastSubject">
@@ -484,10 +520,12 @@ Item3.Item2 as Duration)</scr:Expression>
             <Expression xsi:type="BehaviorSubject">
               <Name>Failure</Name>
             </Expression>
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/replay</osc:Address>
               <osc:TypeTag>si</osc:TypeTag>
-              <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>StartTrial</Name>
@@ -516,29 +554,34 @@ Item3.Item2 as Duration)</scr:Expression>
             <Edge From="5" To="6" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
-            <Edge From="9" To="17" Label="Source2" />
+            <Edge From="9" To="19" Label="Source2" />
             <Edge From="10" To="11" Label="Source1" />
             <Edge From="11" To="12" Label="Source1" />
-            <Edge From="12" To="16" Label="Source1" />
-            <Edge From="13" To="14" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="13" To="18" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
-            <Edge From="15" To="16" Label="Source2" />
+            <Edge From="15" To="16" Label="Source1" />
             <Edge From="16" To="17" Label="Source1" />
-            <Edge From="17" To="18" Label="Source1" />
+            <Edge From="17" To="18" Label="Source2" />
+            <Edge From="18" To="19" Label="Source1" />
             <Edge From="19" To="20" Label="Source1" />
-            <Edge From="20" To="21" Label="Source1" />
             <Edge From="21" To="22" Label="Source1" />
             <Edge From="22" To="23" Label="Source1" />
+            <Edge From="23" To="24" Label="Source1" />
             <Edge From="24" To="25" Label="Source1" />
             <Edge From="25" To="26" Label="Source1" />
-            <Edge From="26" To="27" Label="Source1" />
             <Edge From="27" To="28" Label="Source1" />
-            <Edge From="29" To="31" Label="Source1" />
-            <Edge From="30" To="31" Label="Source2" />
+            <Edge From="28" To="29" Label="Source1" />
+            <Edge From="29" To="30" Label="Source1" />
+            <Edge From="30" To="31" Label="Source1" />
             <Edge From="31" To="32" Label="Source1" />
-            <Edge From="32" To="34" Label="Source1" />
-            <Edge From="33" To="34" Label="Source2" />
-            <Edge From="34" To="35" Label="Source1" />
+            <Edge From="33" To="34" Label="Source1" />
+            <Edge From="34" To="36" Label="Source1" />
+            <Edge From="35" To="36" Label="Source2" />
+            <Edge From="36" To="37" Label="Source1" />
+            <Edge From="37" To="39" Label="Source1" />
+            <Edge From="38" To="39" Label="Source2" />
+            <Edge From="39" To="40" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -546,10 +589,12 @@ Item3.Item2 as Duration)</scr:Expression>
         <Name>PassiveTask</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/start</osc:Address>
               <osc:TypeTag />
-              <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="MulticastSubject">
               <Name>Logic</Name>
@@ -569,9 +614,8 @@ Item3.Item2 as Duration)</scr:Expression>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai" />
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\EndTrial.bonsai" />
-            <Expression xsi:type="osc:SendMessage">
-              <osc:Connection>Reply</osc:Connection>
-              <osc:Address />
+            <Expression xsi:type="MulticastSubject">
+              <Name>Reply</Name>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -586,6 +630,7 @@ Item3.Item2 as Duration)</scr:Expression>
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -593,15 +638,19 @@ Item3.Item2 as Duration)</scr:Expression>
         <Name>GoNoGoTask</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/go</osc:Address>
               <osc:TypeTag />
-              <osc:Connection>Request</osc:Connection>
             </Expression>
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/nogo</osc:Address>
               <osc:TypeTag />
-              <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Merge" />
@@ -645,33 +694,34 @@ Item4 as LickThreshold)</scr:Expression>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai" />
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\EndTrial.bonsai" />
-            <Expression xsi:type="osc:SendMessage">
-              <osc:Connection>Reply</osc:Connection>
-              <osc:Address>/outcome</osc:Address>
+            <Expression xsi:type="MulticastSubject">
+              <Name>Reply</Name>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
-            <Edge From="0" To="2" Label="Source1" />
-            <Edge From="1" To="2" Label="Source2" />
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="4" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
-            <Edge From="3" To="10" Label="Source1" />
+            <Edge From="3" To="4" Label="Source2" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
+            <Edge From="5" To="12" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
-            <Edge From="9" To="12" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="12" Label="Source2" />
+            <Edge From="11" To="14" Label="Source1" />
             <Edge From="12" To="13" Label="Source1" />
-            <Edge From="13" To="14" Label="Source1" />
+            <Edge From="13" To="14" Label="Source2" />
             <Edge From="14" To="15" Label="Source1" />
             <Edge From="15" To="16" Label="Source1" />
             <Edge From="16" To="17" Label="Source1" />
             <Edge From="17" To="18" Label="Source1" />
             <Edge From="18" To="19" Label="Source1" />
+            <Edge From="19" To="20" Label="Source1" />
+            <Edge From="20" To="21" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -679,9 +729,8 @@ Item4 as LickThreshold)</scr:Expression>
         <Name>CorridorTask</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="osc:ReceiveMessage">
-              <osc:Address />
-              <osc:Connection>Request</osc:Connection>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
             </Expression>
             <Expression xsi:type="Condition">
               <Name>Interaction</Name>
@@ -705,10 +754,12 @@ Item4 as LickThreshold)</scr:Expression>
                 </Edges>
               </Workflow>
             </Expression>
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/tile</osc:Address>
               <osc:TypeTag>iffs</osc:TypeTag>
-              <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:TriggeredBuffer">
@@ -730,10 +781,12 @@ Item2.Item1 &lt; 2 as Horizontal,
 Item2.Item1 &gt;= 2 &amp;&amp; Item2.Item1 &lt; 4 as Vertical,
 Item2.Item1 == 4 as Front)</scr:Expression>
             </Expression>
-            <Expression xsi:type="osc:ReceiveMessage">
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Request</Name>
+            </Expression>
+            <Expression xsi:type="osc:Parse">
               <osc:Address>/corridor</osc:Address>
               <osc:TypeTag>ffffff</osc:TypeTag>
-              <osc:Connection>Request</osc:Connection>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Expression>new(
@@ -762,25 +815,24 @@ Item6 as ViewPosition)</scr:Expression>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai" />
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\EndTrial.bonsai" />
-            <Expression xsi:type="osc:SendMessage">
-              <osc:Connection>Reply</osc:Connection>
-              <osc:Address>/endcorridor</osc:Address>
+            <Expression xsi:type="MulticastSubject">
+              <Name>Reply</Name>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="3" Label="Source1" />
-            <Edge From="2" To="3" Label="Source2" />
-            <Edge From="2" To="4" Label="Source2" />
-            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="1" To="4" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source2" />
+            <Edge From="3" To="5" Label="Source2" />
             <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="8" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="9" Label="Source2" />
-            <Edge From="7" To="8" Label="Source2" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="10" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
-            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="9" To="10" Label="Source2" />
+            <Edge From="9" To="11" Label="Source2" />
             <Edge From="10" To="11" Label="Source1" />
             <Edge From="11" To="12" Label="Source1" />
             <Edge From="12" To="13" Label="Source1" />
@@ -788,20 +840,20 @@ Item6 as ViewPosition)</scr:Expression>
             <Edge From="14" To="15" Label="Source1" />
             <Edge From="15" To="16" Label="Source1" />
             <Edge From="16" To="17" Label="Source1" />
+            <Edge From="17" To="18" Label="Source1" />
+            <Edge From="18" To="19" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\HarpRig.bonsai">
-        <PortName>COM3</PortName>
-      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\SoftRig.bonsai" />
     </Nodes>
     <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
       <Edge From="3" To="4" Label="Source1" />
-      <Edge From="4" To="5" Label="Source1" />
       <Edge From="5" To="6" Label="Source1" />
       <Edge From="6" To="7" Label="Source1" />
-      <Edge From="8" To="9" Label="Source1" />
-      <Edge From="9" To="10" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
