@@ -1,27 +1,22 @@
 classdef Rig
   properties
-    client
+    osc
   end
   methods
-    function obj = Rig(u)
-      obj.client = u;
-      fopen(obj.client);
-    end
-
-    function close(obj)
-      fclose(obj.client);
+    function obj = Rig(client)
+      obj.osc = client;
     end
 
     function resource(obj, path)
-      oscsend(obj.client, "/resource", ",s", path);
+      obj.osc.send("/resource", ",s", path);
     end
         
     function preload(obj)
-      oscsend(obj.client, "/preload", ",i", 0);
+      obj.osc.send("/preload", ",i", 0);
     end
         
     function clear(obj)
-      oscsend(obj.client, "/clear", ",i", 0);
+      obj.osc.send("/clear", ",i", 0);
     end
 
     function gratings(obj, g)
@@ -39,10 +34,10 @@ classdef Rig
 
       onset = get(g,'onset', 0.0);
       duration = get(g, 'duration', 1.0);
-      oscsend(obj.client, "/gratings", ",[ffff][ffffff][ff]", ...
-              angle, size, x, y, ...
-              contrast, opacity, phase, freq, speed, dcycle, ...
-              onset, duration);
+      obj.osc.send("/gratings", ",[ffff][ffffff][ff]", ...
+                   angle, size, x, y, ...
+                   contrast, opacity, phase, freq, speed, dcycle, ...
+                   onset, duration);
     end
 
     function video(obj, v)
@@ -59,34 +54,34 @@ classdef Rig
       onset = get(v, 'onset', 0.0);
       duration = get(v, 'duration', 2.0);
         
-      oscsend(obj.client, "/video", ",[fffff][ffs][ff]", ...
-              angle, width, height, x, y, ...
-              loop, speed, name, ...
-              onset, duration);
+      obj.osc.send("/video", ",[fffff][ffs][ff]", ...
+                   angle, width, height, x, y, ...
+                   loop, speed, name, ...
+                   onset, duration);
     end
 
     function start(obj)
-      oscsend(obj.client, "/start", ",i", 0);
+      obj.osc.send("/start", ",i", 0);
     end
 
     function success(obj)
-      oscsend(obj.client, "/success", ",i", 0);
+      obj.osc.send("/success", ",i", 0);
     end
     
     function failure(obj)
-      oscsend(obj.client, "/failure", ",i", 0);
+      obj.osc.send("/failure", ",i", 0);
     end
     
     function go(obj, suppress, start, duration, threshold)
-      oscsend(obj.client, "/go", ",fffi", suppress, start, duration, threshold);
+      obj.osc.send("/go", ",fffi", suppress, start, duration, threshold);
     end
     
     function nogo(obj, suppress, start, duration, threshold)
-      oscsend(obj.client, "/nogo", ",fffi", suppress, start, duration, threshold);
+      obj.osc.send("/nogo", ",fffi", suppress, start, duration, threshold);
     end
 
     function interaction(obj, name, type, arguments)
-      oscsend(obj.client, sprintf('/interaction/%s', name), sprintf(",%s", type), arguments{:});
+      obj.osc.send(sprintf('/interaction/%s', name), sprintf(",%s", type), arguments{:});
     end
 
     function tile(obj, t)
@@ -94,8 +89,8 @@ classdef Rig
       position = get(t, 'position', 0.0);
       extent = get(t, 'extent', 1.0);
       texture = get(t, 'texture', "Transparent");
-      oscsend(obj.client, "/tile", ",iffs", ...
-              wall, position, extent, texture);
+      obj.osc.send("/tile", ",iffs", ...
+                   wall, position, extent, texture);
     end
     
     function corridor(obj, c)
@@ -105,8 +100,8 @@ classdef Rig
       x = get(c, 'x', 0.0);
       y = get(c, 'y', 0.0);
       position = get(c, 'position', 0.0);
-      oscsend(obj.client, "/corridor", ",ffffff", ...
-              length, width, height, x, y, position);
+      obj.osc.send("/corridor", ",ffffff", ...
+                   length, width, height, x, y, position);
     end
   end
 end

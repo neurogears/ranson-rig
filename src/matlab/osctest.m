@@ -1,5 +1,17 @@
-u = udp('127.0.0.1', 4002, 'LocalPort', 4007);
-rig = Rig(u)
+%u = udp('158.109.215.49', 4002, 'LocalPort', 4007);
+%u = tcpip('158.109.215.49', 4002,"NetworkRole","client");
+osc = OscTcp('158.109.215.49', 4002);
+
+% Mouse Test
+% osc = OscTcp('127.0.0.1', 4242);
+% while(true)
+%     res = osc.receive()
+% end
+
+
+
+%u= tcpclient('158.109.215.49', 4002);
+rig = Rig(osc);
 
 rig.resource("Videos/Blink");
 rig.preload();
@@ -21,16 +33,17 @@ g2.duration = 2.0;
 g2.speed = 1;
 rig.gratings(g2); % grating 2
 
-v.name = "Blink"
+v.name = "Blink";
 v.y = 20;
 v.speed = 2.0;
 v.onset = 1.0;
 v.duration = 2.0;
 rig.video(v); % video 1
 rig.start();
-oscrecv(u);
+osc.receive()
 
 rig.clear();
+
 
 gg.size = 120;
 gg.angle = 30;
@@ -38,7 +51,7 @@ gg.freq = 0.1;
 gg.duration = 2.0;
 rig.gratings(gg); % go gratings
 rig.go(1000, 500, 1000, 2); % go trial
-oscrecv(u); % Wait for end trial
+osc.receive() % Wait for end trial
 
 ng.size = 120;
 ng.angle = 0;
@@ -46,7 +59,7 @@ ng.freq = 0.1;
 ng.duration = 2.0;
 rig.gratings(ng); % nogo gratings
 rig.nogo(500, 500, 1000, 1); % no-go trial
-oscrecv(u); % Wait for end trial
+osc.receive() % Wait for end trial
 
 rig.interaction('rewardLick', "ii", {2, 1}); % lickthreshold, max activations
 rig.interaction('endLick', "if", {3, 3000.0}); % lickthreshold, delay
@@ -80,7 +93,7 @@ rig.interaction('endEntry', "f", {2000.0});
 t4.wall = Wall.Left;
 t4.position = 2;
 t4.extent = 1;
-t4.texture = "White";
+t4.texture = "White";   
 rig.tile(t4);
 
 rig.interaction('teleportEntry', "fi", {0.0, 2});
@@ -104,6 +117,6 @@ c.x=0.0;
 c.y=0.0;
 c.position=0.0;
 rig.corridor(c);
-oscrecv(u); % Wait for end trial
+osc.receive() % Wait for end trial
 
 rig.close();
