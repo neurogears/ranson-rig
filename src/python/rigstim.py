@@ -5,7 +5,9 @@ Created on Wed Sep 23 20:44:52 2020
 @author: gonca
 """
 
+import queue
 from enum import Enum
+from pyOSC3.OSC3 import OSCMessage
 
 class WallType(Enum):
     LEFT = 0
@@ -17,21 +19,35 @@ class WallType(Enum):
 class RigClient:
     def __init__(self, client):
         self.client = client
+        self.client.addMsgHandler("default", self.msg_handler)
+        self.msgs = queue.Queue()
+
+    def msg_handler(self, address, *args):
+        msg = OSCMessage(address, args)
+        self.msgs.put(msg)
+        print(msg)
+
+    def send(self, address="", *args):
+        message = OSCMessage(address, *args)
+        return self.client.sendOSC(message)
+
+    def receive(self):
+        return self.msgs.get()
         
     def experiment(self,expid):
-        self.client.send_message("/experiment", expid)
+        self.send("/experiment", expid)
         
     def replay(self, expid, trial):
-        self.client.send_message("/replay", [expid, trial])
+        self.send("/replay", [expid, trial])
         
     def resource(self, path):
-        self.client.send_message("/resource", path)
+        self.send("/resource", path)
         
     def preload(self):
-        self.client.send_message("/preload", 0)
+        self.send("/preload", 0)
         
     def clear(self):
-        self.client.send_message("/clear", 0)
+        self.send("/clear", 0)
         
     def gratings(self, **kwargs):
         angle = float(kwargs.get('angle',0.0))
@@ -49,10 +65,10 @@ class RigClient:
         onset = float(kwargs.get('onset',0.0))
         duration = float(kwargs.get('duration',1.0))
         
-        self.client.send_message("/gratings",
-                                 [[angle,size,x,y],
-                                  [contrast,opacity,phase,freq,speed,dcycle],
-                                  [onset,duration]])
+        self.send("/gratings",
+                  [[angle,size,x,y],
+                   [contrast,opacity,phase,freq,speed,dcycle],
+                   [onset,duration]])
     
     def video(self, name, **kwargs):
         angle = float(kwargs.get('angle',0.0))
@@ -67,46 +83,46 @@ class RigClient:
         onset = float(kwargs.get('onset',0.0))
         duration = float(kwargs.get('duration',2.0))
         
-        self.client.send_message("/video",
-                                 [[angle,width,height,x,y],
-                                  [loop,speed,name],
-                                  [onset,duration]])
+        self.send("/video",
+                  [[angle,width,height,x,y],
+                   [loop,speed,name],
+                   [onset,duration]])
     
     def start(self):
-        self.client.send_message("/start", 0)
+        self.send("/start", 0)
         
     def success(self):
-        self.client.send_message("/success", 0)
+        self.send("/success", 0)
         
     def failure(self):
-        self.client.send_message("/failure", 0)
+        self.send("/failure", 0)
     
     def go(self, suppress=2000, start=500, duration=1000, threshold=1):
-        self.client.send_message("/go",
-                                 [float(suppress),
-                                  float(start),
-                                  float(duration),
-                                  int(threshold)])
+        self.send("/go",
+                  [float(suppress),
+                   float(start),
+                   float(duration),
+                   int(threshold)])
         
     def nogo(self, suppress=2000, start=500, duration=1000, threshold=1):
-        self.client.send_message("/nogo",
-                                 [float(suppress),
-                                  float(start),
-                                  float(duration),
-                                  int(threshold)])
+        self.send("/nogo",
+                  [float(suppress),
+                   float(start),
+                   float(duration),
+                   int(threshold)])
         
     def interaction(self, name, arguments):
-        self.client.send_message('/interaction/{0}'.format(name), arguments)
+        self.send('/interaction/{0}'.format(name), arguments)
     
     def tile(self, wall, **kwargs):
         position = float(kwargs.get('position',0.0))
         extent = float(kwargs.get('extent',1.0))
         texture = str(kwargs.get('texture',"Transparent"))
-        self.client.send_message("/tile",
-                                 [int(wall.value),
-                                  position,
-                                  extent,
-                                  texture])
+        self.send("/tile",
+                  [int(wall.value),
+                   position,
+                   extent,
+                   texture])
     
     def corridor(self, length, **kwargs):
         width = float(kwargs.get('width',1.0))
@@ -114,9 +130,9 @@ class RigClient:
         x = float(kwargs.get('x',0.0))
         y = float(kwargs.get('y',0.0))
         position = float(kwargs.get('position',0.0))
-        self.client.send_message("/corridor",
-                                 [length,
-                                  width,
-                                  height,
-                                  x, y,
-                                  position])
+        self.send("/corridor",
+                  [length,
+                   width,
+                   height,
+                   x, y,
+                   position])
