@@ -1,5 +1,6 @@
 bin
 obj
+*.asv
 *.exe
 *.exe.settings
 .vscode
