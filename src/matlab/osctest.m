@@ -1,28 +1,21 @@
-%u = udp('158.109.215.49', 4002, 'LocalPort', 4007);
-%u = tcpip('158.109.215.49', 4002,"NetworkRole","client");
+metadata = sprintf('%s_S1', datetime(datenum(datetime('now')),'Format','yyyy-MM-dd_HH-mm-ss','convertFrom','datenum'));
 osc = OscTcp('158.109.215.49', 4002);
-
-% Mouse Test
-% osc = OscTcp('127.0.0.1', 4242);
-% while(true)
-%     res = osc.receive()
-% end
-
-
-
-%u= tcpclient('158.109.215.49', 4002);
+%osc = OscUdp('158.109.215.49',4002,4007);
 rig = Rig(osc);
 
 rig.resource("Videos/Blink");
 rig.preload();
 
+rig.experiment(metadata);
 g1.size = 30;
 g1.x = -15;
 g1.y = -5;
 g1.angle = 0;
 g1.freq = 0.1;
 g1.duration = 2.0;
+g1.speed = 0;
 rig.gratings(g1); % grating 1
+
 
 g2.size = 15;
 g2.x = 15;
@@ -40,27 +33,44 @@ v.onset = 1.0;
 v.duration = 2.0;
 rig.video(v); % video 1
 rig.start();
-osc.receive()
+
+datagram = [];
+while(isempty(datagram))
+    datagram = osc.receive();
+end
+disp(datagram);
 
 rig.clear();
 
-
+rig.experiment(metadata)
 gg.size = 120;
 gg.angle = 30;
 gg.freq = 0.1;
 gg.duration = 2.0;
 rig.gratings(gg); % go gratings
 rig.go(1000, 500, 1000, 2); % go trial
-osc.receive() % Wait for end trial
+% Wait for end trial
+datagram = [];
+while(isempty(datagram))
+    datagram = osc.receive();
+end
+disp(datagram);
 
+rig.experiment(metadata)
 ng.size = 120;
 ng.angle = 0;
 ng.freq = 0.1;
 ng.duration = 2.0;
 rig.gratings(ng); % nogo gratings
 rig.nogo(500, 500, 1000, 1); % no-go trial
-osc.receive() % Wait for end trial
+% Wait for end trial
+datagram = [];
+while(isempty(datagram))
+    datagram = osc.receive();
+end
+disp(datagram);
 
+rig.experiment(metadata)
 rig.interaction('rewardLick', "ii", {2, 1}); % lickthreshold, max activations
 rig.interaction('endLick', "if", {3, 3000.0}); % lickthreshold, delay
 t0.wall = Wall.Left;
@@ -117,6 +127,20 @@ c.x=0.0;
 c.y=0.0;
 c.position=0.0;
 rig.corridor(c);
-osc.receive() % Wait for end trial
+% Wait for end trial
+datagram = [];
+while(isempty(datagram))
+    datagram = osc.receive();
+end
+disp(datagram);
 
-rig.close();
+rig.experiment(metadata)
+rig.replay(metadata, 3)
+% Wait for end trial
+datagram = [];
+while(isempty(datagram))
+    datagram = osc.receive();
+end
+disp(datagram);
+
+osc.delete();

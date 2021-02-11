@@ -1,15 +1,17 @@
 classdef OscTcp < Osc
   properties
     client
+    size = 0;
   end
   methods
+    
     function obj = OscTcp(varargin)
       if nargin < 2
         error(["Invalid call. Use oscsend(u,path,types,arg1,arg2,...)"]);
       end
-      obj.client = tcpclient(varargin{1}, varargin{2});
+      obj.client = tcpclient(varargin{1}, varargin{2}, 'timeout', 1000);
     end
-
+    
     function send(obj, varargin)
       if nargin < 2
         error(["Invalid call. Use oscsend(u,path,types,arg1,arg2,...)"]);
@@ -18,19 +20,18 @@ classdef OscTcp < Osc
       len = fliplr(typecast(uint32(length(message)),'uint8'));
       write(obj.client, [len message]);
     end
-    
+     
     function message = receive(obj)
-      set(obj.client, 'timeout', 1000);
-      datagram = [];
-      while (isempty(datagram))
+      message = [];
+      if (obj.size == 0 && obj.client.BytesAvailable > 3)
         datagram = read(obj.client,4);
-        size = typecast(uint8(fliplr(datagram)),'uint32');
+        obj.size = typecast(uint8(fliplr(datagram)),'uint32');
       end
-      datagram = [];
-      while (isempty(datagram))
-        datagram = read(obj.client,size);
+      if (obj.size > 0 && obj.client.BytesAvailable >= obj.size)
+        datagram = read(obj.client,obj.size);
+        obj.size = 0;
+        message = Osc.parse(datagram);
       end
-      message = Osc.parse(datagram);
     end
     
     function delete(obj)

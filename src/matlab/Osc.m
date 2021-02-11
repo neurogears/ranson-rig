@@ -1,4 +1,4 @@
-classdef Osc
+classdef Osc < handle
   methods (Abstract)
     send(obj, varargin)
     message = receive(obj)
