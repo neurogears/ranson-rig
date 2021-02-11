@@ -7,6 +7,10 @@ classdef Rig
       obj.osc = client;
     end
 
+    function experiment(obj, expid)
+      obj.osc.send("/experiment",",s", expid);
+    end
+
     function resource(obj, path)
       obj.osc.send("/resource", ",s", path);
     end
@@ -17,6 +21,10 @@ classdef Rig
         
     function clear(obj)
       obj.osc.send("/clear", ",i", 0);
+    end
+
+    function replay(obj, expid, trial)
+      obj.osc.send("/replay", ",si", expid, trial)
     end
 
     function gratings(obj, g)
