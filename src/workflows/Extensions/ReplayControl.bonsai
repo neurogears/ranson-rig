@@ -1,21 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
+<WorkflowBuilder Version="2.6.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:p1="clr-namespace:;assembly=Extensions"
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns:p2="clr-namespace:Bonsai.Harp.CF;assembly=Bonsai.Harp.CF"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="WorkflowInput">
         <Name>Source1</Name>
-      </Expression>
-      <Expression xsi:type="ExternalizedMapping">
-        <Property Name="EncoderScale" />
       </Expression>
       <Expression xsi:type="SelectMany">
         <Name>LiveOrReplay</Name>
@@ -139,7 +135,7 @@ Item2 as TrialID)</scr:Expression>
                           <Combinator xsi:type="p1:EventPlayer" />
                         </Expression>
                         <Expression xsi:type="MulticastSubject">
-                          <Name>Encoder</Name>
+                          <Name>TrialEncoder</Name>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="rx:SubscribeWhen" />
@@ -190,7 +186,7 @@ Item2 as TrialID)</scr:Expression>
                           <Combinator xsi:type="p1:EventPlayer" />
                         </Expression>
                         <Expression xsi:type="MulticastSubject">
-                          <Name>Response</Name>
+                          <Name>TrialResponse</Name>
                         </Expression>
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="rx:SubscribeWhen" />
@@ -238,53 +234,34 @@ Item2 as TrialID)</scr:Expression>
               <scr:Name>Null</scr:Name>
               <scr:Expression>it == null</scr:Expression>
             </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="EncoderScale" />
-            </Expression>
             <Expression xsi:type="SelectMany">
               <Name>LiveTrial</Name>
               <Workflow>
                 <Nodes>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>Behavior</Name>
-                  </Expression>
-                  <Expression xsi:type="p2:BehaviorEvent">
-                    <p2:Type>QuadratureCounter</p2:Type>
-                    <p2:Mask>Port2</p2:Mask>
-                  </Expression>
-                  <Expression xsi:type="ExternalizedMapping">
-                    <Property Name="Value" DisplayName="EncoderScale" />
-                  </Expression>
-                  <Expression xsi:type="Multiply">
-                    <Operand xsi:type="DoubleProperty">
-                      <Value>1</Value>
-                    </Operand>
+                    <Name>RigEncoder</Name>
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="gl:LatestOnUpdateFrame" />
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
-                    <Name>Encoder</Name>
+                    <Name>TrialEncoder</Name>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
-                    <Name>Behavior</Name>
+                    <Name>RigResponse</Name>
                   </Expression>
-                  <Expression xsi:type="p2:BehaviorEvent">
-                    <p2:Type>Input</p2:Type>
-                    <p2:Mask>Port0</p2:Mask>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="gl:SampleOnUpdateFrame" />
                   </Expression>
                   <Expression xsi:type="MulticastSubject">
-                    <Name>Response</Name>
+                    <Name>TrialResponse</Name>
                   </Expression>
                 </Nodes>
                 <Edges>
                   <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="3" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source2" />
+                  <Edge From="1" To="2" Label="Source1" />
                   <Edge From="3" To="4" Label="Source1" />
                   <Edge From="4" To="5" Label="Source1" />
-                  <Edge From="6" To="7" Label="Source1" />
-                  <Edge From="7" To="8" Label="Source1" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -302,19 +279,17 @@ Item2 as TrialID)</scr:Expression>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="0" To="3" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
-            <Edge From="3" To="5" Label="Source1" />
-            <Edge From="4" To="5" Label="Source2" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="8" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
       <Expression xsi:type="WorkflowOutput" />
     </Nodes>
     <Edges>
-      <Edge From="0" To="2" Label="Source1" />
-      <Edge From="1" To="2" Label="Source2" />
-      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
+<WorkflowBuilder Version="2.6.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:harp="clr-namespace:Bonsai.Harp;assembly=Bonsai.Harp"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:p1="clr-namespace:Bonsai.Harp.CF;assembly=Bonsai.Harp.CF"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
-      <Expression xsi:type="SubscribeSubject">
+      <Expression xsi:type="BehaviorSubject" TypeArguments="harp:HarpMessage">
         <Name>Command</Name>
       </Expression>
       <Expression xsi:type="ExternalizedMapping">
@@ -14,53 +14,45 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="harp:Device">
-          <harp:PortName>COM3</harp:PortName>
           <harp:DeviceState>Active</harp:DeviceState>
           <harp:DumpRegisters>true</harp:DumpRegisters>
           <harp:LedState>On</harp:LedState>
           <harp:VisualIndicators>On</harp:VisualIndicators>
           <harp:Heartbeat>Disable</harp:Heartbeat>
           <harp:IgnoreErrors>false</harp:IgnoreErrors>
+          <harp:PortName>COM3</harp:PortName>
         </Combinator>
       </Expression>
       <Expression xsi:type="PublishSubject">
         <Name>Behavior</Name>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="harp:CreateMessage">
-          <harp:MessageType>Write</harp:MessageType>
-          <harp:Address>32</harp:Address>
-          <harp:PayloadType>U8</harp:PayloadType>
-          <harp:Payload>0</harp:Payload>
-        </Combinator>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>Behavior</Name>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:IgnoreElements" />
+      <Expression xsi:type="p1:BehaviorEvent">
+        <p1:Type>QuadratureCounter</p1:Type>
+        <p1:Mask>Port2</p1:Mask>
       </Expression>
-      <Expression xsi:type="BehaviorSubject">
-        <Name>Command</Name>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Value" DisplayName="EncoderScale" Description="The scale factor to convert encoder ticks to encoder distance." />
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="BooleanProperty">
-          <Value>false</Value>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:IgnoreElements" />
+      <Expression xsi:type="Multiply">
+        <Operand xsi:type="FloatProperty">
+          <Value>1</Value>
+        </Operand>
       </Expression>
       <Expression xsi:type="PublishSubject">
-        <Name>Response</Name>
+        <Name>RigEncoder</Name>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="DoubleProperty">
-          <Value>0</Value>
-        </Combinator>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>Behavior</Name>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:IgnoreElements" />
+      <Expression xsi:type="p1:BehaviorEvent">
+        <p1:Type>Input</p1:Type>
+        <p1:Mask>Port0</p1:Mask>
       </Expression>
       <Expression xsi:type="PublishSubject">
-        <Name>Encoder</Name>
+        <Name>RigResponse</Name>
       </Expression>
     </Nodes>
     <Edges>
@@ -68,11 +60,11 @@
       <Edge From="1" To="2" Label="Source2" />
       <Edge From="2" To="3" Label="Source1" />
       <Edge From="4" To="5" Label="Source1" />
-      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="5" To="7" Label="Source1" />
+      <Edge From="6" To="7" Label="Source2" />
       <Edge From="7" To="8" Label="Source1" />
-      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
-      <Edge From="11" To="12" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

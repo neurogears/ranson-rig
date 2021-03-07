@@ -7,6 +7,7 @@
                  xmlns:osc="clr-namespace:Bonsai.Osc;assembly=Bonsai.Osc"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -277,6 +278,12 @@ Item2.Index as TrialID)</scr:Expression>
               <Name>Request</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogMetadata.bonsai" />
+            <Expression xsi:type="PublishSubject" TypeArguments="sys:Single">
+              <Name>TrialEncoder</Name>
+            </Expression>
+            <Expression xsi:type="PublishSubject" TypeArguments="sys:Boolean">
+              <Name>TrialResponse</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -536,12 +543,7 @@ Item3.Item2 as Duration)</scr:Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:FirstOrDefault" />
             </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="EncoderScale" />
-            </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\ReplayControl.bonsai">
-              <EncoderScale>1</EncoderScale>
-            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\ReplayControl.bonsai" />
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Repeat" />
             </Expression>
@@ -579,9 +581,8 @@ Item3.Item2 as Duration)</scr:Expression>
             <Edge From="34" To="36" Label="Source1" />
             <Edge From="35" To="36" Label="Source2" />
             <Edge From="36" To="37" Label="Source1" />
-            <Edge From="37" To="39" Label="Source1" />
-            <Edge From="38" To="39" Label="Source2" />
-            <Edge From="39" To="40" Label="Source1" />
+            <Edge From="37" To="38" Label="Source1" />
+            <Edge From="38" To="39" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -845,7 +846,9 @@ Item6 as ViewPosition)</scr:Expression>
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\SoftRig.bonsai" />
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\SoftRig.bonsai">
+        <EncoderScale>1</EncoderScale>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />

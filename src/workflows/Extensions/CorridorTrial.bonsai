@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
+<WorkflowBuilder Version="2.6.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
@@ -367,7 +367,7 @@ TimeSpan.FromMilliseconds(Item2) as Delay)</scr:Expression>
                                 <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>Response</Name>
+                                <Name>TrialResponse</Name>
                               </Expression>
                               <Expression xsi:type="Condition">
                                 <Name>ActiveLick</Name>
@@ -384,7 +384,7 @@ TimeSpan.FromMilliseconds(Item2) as Delay)</scr:Expression>
                                 </Workflow>
                               </Expression>
                               <Expression xsi:type="Condition">
-                                <Name>OnLick</Name>
+                                <Name>OnsetLick</Name>
                                 <Workflow>
                                   <Nodes>
                                     <Expression xsi:type="WorkflowInput">
@@ -631,7 +631,7 @@ Item3 as MaxActivations)</scr:Expression>
                                 <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>Response</Name>
+                                <Name>TrialResponse</Name>
                               </Expression>
                               <Expression xsi:type="Condition">
                                 <Name>ActiveLick</Name>
@@ -648,7 +648,7 @@ Item3 as MaxActivations)</scr:Expression>
                                 </Workflow>
                               </Expression>
                               <Expression xsi:type="Condition">
-                                <Name>OnLick</Name>
+                                <Name>OnsetLick</Name>
                                 <Workflow>
                                   <Nodes>
                                     <Expression xsi:type="WorkflowInput">
@@ -1003,7 +1003,7 @@ Item2 as MaxActivations)</scr:Expression>
                                 <Name>Arguments</Name>
                               </Expression>
                               <Expression xsi:type="SubscribeSubject">
-                                <Name>Response</Name>
+                                <Name>TrialResponse</Name>
                               </Expression>
                               <Expression xsi:type="Condition">
                                 <Name>ActiveLick</Name>
@@ -1020,7 +1020,7 @@ Item2 as MaxActivations)</scr:Expression>
                                 </Workflow>
                               </Expression>
                               <Expression xsi:type="Condition">
-                                <Name>OnLick</Name>
+                                <Name>OnsetLick</Name>
                                 <Workflow>
                                   <Nodes>
                                     <Expression xsi:type="WorkflowInput">
@@ -1222,7 +1222,7 @@ Item2 as MaxActivations)</scr:Expression>
               <Name>TrialEnd</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>Encoder</Name>
+              <Name>TrialEncoder</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="dsp:Difference">
