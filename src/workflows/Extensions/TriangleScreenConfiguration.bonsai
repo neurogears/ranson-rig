@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorkflowBuilder Version="2.6.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Description>In this configuration, the visual environment is configured using two screens arranged at 45 degrees in a triangle.</Description>
+  <Workflow>
+    <Nodes>
+      <Expression xsi:type="WorkflowInput">
+        <Name>Source1</Name>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="IntrinsicsFileName" DisplayName="LeftIntrinsics" Category="Left Screen" />
+        <Property Name="ExtrinsicsFileName" DisplayName="LeftExtrinsics" Category="Left Screen" />
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\ScreenCalibration.bonsai">
+        <IntrinsicsFileName>Calibration\display_intrinsics.yml</IntrinsicsFileName>
+        <ExtrinsicsFileName>Calibration\left_extrinsics.yml</ExtrinsicsFileName>
+      </Expression>
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="Width" Selector="DisplayWidth" />
+          <Property Name="Height" Selector="DisplayHeight" />
+          <Property Name="Rotation" Selector="Rotation" />
+          <Property Name="Translation" Selector="Translation" />
+        </PropertyMappings>
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
+        <Width>52.0257339</Width>
+        <Height>29.2644749</Height>
+        <Rotation>
+          <X>0</X>
+          <Y>0.785398</Y>
+          <Z>0</Z>
+        </Rotation>
+        <Translation>
+          <X>-7.07</X>
+          <Y>0</Y>
+          <Z>-10</Z>
+        </Translation>
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.DrawViewport.bonsai">
+        <X>0</X>
+        <Y>0</Y>
+        <Width>0.5</Width>
+        <Height>1</Height>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="IntrinsicsFileName" DisplayName="RightIntrinsics" Category="Right Screen" />
+        <Property Name="ExtrinsicsFileName" DisplayName="RightExtrinsics" Category="Right Screen" />
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\ScreenCalibration.bonsai">
+        <IntrinsicsFileName>Calibration\display_intrinsics.yml</IntrinsicsFileName>
+        <ExtrinsicsFileName>Calibration\right_extrinsics.yml</ExtrinsicsFileName>
+      </Expression>
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="Width" Selector="DisplayWidth" />
+          <Property Name="Height" Selector="DisplayHeight" />
+          <Property Name="Rotation" Selector="Rotation" />
+          <Property Name="Translation" Selector="Translation" />
+        </PropertyMappings>
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
+        <Width>52.0257339</Width>
+        <Height>29.2644749</Height>
+        <Rotation>
+          <X>0</X>
+          <Y>-0.785398</Y>
+          <Z>0</Z>
+        </Rotation>
+        <Translation>
+          <X>7.07</X>
+          <Y>0</Y>
+          <Z>-10</Z>
+        </Translation>
+      </Expression>
+      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.DrawViewport.bonsai">
+        <X>0.5</X>
+        <Y>0</Y>
+        <Width>0.5</Width>
+        <Height>1</Height>
+      </Expression>
+    </Nodes>
+    <Edges>
+      <Edge From="0" To="4" Label="Source1" />
+      <Edge From="0" To="9" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source2" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="8" To="9" Label="Source2" />
+      <Edge From="9" To="10" Label="Source1" />
+    </Edges>
+  </Workflow>
+</WorkflowBuilder>

@@ -79,25 +79,11 @@
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.ViewWindow.bonsai">
-        <Width>20</Width>
-        <Height>15</Height>
-        <Rotation>
-          <X>0</X>
-          <Y>0</Y>
-          <Z>0</Z>
-        </Rotation>
-        <Translation>
-          <X>0</X>
-          <Y>0</Y>
-          <Z>-10</Z>
-        </Translation>
-      </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.DrawViewport.bonsai">
-        <X>0</X>
-        <Y>0</Y>
-        <Width>1</Width>
-        <Height>1</Height>
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\TriangleScreenConfiguration.bonsai">
+        <LeftIntrinsics>Calibration\display_intrinsics.yml</LeftIntrinsics>
+        <LeftExtrinsics>Calibration\left_extrinsics.yml</LeftExtrinsics>
+        <RightIntrinsics>Calibration\display_intrinsics.yml</RightIntrinsics>
+        <RightExtrinsics>Calibration\right_extrinsics.yml</RightExtrinsics>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
         <Name>Networking</Name>
@@ -856,7 +842,6 @@ Item6 as ViewPosition)</scr:Expression>
       <Edge From="2" To="3" Label="Source1" />
       <Edge From="3" To="4" Label="Source1" />
       <Edge From="5" To="6" Label="Source1" />
-      <Edge From="6" To="7" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
