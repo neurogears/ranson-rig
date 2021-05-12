@@ -49,7 +49,7 @@ classdef Osc < handle
       if nargin < 2
         error(["Invalid call. Use oscFormatMessage(path,types,arg1,arg2,...)"]);
       end
-      path = oscstr(varargin{1});
+      path = Osc.oscstr(varargin{1});
       types = char(varargin{2});
       data = [];
       offset = 3;
@@ -60,7 +60,7 @@ classdef Osc < handle
         elseif code == 'f'
           value = fliplr(typecast(single(varargin{offset}),'uint8'));
         elseif code == 's'
-          value = oscstr(varargin{offset});
+          value = Osc.oscstr(varargin{offset});
         elseif code == '['
           continue
         elseif code == ']'
@@ -71,7 +71,7 @@ classdef Osc < handle
         offset = offset + 1;
         data = [data value];
       end
-      types = oscstr(types);
+      types = Osc.oscstr(types);
       oscMessage = [path types data];
     end
   end
