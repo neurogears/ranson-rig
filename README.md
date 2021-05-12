@@ -65,6 +65,14 @@ Signals that all currently preloaded sets should be cleared and unloaded from me
 
 Stimulus control includes messages used to setup various stimulus in the passive and go/nogo tasks. They can include both visual and non-visual stimulation, including sine gratings, videos, and later audio and other stimulation types.
 
+#### Replay
+
+This message triggers replay of the specified session and trial number. The dataset is searched for the correct trial, and all metadata used to construct the trial information is used to reconstruct trial conditions. All input data such as wheel movements or licks are replayed following their originally recorded timing.
+
+* **`/replay`**
+  * **ExpID** the string used to identify the session metadata, in the following format `yyyy-MM-dd_HH-mm-ss_ID`.
+  * **Trial** the trial number within the specified session which is to be replayed
+
 #### Gratings
 
 Defines a fully parameterized grating stimulus.
