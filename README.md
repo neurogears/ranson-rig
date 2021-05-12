@@ -70,7 +70,7 @@ Stimulus control includes messages used to setup various stimulus in the passive
 This message triggers replay of the specified session and trial number. The dataset is searched for the correct trial, and all metadata used to construct the trial information is used to reconstruct trial conditions. All input data such as wheel movements or licks are replayed following their originally recorded timing.
 
 * **`/replay`**
-  * **ExpID** the string used to identify the session metadata, in the following format `yyyy-MM-dd_HH-mm-ss_ID`.
+  * **ExpID** the string used to identify the session metadata, in the following format `yyyy-MM-dd_HH-mm-ss_ID`
   * **Trial** the trial number within the specified session which is to be replayed
 
 #### Gratings
