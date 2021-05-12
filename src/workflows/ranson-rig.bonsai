@@ -189,6 +189,40 @@ Item2.Index as TrialID)</scr:Expression>
               </Workflow>
             </Expression>
             <Expression xsi:type="GroupWorkflow">
+              <Name>Dataset</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="ExternalizedMapping">
+                    <Property Name="Value" DisplayName="DefaultPath" />
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="StringProperty">
+                      <Value>Data</Value>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="BehaviorSubject">
+                    <Name>Dataset</Name>
+                  </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Request</Name>
+                  </Expression>
+                  <Expression xsi:type="osc:Parse">
+                    <osc:Address>/dataset</osc:Address>
+                    <osc:TypeTag>s</osc:TypeTag>
+                  </Expression>
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>Dataset</Name>
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="4" To="5" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="GroupWorkflow">
               <Name>TrialMetadata</Name>
               <Workflow>
                 <Nodes>
@@ -276,7 +310,7 @@ Item2.Index as TrialID)</scr:Expression>
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
-            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>

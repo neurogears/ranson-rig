@@ -5,7 +5,7 @@ An interactive visual stimulation rig controllable by OSC using Bonsai and BonVi
 
 1. Clone or [download](https://github.com/neurogears/ranson-rig/archive/master.zip) this repository
 2. Run the `setup.cmd` script in the `bonsai` folder
-3. Run `Bonsai64.exe`
+3. Run `Bonsai.exe`
 
 ## How to use
 
@@ -19,6 +19,24 @@ An interactive visual stimulation rig controllable by OSC using Bonsai and BonVi
 The communication interface between Python/MATLAB and the stimulation rig is built on top of the [OSC](http://opensoundcontrol.org/spec-1_0) real-time protocol over UDP.
 
 A sequence of messages is used to setup the stimuli for each trial, followed by a start message for each trial type. The existing messages and their parameters are detailed below.
+
+### Data Storage
+
+Data storage messages control where logged data is recorded, and specify session and trial identifiers to enable replay of trials in open loop mode.
+
+#### Dataset
+
+This message specifies the root of the dataset, i.e. the volume and file path prefix where all the data will be stored. Replay of trials is only allowed within the same dataset.
+
+* **`/dataset`**
+  * **Path** the root path of the dataset where all sessions and trials will be stored
+
+#### Experiment
+
+This message specifies the start of a new session, and provides metadata about animal ID and session start time.
+
+* **`/experiment`**
+  * **ExpID** the string containing metadata information about the session, in the following format `yyyy-MM-dd_HH-mm-ss_ID`
 
 ### Preloading
 

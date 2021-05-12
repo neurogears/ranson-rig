@@ -33,6 +33,9 @@ class RigClient:
 
     def receive(self):
         return self.msgs.get()
+
+    def dataset(self, path):
+        self.send("/dataset", path)
         
     def experiment(self,expid):
         self.send("/experiment", expid)

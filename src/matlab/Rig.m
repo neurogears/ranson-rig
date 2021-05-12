@@ -7,6 +7,10 @@ classdef Rig
       obj.osc = client;
     end
 
+    function dataset(obj, path)
+      obj.osc.send("/dataset",",s", path);
+    end
+
     function experiment(obj, expid)
       obj.osc.send("/experiment",",s", expid);
     end
