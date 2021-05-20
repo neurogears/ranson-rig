@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
+<WorkflowBuilder Version="2.6.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
@@ -17,8 +17,8 @@
               <Combinator xsi:type="gl:RenderFrame" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.OrthographicView.bonsai">
-              <Left>-90</Left>
-              <Right>90</Right>
+              <Left>-135</Left>
+              <Right>135</Right>
               <Bottom>-45</Bottom>
               <Top>45</Top>
             </Expression>

@@ -18,8 +18,8 @@
               <Combinator xsi:type="gl:RenderFrame" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.OrthographicView.bonsai">
-              <Left>-90</Left>
-              <Right>90</Right>
+              <Left>-135</Left>
+              <Right>135</Right>
               <Bottom>-45</Bottom>
               <Top>45</Top>
             </Expression>
