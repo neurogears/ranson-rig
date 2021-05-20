@@ -58,31 +58,15 @@
         <Combinator xsi:type="res:LoadResources" />
       </Expression>
       <Expression xsi:type="WorkflowOutput" />
-      <Expression xsi:type="GroupWorkflow">
+      <Expression xsi:type="BehaviorSubject" TypeArguments="gl:Texture">
         <Name>Environment</Name>
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="p1:TextureSource" />
-            </Expression>
-            <Expression xsi:type="BehaviorSubject">
-              <Name>Environment</Name>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>Environment</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="2" To="3" Label="Source1" />
-          </Edges>
-        </Workflow>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\TriangleScreenConfiguration.bonsai">
-        <LeftIntrinsics>Calibration\display_intrinsics.yml</LeftIntrinsics>
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\UScreenConfiguration.bonsai">
+        <LeftIntrinsics>Calibration\left_intrinsics.yml</LeftIntrinsics>
         <LeftExtrinsics>Calibration\left_extrinsics.yml</LeftExtrinsics>
-        <RightIntrinsics>Calibration\display_intrinsics.yml</RightIntrinsics>
+        <FrontIntrinsics>Calibration\front_intrinsics.yml</FrontIntrinsics>
+        <FrontExtrinsics>Calibration\front_extrinsics.yml</FrontExtrinsics>
+        <RightIntrinsics>Calibration\right_intrinsics.yml</RightIntrinsics>
         <RightExtrinsics>Calibration\right_extrinsics.yml</RightExtrinsics>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
@@ -866,7 +850,8 @@ Item6 as ViewPosition)</scr:Expression>
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="IncludeWorkflow" Path="Extensions\SoftRig.bonsai">
+      <Expression xsi:type="IncludeWorkflow" Path="Extensions\HarpRig.bonsai">
+        <PortName>COM3</PortName>
         <EncoderScale>1</EncoderScale>
       </Expression>
     </Nodes>
