@@ -28,6 +28,7 @@ client = OSCStreamingClient()  # Create client
 try:
     client.connect((ip, request_port))
     rig = rigstim.RigClient(client)
+    rig.dataset('Data')
 
     rig.resource("Videos/Blink")
     rig.preload()
@@ -77,5 +78,7 @@ try:
     rig.experiment(metadata)
     rig.replay(metadata, 3)
     rig.receive()  # Wait for end trial
+
+    rig.experiment(None)
 finally:
     client.close()

@@ -38,7 +38,7 @@ class RigClient:
         self.send("/dataset", path)
         
     def experiment(self,expid):
-        self.send("/experiment", expid)
+        self.send("/experiment", "" if expid is None else expid)
         
     def replay(self, expid, trial):
         self.send("/replay", [expid, trial])
