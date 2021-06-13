@@ -2,7 +2,7 @@
 <WorkflowBuilder Version="2.6.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:p1="clr-namespace:;assembly=Extensions"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -36,16 +36,15 @@
         <Bottom>0</Bottom>
         <Top>1</Top>
       </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Seed" />
+        <Property Name="P" />
+      </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:ElementIndex" />
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Index</Selector>
-      </Expression>
-      <Expression xsi:type="Mod">
-        <Operand xsi:type="IntProperty">
-          <Value>2</Value>
-        </Operand>
+        <Combinator xsi:type="p1:SyncSequence">
+          <p1:Seed>23</p1:Seed>
+          <p1:P>0.05</p1:P>
+        </Combinator>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
         <Format xsi:nil="true" />
@@ -76,16 +75,15 @@
     <Edges>
       <Edge From="0" To="2" Label="Source1" />
       <Edge From="1" To="2" Label="Source2" />
+      <Edge From="2" To="7" Label="Source1" />
       <Edge From="3" To="4" Label="Source1" />
       <Edge From="4" To="5" Label="Source1" />
-      <Edge From="4" To="6" Label="Source1" />
-      <Edge From="5" To="11" Label="Source1" />
-      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="5" To="10" Label="Source1" />
+      <Edge From="6" To="7" Label="Source2" />
       <Edge From="7" To="8" Label="Source1" />
       <Edge From="8" To="9" Label="Source1" />
-      <Edge From="9" To="10" Label="Source1" />
-      <Edge From="10" To="11" Label="Source2" />
-      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="9" To="10" Label="Source2" />
+      <Edge From="10" To="11" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
