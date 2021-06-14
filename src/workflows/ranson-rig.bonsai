@@ -233,9 +233,9 @@ Item2.Index as TrialID)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="Extensions\SyncQuad.bonsai">
                     <FileName />
-                    <Seed>23</Seed>
-                    <P>0.05</P>
-                    <Offset>0</Offset>
+                    <Seed>0</Seed>
+                    <P>1</P>
+                    <Offset>30</Offset>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>Prefix</Name>
