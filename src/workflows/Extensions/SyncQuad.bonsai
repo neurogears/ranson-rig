@@ -39,11 +39,13 @@
       <Expression xsi:type="ExternalizedMapping">
         <Property Name="Seed" />
         <Property Name="P" />
+        <Property Name="Offset" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:SyncSequence">
           <p1:Seed>23</p1:Seed>
           <p1:P>0.05</p1:P>
+          <p1:Offset>0</p1:Offset>
         </Combinator>
       </Expression>
       <Expression xsi:type="IncludeWorkflow" Path="BonVision:Logging.LogEvent.bonsai">
