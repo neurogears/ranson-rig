@@ -58,6 +58,15 @@
         <Combinator xsi:type="res:LoadResources" />
       </Expression>
       <Expression xsi:type="WorkflowOutput" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:RenderFrame" />
+      </Expression>
+      <Expression xsi:type="PublishSubject">
+        <Name>Render</Name>
+      </Expression>
+      <Expression xsi:type="PublishSubject">
+        <Name>PostRender</Name>
+      </Expression>
       <Expression xsi:type="BehaviorSubject" TypeArguments="gl:Texture">
         <Name>Environment</Name>
       </Expression>
@@ -68,9 +77,6 @@
         <FrontExtrinsics>Calibration\front_extrinsics.yml</FrontExtrinsics>
         <RightIntrinsics>Calibration\right_intrinsics.yml</RightIntrinsics>
         <RightExtrinsics>Calibration\right_extrinsics.yml</RightExtrinsics>
-      </Expression>
-      <Expression xsi:type="PublishSubject">
-        <Name>PostRender</Name>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
         <Name>Networking</Name>
@@ -963,6 +969,7 @@ Item6 as ViewPosition)</scr:Expression>
       <Edge From="3" To="4" Label="Source1" />
       <Edge From="5" To="6" Label="Source1" />
       <Edge From="6" To="7" Label="Source1" />
+      <Edge From="8" To="9" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

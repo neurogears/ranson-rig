@@ -13,8 +13,8 @@
         <Name>PlayOutcome</Name>
         <Workflow>
           <Nodes>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:RenderFrame" />
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Render</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.OrthographicView.bonsai">
               <Left>-90</Left>

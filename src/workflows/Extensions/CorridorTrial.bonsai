@@ -28,8 +28,8 @@
             <Expression xsi:type="AsyncSubject">
               <Name>CorridorParameters</Name>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:RenderFrame" />
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Render</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>CorridorParameters</Name>
