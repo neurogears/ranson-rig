@@ -15,19 +15,22 @@ public class SyncSequence
 
     public double P { get; set; }
 
+    public int Offset { get; set; }
+
     public IObservable<int> Process(IObservable<FrameEvent> source)
     {
         return Observable.Defer(() =>
         {
             var state = 0;
+            var offset = Offset;
             var random = new Random(Seed);
             var distribution = new Geometric(P, random);
-            var next = distribution.Sample();
+            var next = distribution.Sample() + offset;
             return source.Select(value =>
             {
                 if (next-- <= 0)
                 {
-                    next = distribution.Sample();
+                    next = distribution.Sample() + offset;
                     state = 1 - state;
                 }
 
