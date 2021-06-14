@@ -32,23 +32,20 @@
               <Selector>MessageBytes</Selector>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>ExperimentID</Name>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
               <Name>Events</Name>
             </Expression>
             <Expression xsi:type="MemberSelector">
               <Selector>Key</Selector>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
-              <Name>Dataset</Name>
+              <Name>Prefix</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Zip" />
             </Expression>
             <Expression xsi:type="Format">
-              <Format>{3}/{2}/{0}_{1}_{2}/{0}_{1}_{2}_Behavior_{4}{5}.bin</Format>
-              <Selector>Item1.ExperimentDate,Item1.ExperimentNumber,Item1.AnimalID,Item3,Item2.Item1,Item2.Item2</Selector>
+              <Format>{0}_Behavior_{1}{2}.bin</Format>
+              <Selector>Item1,Item2.Item1,Item2.Item2</Selector>
             </Expression>
             <Expression xsi:type="PropertyMapping">
               <PropertyMappings>
@@ -68,15 +65,14 @@
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="12" Label="Source1" />
-            <Edge From="5" To="9" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="9" Label="Source2" />
-            <Edge From="8" To="9" Label="Source3" />
+            <Edge From="4" To="11" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="8" Label="Source2" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
-            <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="12" Label="Source2" />
-            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="10" To="11" Label="Source2" />
+            <Edge From="11" To="12" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
