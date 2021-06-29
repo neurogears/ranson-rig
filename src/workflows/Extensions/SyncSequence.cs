@@ -3,7 +3,6 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
-using Bonsai.Shaders;
 using MathNet.Numerics.Distributions;
 
 [Combinator]
@@ -17,12 +16,12 @@ public class SyncSequence
 
     public int Offset { get; set; }
 
-    public IObservable<int> Process<TSource>(IObservable<TSource> source)
+    public IObservable<float> Process<TSource>(IObservable<TSource> source)
     {
         return Observable.Defer(() =>
         {
             var next = 0;
-            var state = 0;
+            var state = 0f;
             var offset = Offset;
             var random = new Random(Seed);
             var distribution = new Geometric(P, random);
