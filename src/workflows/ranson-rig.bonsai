@@ -227,6 +227,13 @@ Item2.Index as TrialID)</scr:Expression>
                     <Combinator xsi:type="rx:SubscribeWhen" />
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
+                    <Name>StartTrial</Name>
+                  </Expression>
+                  <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogExperiment.bonsai" />
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:SubscribeWhen" />
+                  </Expression>
+                  <Expression xsi:type="SubscribeSubject">
                     <Name>Prefix</Name>
                   </Expression>
                   <Expression xsi:type="Add">
@@ -282,12 +289,14 @@ Item2.Index as TrialID)</scr:Expression>
                   <Edge From="24" To="25" Label="Source1" />
                   <Edge From="26" To="28" Label="Source2" />
                   <Edge From="27" To="28" Label="Source1" />
-                  <Edge From="29" To="30" Label="Source1" />
+                  <Edge From="29" To="31" Label="Source2" />
                   <Edge From="30" To="31" Label="Source1" />
-                  <Edge From="31" To="33" Label="Source2" />
                   <Edge From="32" To="33" Label="Source1" />
-                  <Edge From="33" To="35" Label="Source1" />
-                  <Edge From="34" To="35" Label="Source2" />
+                  <Edge From="33" To="34" Label="Source1" />
+                  <Edge From="34" To="36" Label="Source2" />
+                  <Edge From="35" To="36" Label="Source1" />
+                  <Edge From="36" To="38" Label="Source1" />
+                  <Edge From="37" To="38" Label="Source2" />
                 </Edges>
               </Workflow>
             </Expression>
