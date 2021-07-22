@@ -1,4 +1,6 @@
-function data = harpread(fid)
+function data = harpread(filename)
+    fid = fopen(filename,'r');                          % open the binary file
+    cleanupObj = onCleanup(@() fclose(fid))             % ensure file handle gets closed
     data = fread(fid,'*uint8');                         % read data as raw binary
     stride = data(2) + 2;                               % size of each message
     count = length(data) / int32(stride);               % number of messages in file
