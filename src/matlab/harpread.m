@@ -9,8 +9,8 @@ function data = harpread(filename)
     elementsize = bitand(payloadtype, uint8(0x3));      % the size in bytes of each element
     payloadshape = [count, payloadsize / elementsize];  % the dimensions of the data matrix
     messages = reshape(data, stride, count);            % structure all message data
-    seconds = typecast(messages(6:9, :), 'uint32');     % the seconds part of the timestamp
-    ticks = typecast(messages(10:11, :), 'uint16');     % the 32-microsecond ticks part of each timestamp
+    seconds = typecast(reshape(messages(6:9, :),[],1), 'uint32');  % the seconds part of the timestamp
+    ticks = typecast(reshape(messages(10:11, :),[],1), 'uint16');  % the 32-microsecond ticks part of each timestamp
     seconds = double(ticks) * 32e-6 + double(seconds);  % the message timestamp
 
     payload = messages(12:12 + payloadsize - 1, :);     % extract the payload data
@@ -35,7 +35,7 @@ function data = harpread(filename)
         dtype = 'float32';
     end
 
-    payload = typecast(payload, dtype);                 % convert payload data type
+    payload = typecast(payload(:), dtype);              % convert payload data type
     payload = reshape(payload, elementsize, count)';    % reshape into final data matrix
     data = [seconds double(payload)];                   % convert data to double and return
-end
+end 
