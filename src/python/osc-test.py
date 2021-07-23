@@ -40,7 +40,6 @@ try:
     rig.start()
 
     rig.receive()  # Wait for end trial
-    rig.clear()
     
     rig.experiment(metadata)
     rig.gratings(size=120, angle=30, freq=0.1, duration=2.0) # go gratings
@@ -79,6 +78,7 @@ try:
     rig.replay(metadata, 3)
     rig.receive()  # Wait for end trial
 
+    rig.clear()
     rig.experiment(None)
 finally:
     client.close()
