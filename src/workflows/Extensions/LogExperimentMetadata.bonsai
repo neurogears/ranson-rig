@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.6.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -20,7 +20,7 @@
         </PropertyMappings>
       </Expression>
       <Expression xsi:type="SubscribeSubject">
-        <Name>TrialID</Name>
+        <Name>Trial</Name>
       </Expression>
       <Expression xsi:type="WorkflowInput">
         <Name>Source1</Name>
