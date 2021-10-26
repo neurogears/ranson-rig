@@ -540,14 +540,15 @@ Item2.Index as TrialID)</scr:Expression>
             </Expression>
             <Expression xsi:type="osc:Parse">
               <osc:Address>/gratings</osc:Address>
-              <osc:TypeTag>[ffff][ffffff][ff]</osc:TypeTag>
+              <osc:TypeTag>[fffff][ffffff][ff]</osc:TypeTag>
             </Expression>
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Expression>new(
 Item1.Item1 as Angle,
-Item1.Item2 as Size,
-Item1.Item3 as LocationX,
-Item1.Item4 as LocationY,
+Item1.Item2 as ExtentX,
+Item1.Item3 as ExtentY,
+Item1.Item4 as LocationX,
+Item1.Item5 as LocationY,
 Item2.Item1 as Contrast,
 Item2.Item2 as Opacity,
 Item2.Item3 as Phase,

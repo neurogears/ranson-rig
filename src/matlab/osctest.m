@@ -7,7 +7,8 @@ rig.resource("Videos/Blink");
 rig.preload();
 
 rig.experiment(metadata);
-g1.size = 30;
+g1.width = 30;
+g1.height = 30;
 g1.x = -15;
 g1.y = -5;
 g1.angle = 0;
@@ -17,7 +18,8 @@ g1.speed = 0;
 rig.gratings(g1); % grating 1
 
 
-g2.size = 15;
+g2.width = 15;
+g2.height = 15;
 g2.x = 15;
 g2.y = -5;
 g2.angle = 45;
@@ -43,7 +45,8 @@ disp(datagram);
 rig.clear();
 
 rig.experiment(metadata)
-gg.size = 120;
+gg.width = 120;
+gg.height = 120;
 gg.angle = 30;
 gg.freq = 0.1;
 gg.duration = 2.0;
@@ -57,7 +60,8 @@ end
 disp(datagram);
 
 rig.experiment(metadata)
-ng.size = 120;
+ng.width = 120;
+ng.height = 120;
 ng.angle = 0;
 ng.freq = 0.1;
 ng.duration = 2.0;

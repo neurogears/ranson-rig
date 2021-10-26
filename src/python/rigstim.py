@@ -54,7 +54,8 @@ class RigClient:
         
     def gratings(self, **kwargs):
         angle = float(kwargs.get('angle',0.0))
-        size = float(kwargs.get('size',20.0))
+        width = float(kwargs.get('width',20.0))
+        height = float(kwargs.get('height',20.0))
         x = float(kwargs.get('x',0.0))
         y = float(kwargs.get('y',0.0))
         
@@ -69,7 +70,7 @@ class RigClient:
         duration = float(kwargs.get('duration',1.0))
         
         self.send("/gratings",
-                  [[angle,size,x,y],
+                  [[angle,width,height,x,y],
                    [contrast,opacity,phase,freq,speed,dcycle],
                    [onset,duration]])
     

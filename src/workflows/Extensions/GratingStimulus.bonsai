@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
+<WorkflowBuilder Version="2.6.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
-                 xmlns:p1="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
+                 xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
@@ -51,7 +51,7 @@
               <Selector>Angle</Selector>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="p1:DegreeToRadian" />
+              <Combinator xsi:type="num:DegreeToRadian" />
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:CombineLatest" />
@@ -59,8 +59,8 @@
             <Expression xsi:type="InputMapping">
               <PropertyMappings>
                 <Property Name="Angle" Selector="Item3" />
-                <Property Name="ExtentX" Selector="Item2.Size" />
-                <Property Name="ExtentY" Selector="Item2.Size" />
+                <Property Name="ExtentX" Selector="Item2.ExtentX" />
+                <Property Name="ExtentY" Selector="Item2.ExtentY" />
                 <Property Name="LocationX" Selector="Item2.LocationX" />
                 <Property Name="LocationY" Selector="Item2.LocationY" />
                 <Property Name="Contrast" Selector="Item2.Contrast" />

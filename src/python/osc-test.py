@@ -28,26 +28,26 @@ client = OSCStreamingClient()  # Create client
 try:
     client.connect((ip, request_port))
     rig = rigstim.RigClient(client)
+    rig.clear()
+    rig.experiment(None)
     rig.dataset('Data')
-
     rig.resource("Videos/Blink")
     rig.preload()
     
     rig.experiment(metadata)
-    rig.gratings(size=30, x=-15, y=-5, angle=0, freq=0.1, duration=2.0) # grating 1
-    rig.gratings(size=15, x=15, y=-5, angle=45, freq=0.1, duration=2.0, speed=1) # grating 2
+    rig.gratings(width=30, height=30, x=-15, y=-5, angle=0, freq=0.1, duration=2.0) # grating 1
+    rig.gratings(width=15, height=15, x=15, y=-5, angle=45, freq=0.1, duration=2.0, speed=1) # grating 2
     rig.video("Blink", y=20, speed=2.0, onset=1.0, duration=2.0) # video 1
     rig.start()
-
     rig.receive()  # Wait for end trial
     
     rig.experiment(metadata)
-    rig.gratings(size=120, angle=30, freq=0.1, duration=2.0) # go gratings
+    rig.gratings(width=120, height=120, angle=30, freq=0.1, duration=2.0) # go gratings
     rig.go(suppress=1000, start=500, duration=1000.0, threshold=2) # go trial
     rig.receive()  # Wait for end trial
 
     rig.experiment(metadata)
-    rig.gratings(size=120, angle=0, freq=0.1, duration=2.0) # nogo gratings
+    rig.gratings(width=120, height=120, angle=0, freq=0.1, duration=2.0) # nogo gratings
     rig.nogo(suppress=500, start=0.0, duration=2000.0) # no-go trial
     rig.receive()  # Wait for end trial
 

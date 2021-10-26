@@ -33,7 +33,8 @@ classdef Rig
 
     function gratings(obj, g)
       angle = get(g, 'angle', 0.0);
-      size = get(g, 'size', 20.0);
+      width = get(g, 'width', 20.0);
+      height = get(g, 'height', 20.0);
       x = get(g, 'x', 0.0);
       y = get(g, 'y', 0.0);
         
@@ -46,8 +47,8 @@ classdef Rig
 
       onset = get(g,'onset', 0.0);
       duration = get(g, 'duration', 1.0);
-      obj.osc.send('/gratings', ',[ffff][ffffff][ff]', ...
-                   angle, size, x, y, ...
+      obj.osc.send('/gratings', ',[fffff][ffffff][ff]', ...
+                   angle, width, height, x, y, ...
                    contrast, opacity, phase, freq, speed, dcycle, ...
                    onset, duration);
     end
