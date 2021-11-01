@@ -31,6 +31,10 @@ classdef Rig
       obj.osc.send('/replay', ',si', expid, trial)
     end
 
+    function background(obj, color)
+      obj.osc.send('/background', ',s', color)
+    end
+
     function gratings(obj, g)
       angle = get(g, 'angle', 0.0);
       width = get(g, 'width', 20.0);

@@ -37,7 +37,7 @@ class RigClient:
     def dataset(self, path):
         self.send("/dataset", path)
         
-    def experiment(self,expid):
+    def experiment(self, expid):
         self.send("/experiment", "" if expid is None else expid)
         
     def replay(self, expid, trial):
@@ -51,6 +51,9 @@ class RigClient:
         
     def clear(self):
         self.send("/clear", 0)
+
+    def background(self, color):
+        self.send("/background", color)
         
     def gratings(self, **kwargs):
         angle = float(kwargs.get('angle',0.0))
