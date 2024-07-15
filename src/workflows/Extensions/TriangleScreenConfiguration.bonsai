@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.6.0"
+<WorkflowBuilder Version="2.8.4"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Description>In this configuration, the visual environment is configured using two screens arranged at 45 degrees in a triangle.</Description>

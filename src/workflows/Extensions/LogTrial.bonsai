@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.6.0"
+<WorkflowBuilder Version="2.8.4"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:p1="clr-namespace:;assembly=Extensions"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="WorkflowInput">
         <Name>Source1</Name>
       </Expression>
-      <Expression xsi:type="CreateObservable">
+      <Expression xsi:type="rx:CreateObservable">
         <Name>LogTrial</Name>
         <Workflow>
           <Nodes>
@@ -20,7 +20,7 @@
               <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\TrialPrefix.bonsai" />
-            <Expression xsi:type="AsyncSubject">
+            <Expression xsi:type="rx:AsyncSubject">
               <Name>Prefix</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
@@ -30,22 +30,6 @@
               <Combinator xsi:type="rx:Skip">
                 <rx:Count>1</rx:Count>
               </Combinator>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>Prefix</Name>
-            </Expression>
-            <Expression xsi:type="Add">
-              <Operand xsi:type="StringProperty">
-                <Value>.csv</Value>
-              </Operand>
-            </Expression>
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="FileName" />
-              </PropertyMappings>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>EndTrial</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>Prefix</Name>
@@ -67,12 +51,28 @@
               </Combinator>
             </Expression>
             <Expression xsi:type="Format" />
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Prefix</Name>
+            </Expression>
+            <Expression xsi:type="Add">
+              <Operand xsi:type="StringProperty">
+                <Value>.csv</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="FileName" />
+              </PropertyMappings>
+            </Expression>
             <Expression xsi:type="io:CsvWriter">
               <io:FileName />
               <io:Append>false</io:Append>
               <io:Overwrite>false</io:Overwrite>
               <io:Suffix>None</io:Suffix>
               <io:IncludeHeader>false</io:IncludeHeader>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>EndTrial</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:TakeUntil" />
@@ -82,8 +82,23 @@
               <Name>LogData</Name>
               <Workflow>
                 <Nodes>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="gl:UpdateFrame" />
+                  </Expression>
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>TimeStep.ElapsedTime</Selector>
+                  </Expression>
+                  <Expression xsi:type="rx:Accumulate" />
                   <Expression xsi:type="SubscribeSubject">
                     <Name>TrialEncoder</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="rx:WithLatestFrom" />
+                  </Expression>
+                  <Expression xsi:type="scr:ExpressionTransform">
+                    <scr:Expression>new(
+Item1 as ElapsedTime,
+Item2 as Encoder)</scr:Expression>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>Prefix</Name>
@@ -98,40 +113,12 @@
                       <Property Name="FileName" />
                     </PropertyMappings>
                   </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="gl:UpdateFrame" />
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>TimeStep.ElapsedTime</Selector>
-                  </Expression>
-                  <Expression xsi:type="rx:Accumulate" />
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:WithLatestFrom" />
-                  </Expression>
-                  <Expression xsi:type="scr:ExpressionTransform">
-                    <scr:Expression>new(
-Item1 as ElapsedTime,
-Item2 as Encoder)</scr:Expression>
-                  </Expression>
                   <Expression xsi:type="io:CsvWriter">
                     <io:FileName />
                     <io:Append>false</io:Append>
                     <io:Overwrite>false</io:Overwrite>
                     <io:Suffix>None</io:Suffix>
                     <io:IncludeHeader>true</io:IncludeHeader>
-                  </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>Prefix</Name>
-                  </Expression>
-                  <Expression xsi:type="Add">
-                    <Operand xsi:type="StringProperty">
-                      <Value>_Responses.csv</Value>
-                    </Operand>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="FileName" />
-                    </PropertyMappings>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>TrialResponse</Name>
@@ -151,6 +138,19 @@ Item2 as Encoder)</scr:Expression>
 Item2 as ElapsedTime,
 Item1 as Response)</scr:Expression>
                   </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>Prefix</Name>
+                  </Expression>
+                  <Expression xsi:type="Add">
+                    <Operand xsi:type="StringProperty">
+                      <Value>_Responses.csv</Value>
+                    </Operand>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="FileName" />
+                    </PropertyMappings>
+                  </Expression>
                   <Expression xsi:type="io:CsvWriter">
                     <io:FileName />
                     <io:Append>false</io:Append>
@@ -160,24 +160,24 @@ Item1 as Response)</scr:Expression>
                   </Expression>
                 </Nodes>
                 <Edges>
-                  <Edge From="0" To="7" Label="Source2" />
+                  <Edge From="0" To="1" Label="Source1" />
                   <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
-                  <Edge From="3" To="9" Label="Source2" />
+                  <Edge From="2" To="4" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source2" />
                   <Edge From="4" To="5" Label="Source1" />
-                  <Edge From="5" To="6" Label="Source1" />
+                  <Edge From="5" To="9" Label="Source1" />
                   <Edge From="6" To="7" Label="Source1" />
                   <Edge From="7" To="8" Label="Source1" />
-                  <Edge From="8" To="9" Label="Source1" />
-                  <Edge From="10" To="11" Label="Source1" />
+                  <Edge From="8" To="9" Label="Source2" />
+                  <Edge From="10" To="14" Label="Source1" />
                   <Edge From="11" To="12" Label="Source1" />
-                  <Edge From="12" To="19" Label="Source2" />
-                  <Edge From="13" To="17" Label="Source1" />
+                  <Edge From="12" To="13" Label="Source1" />
+                  <Edge From="13" To="14" Label="Source2" />
                   <Edge From="14" To="15" Label="Source1" />
-                  <Edge From="15" To="16" Label="Source1" />
-                  <Edge From="16" To="17" Label="Source2" />
+                  <Edge From="15" To="19" Label="Source1" />
+                  <Edge From="16" To="17" Label="Source1" />
                   <Edge From="17" To="18" Label="Source1" />
-                  <Edge From="18" To="19" Label="Source1" />
+                  <Edge From="18" To="19" Label="Source2" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -192,17 +192,17 @@ Item1 as Response)</scr:Expression>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="12" Label="Source1" />
+            <Edge From="4" To="8" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="14" Label="Source2" />
-            <Edge From="8" To="15" Label="Source2" />
-            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="7" To="8" Label="Source2" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="13" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="12" Label="Source2" />
-            <Edge From="12" To="13" Label="Source1" />
-            <Edge From="13" To="14" Label="Source1" />
-            <Edge From="14" To="15" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="12" To="13" Label="Source2" />
+            <Edge From="13" To="15" Label="Source1" />
+            <Edge From="14" To="15" Label="Source2" />
             <Edge From="15" To="16" Label="Source1" />
             <Edge From="17" To="19" Label="Source1" />
             <Edge From="18" To="19" Label="Source2" />

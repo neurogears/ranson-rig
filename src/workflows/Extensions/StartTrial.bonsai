@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.1"
+<WorkflowBuilder Version="2.8.4"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Description>Starts logging of the current trial.</Description>
   <Workflow>
@@ -8,7 +9,7 @@
       <Expression xsi:type="WorkflowInput">
         <Name>Source1</Name>
       </Expression>
-      <Expression xsi:type="Sink">
+      <Expression xsi:type="rx:Sink">
         <Name>StartTrial</Name>
         <Workflow>
           <Nodes>

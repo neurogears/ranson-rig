@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.6.0"
+<WorkflowBuilder Version="2.8.4"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
-                 xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
+                 xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="WorkflowInput">
         <Name>Source1</Name>
       </Expression>
-      <Expression xsi:type="CreateObservable">
+      <Expression xsi:type="rx:CreateObservable">
         <Name>CreateGratings</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="AsyncSubject">
+            <Expression xsi:type="rx:AsyncSubject">
               <Name>GratingParameters</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
@@ -26,23 +26,6 @@
             </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>GratingParameters</Name>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>GratingParameters</Name>
-            </Expression>
-            <Expression xsi:type="scr:ExpressionTransform">
-              <scr:Name>Duration</scr:Name>
-              <scr:Expression>TimeSpan.FromSeconds(Duration)</scr:Expression>
-            </Expression>
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="DueTime" />
-              </PropertyMappings>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:Timer">
-                <gl:DueTime>PT2S</gl:DueTime>
-              </Combinator>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>GratingParameters</Name>
@@ -71,23 +54,6 @@
               </PropertyMappings>
               <Selector>Item1</Selector>
             </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>GratingParameters</Name>
-            </Expression>
-            <Expression xsi:type="scr:ExpressionTransform">
-              <scr:Name>Onset</scr:Name>
-              <scr:Expression>TimeSpan.FromSeconds(Onset)</scr:Expression>
-            </Expression>
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="DueTime" />
-              </PropertyMappings>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:Timer">
-                <gl:DueTime>PT0S</gl:DueTime>
-              </Combinator>
-            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="gl:UpdateFrame" />
             </Expression>
@@ -106,21 +72,55 @@
               <LocationX>15</LocationX>
               <LocationY>-5</LocationY>
               <Layer>0</Layer>
-              <Angle>45</Angle>
+              <ExtentX>15</ExtentX>
+              <ExtentY>15</ExtentY>
               <SpatialFrequency>0.1</SpatialFrequency>
               <TemporalFrequency>1</TemporalFrequency>
               <Phase>0</Phase>
+              <Angle>45</Angle>
               <SquareWave>false</SquareWave>
               <Contrast>1</Contrast>
               <DutyCycle xsi:nil="true" />
               <Radius>1</Radius>
               <Aperture>0</Aperture>
               <Opacity>1</Opacity>
-              <ExtentX>15</ExtentX>
-              <ExtentY>15</ExtentY>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>GratingParameters</Name>
+            </Expression>
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Name>Duration</scr:Name>
+              <scr:Expression>TimeSpan.FromSeconds(Duration)</scr:Expression>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="DueTime" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:Timer">
+                <gl:DueTime>PT2S</gl:DueTime>
+              </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:TakeUntil" />
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>GratingParameters</Name>
+            </Expression>
+            <Expression xsi:type="scr:ExpressionTransform">
+              <scr:Name>Onset</scr:Name>
+              <scr:Expression>TimeSpan.FromSeconds(Onset)</scr:Expression>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="DueTime" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:Timer">
+                <gl:DueTime>PT0S</gl:DueTime>
+              </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:SubscribeWhen" />
@@ -128,27 +128,27 @@
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
-            <Edge From="2" To="11" Label="Source1" />
-            <Edge From="3" To="11" Label="Source2" />
+            <Edge From="2" To="7" Label="Source1" />
+            <Edge From="3" To="7" Label="Source2" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="22" Label="Source2" />
-            <Edge From="8" To="9" Label="Source1" />
-            <Edge From="9" To="10" Label="Source1" />
-            <Edge From="10" To="11" Label="Source3" />
+            <Edge From="6" To="7" Label="Source3" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="13" Label="Source1" />
+            <Edge From="9" To="11" Label="Source1" />
+            <Edge From="10" To="11" Label="Source2" />
             <Edge From="11" To="12" Label="Source1" />
-            <Edge From="12" To="21" Label="Source1" />
-            <Edge From="13" To="14" Label="Source1" />
+            <Edge From="12" To="13" Label="Source2" />
+            <Edge From="13" To="18" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
             <Edge From="15" To="16" Label="Source1" />
-            <Edge From="16" To="23" Label="Source2" />
-            <Edge From="17" To="19" Label="Source1" />
-            <Edge From="18" To="19" Label="Source2" />
+            <Edge From="16" To="17" Label="Source1" />
+            <Edge From="17" To="18" Label="Source2" />
+            <Edge From="18" To="23" Label="Source1" />
             <Edge From="19" To="20" Label="Source1" />
-            <Edge From="20" To="21" Label="Source2" />
+            <Edge From="20" To="21" Label="Source1" />
             <Edge From="21" To="22" Label="Source1" />
-            <Edge From="22" To="23" Label="Source1" />
+            <Edge From="22" To="23" Label="Source2" />
           </Edges>
         </Workflow>
       </Expression>
