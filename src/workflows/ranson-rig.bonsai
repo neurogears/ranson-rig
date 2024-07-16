@@ -775,7 +775,12 @@ Item3.Item2 as Duration)</scr:Expression>
               <Combinator xsi:type="gl:SampleOnUpdateFrame" />
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="Extensions\StartTrial.bonsai" />
-            <Expression xsi:type="IncludeWorkflow" Path="Extensions\PlayStimulus.bonsai" />
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\PlayStimulus.bonsai">
+              <StimulusBank>Stimuli</StimulusBank>
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="Extensions\PlayStimulus.bonsai">
+              <StimulusBank>Success</StimulusBank>
+            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
                 <Value>0</Value>
@@ -803,6 +808,7 @@ Item3.Item2 as Duration)</scr:Expression>
             <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
