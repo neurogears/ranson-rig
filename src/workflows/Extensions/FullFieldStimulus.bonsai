@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.5.0"
+<WorkflowBuilder Version="2.8.4"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:p1="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:num="clr-namespace:Bonsai.Numerics;assembly=Bonsai.Numerics"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting.Expressions;assembly=Bonsai.Scripting.Expressions"
+                 xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
       <Expression xsi:type="WorkflowInput">
         <Name>Source1</Name>
       </Expression>
-      <Expression xsi:type="SelectMany">
+      <Expression xsi:type="rx:SelectMany">
         <Name>FullFieldStimulus</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="AsyncSubject">
+            <Expression xsi:type="rx:AsyncSubject">
               <Name>StimulusParameters</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
@@ -30,20 +30,54 @@
               <Bottom>-45</Bottom>
               <Top>45</Top>
             </Expression>
-            <Expression xsi:type="PublishSubject">
+            <Expression xsi:type="rx:PublishSubject">
               <Name>Draw</Name>
             </Expression>
             <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
-              <FaceSize xsi:nil="true" />
               <ClearColor>Gray</ClearColor>
               <Width>1024</Width>
               <Height>1024</Height>
+              <RotationZ>0</RotationZ>
+              <RotationY>0</RotationY>
+              <RotationX>0</RotationX>
+              <FaceSize xsi:nil="true" />
             </Expression>
             <Expression xsi:type="MulticastSubject">
               <Name>Environment</Name>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>Draw</Name>
+            </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>StimulusParameters</Name>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Angle</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="num:DegreeToRadian" />
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Angle" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
+              <LocationX>0</LocationX>
+              <LocationY>0</LocationY>
+              <Layer>0</Layer>
+              <ExtentX>90</ExtentX>
+              <ExtentY>90</ExtentY>
+              <SpatialFrequency>0.1</SpatialFrequency>
+              <TemporalFrequency>0</TemporalFrequency>
+              <Phase>0</Phase>
+              <Angle>30</Angle>
+              <SquareWave>false</SquareWave>
+              <Contrast>1</Contrast>
+              <DutyCycle xsi:nil="true" />
+              <Radius>2</Radius>
+              <Aperture>0</Aperture>
+              <Opacity>1</Opacity>
             </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>StimulusParameters</Name>
@@ -61,35 +95,6 @@
               <Combinator xsi:type="gl:Timer">
                 <gl:DueTime>PT2S</gl:DueTime>
               </Combinator>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>StimulusParameters</Name>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Angle</Selector>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="p1:DegreeToRadian" />
-            </Expression>
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="Angle" />
-              </PropertyMappings>
-            </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawGratings.bonsai">
-              <LocationX>0</LocationX>
-              <LocationY>0</LocationY>
-              <Angle>30</Angle>
-              <SpatialFrequency>0.1</SpatialFrequency>
-              <TemporalFrequency>0</TemporalFrequency>
-              <Phase>0</Phase>
-              <SquareWave>false</SquareWave>
-              <Contrast>1</Contrast>
-              <Radius>2</Radius>
-              <Aperture>0</Aperture>
-              <Opacity>1</Opacity>
-              <ExtentX>90</ExtentX>
-              <ExtentY>90</ExtentY>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:TakeUntil" />
@@ -114,16 +119,16 @@
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
-            <Edge From="7" To="16" Label="Source1" />
+            <Edge From="7" To="12" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
             <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="17" Label="Source2" />
-            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="11" To="12" Label="Source2" />
+            <Edge From="12" To="17" Label="Source1" />
             <Edge From="13" To="14" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
-            <Edge From="15" To="16" Label="Source2" />
-            <Edge From="16" To="17" Label="Source1" />
+            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="16" To="17" Label="Source2" />
             <Edge From="17" To="18" Label="Source1" />
             <Edge From="18" To="20" Label="Source1" />
             <Edge From="19" To="20" Label="Source2" />

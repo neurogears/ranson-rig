@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.6.0"
+<WorkflowBuilder Version="2.8.4"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gli="clr-namespace:Bonsai.Shaders.Input;assembly=Bonsai.Shaders"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
@@ -32,7 +32,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Merge" />
       </Expression>
-      <Expression xsi:type="PublishSubject">
+      <Expression xsi:type="rx:PublishSubject">
         <Name>RigResponse</Name>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -49,14 +49,14 @@
           <Value>1</Value>
         </Operand>
       </Expression>
-      <Expression xsi:type="PublishSubject">
+      <Expression xsi:type="rx:PublishSubject">
         <Name>RigEncoder</Name>
       </Expression>
-      <Expression xsi:type="BehaviorSubject" TypeArguments="harp:HarpMessage">
-        <Name>Command</Name>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="harp:HarpMessage">
+        <rx:Name>Command</rx:Name>
       </Expression>
-      <Expression xsi:type="BehaviorSubject" TypeArguments="harp:HarpMessage">
-        <Name>Behavior</Name>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="harp:HarpMessage">
+        <rx:Name>Behavior</rx:Name>
       </Expression>
     </Nodes>
     <Edges>
