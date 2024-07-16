@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.4"
+<WorkflowBuilder Version="2.8.5"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:harp="clr-namespace:Bonsai.Harp;assembly=Bonsai.Harp"
                  xmlns:p1="clr-namespace:Bonsai.Harp.CF;assembly=Bonsai.Harp.CF"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -55,6 +56,105 @@
       <Expression xsi:type="rx:PublishSubject">
         <Name>RigResponse</Name>
       </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
+        <rx:Name>ClearOutputs</rx:Name>
+      </Expression>
+      <Expression xsi:type="p1:BehaviorCommand">
+        <p1:Type>ClearOutput</p1:Type>
+        <p1:Mask>Port0</p1:Mask>
+      </Expression>
+      <Expression xsi:type="MulticastSubject">
+        <Name>Command</Name>
+      </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
+        <rx:Name>PulseValve</rx:Name>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Mask" DisplayName="ValvePort" Category="Wiring" />
+      </Expression>
+      <Expression xsi:type="p1:BehaviorCommand">
+        <p1:Type>SetOutput</p1:Type>
+        <p1:Mask>Port0</p1:Mask>
+      </Expression>
+      <Expression xsi:type="MulticastSubject">
+        <Name>Command</Name>
+      </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
+        <rx:Name>ResetEncoder</rx:Name>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Mask" DisplayName="EncoderPort" Category="Wiring" />
+      </Expression>
+      <Expression xsi:type="p1:BehaviorCommand">
+        <p1:Type>ResetQuadratureCounter</p1:Type>
+        <p1:Mask>Port2</p1:Mask>
+      </Expression>
+      <Expression xsi:type="MulticastSubject">
+        <Name>Command</Name>
+      </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
+        <rx:Name>HarpSync</rx:Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:DistinctUntilChanged" />
+      </Expression>
+      <Expression xsi:type="rx:Condition">
+        <Name>Rising</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="GreaterThan">
+              <Operand xsi:type="FloatProperty">
+                <Value>0</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="ExternalizedMapping">
+        <Property Name="Mask" DisplayName="SyncOutput" Category="Wiring" />
+      </Expression>
+      <Expression xsi:type="p1:BehaviorCommand">
+        <p1:Type>SetOutput</p1:Type>
+        <p1:Mask>Digital0</p1:Mask>
+      </Expression>
+      <Expression xsi:type="rx:Condition">
+        <Name>Falling</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="LessThanOrEqual">
+              <Operand xsi:type="FloatProperty">
+                <Value>0</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="p1:BehaviorCommand">
+        <p1:Type>ClearOutput</p1:Type>
+        <p1:Mask>Digital0</p1:Mask>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Merge" />
+      </Expression>
+      <Expression xsi:type="MulticastSubject">
+        <Name>Command</Name>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="2" Label="Source1" />
@@ -66,6 +166,24 @@
       <Edge From="7" To="8" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="13" To="14" Label="Source1" />
+      <Edge From="15" To="17" Label="Source1" />
+      <Edge From="16" To="17" Label="Source2" />
+      <Edge From="17" To="18" Label="Source1" />
+      <Edge From="19" To="21" Label="Source1" />
+      <Edge From="20" To="21" Label="Source2" />
+      <Edge From="21" To="22" Label="Source1" />
+      <Edge From="23" To="24" Label="Source1" />
+      <Edge From="24" To="25" Label="Source1" />
+      <Edge From="24" To="28" Label="Source1" />
+      <Edge From="25" To="27" Label="Source1" />
+      <Edge From="26" To="27" Label="Source2" />
+      <Edge From="26" To="29" Label="Source2" />
+      <Edge From="27" To="30" Label="Source1" />
+      <Edge From="28" To="29" Label="Source1" />
+      <Edge From="29" To="30" Label="Source2" />
+      <Edge From="30" To="31" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

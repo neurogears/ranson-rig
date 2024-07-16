@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.4"
+<WorkflowBuilder Version="2.8.5"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gli="clr-namespace:Bonsai.Shaders.Input;assembly=Bonsai.Shaders"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:harp="clr-namespace:Bonsai.Harp;assembly=Bonsai.Harp"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -57,6 +58,18 @@
       </Expression>
       <Expression xsi:type="rx:BehaviorSubject" TypeArguments="harp:HarpMessage">
         <rx:Name>Behavior</rx:Name>
+      </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
+        <rx:Name>ClearOutputs</rx:Name>
+      </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
+        <rx:Name>PulseValve</rx:Name>
+      </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
+        <rx:Name>ResetEncoder</rx:Name>
+      </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
+        <rx:Name>HarpSync</rx:Name>
       </Expression>
     </Nodes>
     <Edges>
