@@ -63,6 +63,9 @@
         <rx:Name>ClearOutputs</rx:Name>
       </Expression>
       <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
+        <rx:Name>PulseValve</rx:Name>
+      </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
         <rx:Name>ResetEncoder</rx:Name>
       </Expression>
       <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
