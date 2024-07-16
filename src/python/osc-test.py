@@ -42,11 +42,14 @@ try:
     rig.receive()  # Wait for end trial
     
     rig.experiment(metadata)
+    rig.pulseValve() # Configure pulse
+    rig.success() # Pulse valve on hit trial
     rig.gratings(width=120, height=120, angle=30, freq=0.1, duration=2.0) # go gratings
     rig.go(suppress=1000, start=500, duration=1000.0, threshold=2) # go trial
     rig.receive()  # Wait for end trial
 
     rig.experiment(metadata)
+    rig.success() # Configure no-reward for correct reject trial
     rig.gratings(width=120, height=120, angle=0, freq=0.1, duration=2.0) # nogo gratings
     rig.nogo(suppress=500, start=0.0, duration=2000.0) # no-go trial
     rig.receive()  # Wait for end trial

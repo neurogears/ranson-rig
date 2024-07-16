@@ -95,6 +95,9 @@ class RigClient:
                    [loop,speed,name],
                    [onset,duration]])
     
+    def pulseValve(self):
+        self.send("/pulseValve", 0)
+    
     def start(self):
         self.send("/start", 0)
         
