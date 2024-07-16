@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.4"
+<WorkflowBuilder Version="2.8.5"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:p1="clr-namespace:;assembly=Extensions"
@@ -141,7 +141,9 @@
                   <Expression xsi:type="WorkflowInput">
                     <Name>Source1</Name>
                   </Expression>
-                  <Expression xsi:type="IncludeWorkflow" Path="Extensions\ResetEncoder.bonsai" />
+                  <Expression xsi:type="MulticastSubject">
+                    <Name>ResetEncoder</Name>
+                  </Expression>
                   <Expression xsi:type="rx:AsyncSubject">
                     <Name>Experiment</Name>
                   </Expression>

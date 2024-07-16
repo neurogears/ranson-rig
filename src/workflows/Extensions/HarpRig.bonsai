@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.4"
+<WorkflowBuilder Version="2.8.5"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:harp="clr-namespace:Bonsai.Harp;assembly=Bonsai.Harp"
                  xmlns:p1="clr-namespace:Bonsai.Harp.CF;assembly=Bonsai.Harp.CF"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -55,6 +56,16 @@
       <Expression xsi:type="rx:PublishSubject">
         <Name>RigResponse</Name>
       </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
+        <rx:Name>ResetEncoder</rx:Name>
+      </Expression>
+      <Expression xsi:type="p1:BehaviorCommand">
+        <p1:Type>ResetQuadratureCounter</p1:Type>
+        <p1:Mask>Port2</p1:Mask>
+      </Expression>
+      <Expression xsi:type="MulticastSubject">
+        <Name>Command</Name>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="2" Label="Source1" />
@@ -66,6 +77,8 @@
       <Edge From="7" To="8" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
       <Edge From="10" To="11" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="13" To="14" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
