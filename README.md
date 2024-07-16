@@ -113,6 +113,12 @@ This stimulus type implements visual stimulation with an arbitrary image sequenc
     * **Onset** the delay until the video appears, in seconds
     * **Duration** the time during which the video is visible, in seconds
 
+#### Pulse Valve
+
+This stimulus type implements a single pulse on the water valve output. Pulse duration must be specified manually in the Behavior board GUI.
+
+* **`/pulseValve`** (no arguments)
+
 #### Start
 
 This message immediately plays the current stimulus set as a passive stimulation trial.

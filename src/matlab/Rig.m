@@ -77,6 +77,10 @@ classdef Rig
                    onset, duration);
     end
 
+    function pulseValve(obj)
+      obj.osc.send('/pulseValve', ',i', 0);
+    end
+
     function start(obj)
       obj.osc.send('/start', ',i', 0);
     end
