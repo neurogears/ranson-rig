@@ -60,7 +60,13 @@
         <rx:Name>Behavior</rx:Name>
       </Expression>
       <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
+        <rx:Name>ClearOutputs</rx:Name>
+      </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Object">
         <rx:Name>ResetEncoder</rx:Name>
+      </Expression>
+      <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Single">
+        <rx:Name>HarpSync</rx:Name>
       </Expression>
     </Nodes>
     <Edges>
