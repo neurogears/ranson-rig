@@ -1,0 +1,12 @@
+[project]
+name = "ranson-rig"
+version = "0.3.0"
+description = "An interactive visual stimulation rig controllable by OSC using Bonsai and BonVision"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pyosc3",
+]
+
+[tool.uv.sources]
+pyosc3 = { git = "https://github.com/glopesdev/pyOSC3.git", rev = "f853711fa836ebee6d1914cb007341611e74e5a5" }

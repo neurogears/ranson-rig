@@ -5,7 +5,8 @@ An interactive visual stimulation rig controllable by OSC using Bonsai and BonVi
 
 1. Clone or [download](https://github.com/neurogears/ranson-rig/archive/master.zip) this repository
 2. Run the `setup.cmd` script in the `bonsai` folder
-3. Run `Bonsai.exe`
+3. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and run `uv sync` 
+4. Run `Bonsai.exe`
 
 ## How to use
 
