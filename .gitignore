@@ -1,9 +1,15 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# IDE
+.vscode/
+
+# misc
 bin
 obj
 *.asv
-*.exe
-*.exe.settings
-.vscode
-Packages
-__pycache__
 Data
+
+# Environment
+.venv/
+uv.lock

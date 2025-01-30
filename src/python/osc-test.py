@@ -8,7 +8,7 @@ Created on Thu Aug 13 11:44:13 2020
 import rigstim
 from datetime import datetime
 from rigstim import WallType as Wall
-from pyOSC3fix.OSC3 import OSCStreamingClient
+from pyOSC3.OSC3 import OSCStreamingClient
 import threading
 import time
 
