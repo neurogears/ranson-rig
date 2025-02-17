@@ -17,7 +17,7 @@ An interactive visual stimulation rig controllable by OSC using Bonsai and BonVi
 
 ## Protocol
 
-The communication interface between Python/MATLAB and the stimulation rig is built on top of the [OSC](http://opensoundcontrol.org/spec-1_0) real-time protocol over UDP.
+The communication interface between Python/MATLAB and the stimulation rig is built on top of the [OSC](https://opensoundcontrol.stanford.edu/spec-1_0.html) real-time protocol over UDP.
 
 A sequence of messages is used to setup the stimuli for each trial, followed by a start message for each trial type. The existing messages and their parameters are detailed below.
 
