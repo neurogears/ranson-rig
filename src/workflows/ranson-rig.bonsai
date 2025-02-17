@@ -349,9 +349,6 @@ Item2.Index as TrialID)</scr:Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:SubscribeWhen" />
                   </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>PostRender</Name>
-                  </Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogExperiment.bonsai">
                     <Seed>0</Seed>
                     <P>1</P>
@@ -395,9 +392,8 @@ Item2.Index as TrialID)</scr:Expression>
                   <Edge From="29" To="30" Label="Source1" />
                   <Edge From="31" To="33" Label="Source1" />
                   <Edge From="32" To="33" Label="Source2" />
-                  <Edge From="34" To="35" Label="Source1" />
-                  <Edge From="35" To="37" Label="Source1" />
-                  <Edge From="36" To="37" Label="Source2" />
+                  <Edge From="34" To="36" Label="Source1" />
+                  <Edge From="35" To="36" Label="Source2" />
                 </Edges>
               </Workflow>
             </Expression>
@@ -510,6 +506,61 @@ Item2.Index as TrialID)</scr:Expression>
                 </Edges>
               </Workflow>
             </Expression>
+            <Expression xsi:type="GroupWorkflow">
+              <Name>SyncQuad</Name>
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>PostRender</Name>
+                  </Expression>
+                  <Expression xsi:type="Combinator">
+                    <Combinator xsi:type="gl:UpdateViewportState">
+                      <gl:X>0</gl:X>
+                      <gl:Y>0</gl:Y>
+                      <gl:Width>1</gl:Width>
+                      <gl:Height>1</gl:Height>
+                    </Combinator>
+                  </Expression>
+                  <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.OrthographicView.bonsai">
+                    <Left>0</Left>
+                    <Right>1</Right>
+                    <Bottom>0</Bottom>
+                    <Top>1</Top>
+                  </Expression>
+                  <Expression xsi:type="SubscribeSubject">
+                    <Name>HarpSync</Name>
+                  </Expression>
+                  <Expression xsi:type="PropertyMapping">
+                    <PropertyMappings>
+                      <Property Name="ColorR" />
+                      <Property Name="ColorG" />
+                      <Property Name="ColorB" />
+                    </PropertyMappings>
+                  </Expression>
+                  <Expression xsi:type="IncludeWorkflow" Path="BonVision:Primitives.DrawQuad.bonsai">
+                    <ExtentX>0.1</ExtentX>
+                    <ExtentY>0.3</ExtentY>
+                    <LocationX>0</LocationX>
+                    <LocationY>0</LocationY>
+                    <Layer>0</Layer>
+                    <Angle>0</Angle>
+                    <ColorR>0</ColorR>
+                    <ColorG>0</ColorG>
+                    <ColorB>0</ColorB>
+                    <ColorA>1</ColorA>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                </Nodes>
+                <Edges>
+                  <Edge From="0" To="1" Label="Source1" />
+                  <Edge From="1" To="2" Label="Source1" />
+                  <Edge From="2" To="5" Label="Source1" />
+                  <Edge From="3" To="4" Label="Source1" />
+                  <Edge From="4" To="5" Label="Source2" />
+                  <Edge From="5" To="6" Label="Source1" />
+                </Edges>
+              </Workflow>
+            </Expression>
             <Expression xsi:type="SubscribeSubject">
               <Name>Request</Name>
             </Expression>
@@ -527,7 +578,7 @@ Item2.Index as TrialID)</scr:Expression>
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
-            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
