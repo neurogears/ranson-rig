@@ -18,34 +18,8 @@
             <Expression xsi:type="SubscribeSubject">
               <Name>Render</Name>
             </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.OrthographicView.bonsai">
-              <Left>-135</Left>
-              <Right>135</Right>
-              <Bottom>-45</Bottom>
-              <Top>45</Top>
-            </Expression>
             <Expression xsi:type="MulticastSubject">
-              <Name>Draw</Name>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>ClearColor</Name>
-            </Expression>
-            <Expression xsi:type="PropertyMapping">
-              <PropertyMappings>
-                <Property Name="ClearColor" />
-              </PropertyMappings>
-            </Expression>
-            <Expression xsi:type="IncludeWorkflow" Path="BonVision:Environment.SphereMapping.bonsai">
-              <ClearColor>Gray</ClearColor>
-              <Width>1024</Width>
-              <Height>1024</Height>
-              <RotationZ>0</RotationZ>
-              <RotationY>0</RotationY>
-              <RotationX>0</RotationX>
-              <FaceSize xsi:nil="true" />
-            </Expression>
-            <Expression xsi:type="MulticastSubject">
-              <Name>Environment</Name>
+              <Name>Render2D</Name>
             </Expression>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
@@ -77,19 +51,14 @@
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="2" To="5" Label="Source1" />
+            <Edge From="2" To="9" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="5" Label="Source2" />
+            <Edge From="4" To="5" Label="Source1" />
             <Edge From="5" To="6" Label="Source1" />
-            <Edge From="7" To="14" Label="Source1" />
-            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source2" />
             <Edge From="9" To="10" Label="Source1" />
-            <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="12" Label="Source1" />
-            <Edge From="12" To="13" Label="Source1" />
-            <Edge From="13" To="14" Label="Source2" />
-            <Edge From="14" To="15" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
