@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.8.4"
+<WorkflowBuilder Version="2.8.5"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
@@ -10,7 +10,7 @@
         <Name>Behavior</Name>
       </Expression>
       <Expression xsi:type="rx:GroupBy">
-        <rx:KeySelector>MessageType,Address</rx:KeySelector>
+        <rx:KeySelector>Address</rx:KeySelector>
       </Expression>
       <Expression xsi:type="rx:SelectMany">
         <Name>LogRegisters</Name>
@@ -44,8 +44,8 @@
               <Combinator xsi:type="rx:Zip" />
             </Expression>
             <Expression xsi:type="Format">
-              <Format>{0}_Behavior_{1}{2}.bin</Format>
-              <Selector>Item1,Item2.Item1,Item2.Item2</Selector>
+              <Format>{0}_Behavior_{1}.bin</Format>
+              <Selector>Item1,Item2</Selector>
             </Expression>
             <Expression xsi:type="PropertyMapping">
               <PropertyMappings>
