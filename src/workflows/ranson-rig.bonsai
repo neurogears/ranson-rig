@@ -360,7 +360,7 @@ Item2.Index as TrialID)</scr:Expression>
                   <Expression xsi:type="IncludeWorkflow" Path="Extensions\LogExperiment.bonsai">
                     <Seed>0</Seed>
                     <P>1</P>
-                    <Offset>30</Offset>
+                    <Offset>120</Offset>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>Prefix</Name>
