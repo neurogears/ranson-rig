@@ -1365,6 +1365,12 @@ Item2 as MaxActivations)</scr:Expression>
             <Expression xsi:type="MulticastSubject">
               <Name>PulseValve</Name>
             </Expression>
+            <Expression xsi:type="SubscribeSubject">
+              <Name>Position</Name>
+            </Expression>
+            <Expression xsi:type="MulticastSubject">
+              <Name>TrialPosition</Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
@@ -1402,6 +1408,7 @@ Item2 as MaxActivations)</scr:Expression>
             <Edge From="37" To="38" Label="Source1" />
             <Edge From="38" To="39" Label="Source1" />
             <Edge From="41" To="42" Label="Source1" />
+            <Edge From="43" To="44" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>

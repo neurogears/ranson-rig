@@ -581,6 +581,9 @@ Item2.Index as TrialID)</scr:Expression>
             <Expression xsi:type="rx:PublishSubject" TypeArguments="sys:Boolean">
               <rx:Name>TrialResponse</rx:Name>
             </Expression>
+            <Expression xsi:type="rx:PublishSubject" TypeArguments="sys:Single">
+              <rx:Name>TrialPosition</rx:Name>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
