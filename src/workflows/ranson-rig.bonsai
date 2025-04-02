@@ -1194,7 +1194,6 @@ Item6 as ViewPosition)</scr:Expression>
         <PortName>COM3</PortName>
         <EncoderScale>1</EncoderScale>
         <ValvePort>Port0</ValvePort>
-        <EncoderPort>Port2</EncoderPort>
         <SyncOutput>Digital0</SyncOutput>
       </Expression>
     </Nodes>
