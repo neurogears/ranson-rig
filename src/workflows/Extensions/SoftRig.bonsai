@@ -40,7 +40,7 @@
         <Combinator xsi:type="gli:MouseWheel" />
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>EventArgs.Mouse.WheelPrecise</Selector>
+        <Selector>EventArgs.DeltaPrecise</Selector>
       </Expression>
       <Expression xsi:type="ExternalizedMapping">
         <Property Name="Value" DisplayName="EncoderScale" Description="The scale factor to convert mouse ticks into encoder distance." />
